@@ -24,8 +24,8 @@ def derived(values: dict[str, str], raw: dict) -> dict[str, str]:
     else:
         raise NotImplementedError("gate.json exists: write templates/kalshi_decided.md from its fields")
     out["pm_xarb_exact_verdict"] = (
-        f"edges of about {values['xa_exact_edge_mean']} that rarely outlast a poll; sound at settlement, "
-        "lost in execution so far."
+        f"edges of about {values['xa_exact_edge_mean']} that often last a single poll; no divergence at "
+        "settlement, a net loss so far."
     )
     return out
 

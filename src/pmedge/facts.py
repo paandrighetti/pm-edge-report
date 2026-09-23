@@ -210,7 +210,13 @@ def backtest(f: Facts) -> None:
     claim(num(valid_oos["no"]["share_several_winners"]) > 0.5, "most NO books have several winners")
     db_is = md_table(text, "## dutch_book", 0)
     db_oos = md_table(text, "## dutch_book", 1)[0]
-    f.put("db_is_roc", max(num(r["return_on_capital"]) for r in db_is) * 100, "{:.1f} %", src)
+    selected = max(db_is, key=lambda r: num(r["t_stat"]))  # the report's selection rule
+    f.put("db_is_roc", num(selected["return_on_capital"]) * 100, "{:.1f} %", src)
+    f.put("db_yes_roc", num(db_side["yes"]["return_on_capital"]) * 100, "{:.0f} %", src)
+    f.put("db_yes_t", num(db_side["yes"]["t_stat"]), "{:.1f}", src)
+    f.put("db_no_roc", num(db_side["no"]["return_on_capital"]) * 100, "{:.1f} %", src)
+    claim(num(db_side["yes"]["return_on_capital"]) > 0 and num(db_side["yes"]["t_stat"]) > 2,
+          "the YES books keep a positive out-of-sample return")
     f.put("db_oos_roc", num(db_oos["return_on_capital"]) * 100, "{:.1f} %", src)
     claim(abs(num(db_oos["return_on_capital"])) < 0.005 < min(num(r["return_on_capital"]) for r in db_is),
           "the Dutch-book return on capital is positive in sample and flat out of sample")
@@ -267,6 +273,7 @@ def xarb(f: Facts) -> None:
     sb = since[("crypto", "basis")]
     f.put("xa_basis_traded_pairs", int(num(sb["resolved_pairs"])), "{}", src)
     f.put("xa_basis_traded_pnl", num(sb["pnl"]), "{:.0f} USD", src)
+    f.put("xa_basis_traded_onesided", int(num(sb["one_sided"])), "{}", src)
     f.put("xa_day", re.search(r"(\d{4}-\d{2}-\d{2})", text.splitlines()[0]).group(1), "", src)
     claim(num(se["pnl"]) < 0, "exact pairs lose since inception")
 

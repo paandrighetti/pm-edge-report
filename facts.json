@@ -365,8 +365,23 @@
   "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
  },
  "db_is_roc": {
-  "value": 5.26,
-  "printed": "5.3 %",
+  "value": 5.18,
+  "printed": "5.2 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "db_yes_roc": {
+  "value": 19.34,
+  "printed": "19 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "db_yes_t": {
+  "value": 2.3932,
+  "printed": "2.4",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "db_no_roc": {
+  "value": -0.69,
+  "printed": "-0.7 %",
   "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
  },
  "db_oos_roc": {
@@ -497,6 +512,11 @@
  "xa_basis_traded_pnl": {
   "value": -301.7,
   "printed": "-302 USD",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_basis_traded_onesided": {
+  "value": 6,
+  "printed": "6",
   "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
  },
  "xa_day": {

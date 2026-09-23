@@ -17,7 +17,7 @@ desk are measurements with no decision rule. The Kalshi study is still running.
 | study | question | verdict |
 |---|---|---|
 | Up/Down taker ([updown-desk](https://github.com/paandrighetti/updown-desk)) | Does taking against a diffusion fair value pay on 15-minute crypto markets? | No. All {ud_taker_cells} cells lose, t from {ud_taker_t_lo} to {ud_taker_t_hi}. |
-| Resolved-market strategies ([pm-backtest](https://github.com/paandrighetti/pm-backtest)) | Do favorite carry, Dutch books or hedged crypto binaries survive out of sample? | No. Favorite carry loses, the Dutch-book residual goes flat and the best hedge cell reverses. |
+| Resolved-market strategies ([pm-backtest](https://github.com/paandrighetti/pm-backtest)) | Do favorite carry, Dutch books or hedged crypto binaries survive out of sample? | No. Favorite carry loses and the best hedge cell reverses; the only Dutch-book residual sits in a few cheap books and cannot be sized on hourly data. |
 | Passive quoting (updown-desk) | Does resting liquidity earn the spread plus the maker rebate? | About the rebate, in one price bucket, and not at the back of the queue. |
 | Cross-venue arbitrage (pm-xarb) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: {pm_xarb_exact_verdict} Basis pairs: more entry edge, and a negative result. |
 | Kalshi maker premium (kalshi-maker) | Does the published maker premium survive for a slow maker at the back of the queue? | {km_verdict} |
@@ -77,9 +77,8 @@ Hourly price history of {bt_markets} resolved Polymarket markets, split by resol
 is selected in sample by a rule fixed in the configuration before the run, then run once out
 of sample.
 
-- **Favorite carry.** The favorite-longshot bias (Snowberg and Wolfers 2010) and the
-  calibration literature (Page and Clemen 2013) suggest that favorites near resolution are
-  underpriced. Out of sample, {fc_n} trades lose {fc_loss} per trade (t = {fc_t}), and still
+- **Favorite carry.** The favorite-longshot bias (Snowberg and Wolfers 2010) suggests that
+  favorites are underpriced. Out of sample, {fc_n} trades lose {fc_loss} per trade (t = {fc_t}), and still
   lose {fc_loss_0} (t = {fc_t_0}) with no spread at all. At the mid, favorites priced near
   {fc_mid_95} win {fc_win_95} of the time, and those near {fc_mid_98} win {fc_win_98}. On this
   universe near-certainties look slightly dear rather than cheap. The pm-backtest README adds
@@ -88,8 +87,10 @@ of sample.
 - **Dutch books** (outcome prices summing away from one). {db_no_several} of the books priced
   above one had several winners: they were nested thresholds, not exclusive outcomes. Among
   the {db_yes_n} books priced below one, {db_yes_one} were valid, and together they made
-  {db_yes_pnl} units of capital at one share per leg, which says nothing about size. Over both
-  sides, the return on capital is {db_is_roc} in sample and {db_oos_roc} out of sample.
+  {db_yes_pnl} units of capital at one share per leg: a return on capital of {db_yes_roc} out
+  of sample (t = {db_yes_t}), on hourly prints that say nothing about the size that could have
+  been filled. The books priced above one return {db_no_roc}, and both sides together
+  {db_is_roc} in sample and {db_oos_roc} out of sample.
 - **Hedged crypto binaries.** The best of {bh_cells} in-sample cells (t = {bh_is_t}) loses
   {bh_oos_loss} per trade out of sample (t = {bh_oos_t}). The spot hedge reduces variance
   (hedged over unhedged variance {bh_var_ratio}) but protects a fair value with no edge.
@@ -136,19 +137,20 @@ polls, mean skew between venues {xa_skew}. Of the Kalshi legs in the matched fam
   on a single poll (median lifetime {xa_exact_life_med}, 90th percentile
   {xa_exact_life_p90}); one poll later, {xa_fill_ratio} of the intended size fills.
   Since inception, {xa_exact_resolved} pairs have resolved for a total of {xa_exact_pnl},
-  of which {xa_exact_naked_pnl} on the {xa_exact_naked} pairs left with a naked leg; the
-  total is not final while {xa_exact_onesided} of them await the second venue. Held without
-  execution from the first opportunity, {xa_exact_cf_pairs} exact pairs settle with no
-  divergence and return {xa_exact_cf_pnl} per contract: the pairs are sound, and the loss so
-  far comes from execution.
+  of which {xa_exact_naked_pnl} on the {xa_exact_naked} pairs left with a naked leg and
+  {xa_exact_hedged_pnl} on hedged pairs; the total is not final while {xa_exact_onesided} of
+  them await the second venue. In the desk's counterfactual table, {xa_exact_cf_pairs} exact
+  pairs held from their first opportunity settle with no divergence and return
+  {xa_exact_cf_pnl} per contract: the loss so far is not explained by divergent settlement.
 - **Basis pairs** (the same question, settled on different sources or at different instants;
-  {xa_basis_pairs} on today's whitelist). Held without capital from the first opportunity on
-  each of the {xa_basis_cf_pairs} basis pairs seen since inception, the mean entry edge is
+  {xa_basis_pairs} on the current whitelist). Held without capital from the first opportunity
+  on each of the {xa_basis_cf_pairs} basis pairs in the desk's counterfactual table, the mean entry edge is
   {xa_basis_edge} per contract against {xa_exact_cf_edge} for exact pairs, and the mean result
   is {xa_basis_pnl}. {xa_basis_div} of those pairs settled differently on the two venues, and
   such a pair pays zero or two, not one. The entry edge is the premium for that risk; on this
   small sample it did not cover it. In the first days of paper trading basis pairs were also
-  traded: {xa_basis_traded_pairs} resolved, total {xa_basis_traded_pnl}.
+  traded: {xa_basis_traded_pairs} resolved, total {xa_basis_traded_pnl}, not final while
+  {xa_basis_traded_onesided} of them await the second venue.
 
 A basis pair is short the difference between two measurements of the same event. It is not an
 arbitrage.
@@ -159,13 +161,15 @@ arbitrage.
 
 ## 7. What the five studies say together
 
-1. **Know the contract before pricing it.** The Up/Down model was worse than the market until
-   it priced the 60-second average, and in the cross-venue desk the pairs with the most entry
+1. **Know the contract before pricing it.** Priced on the spot price, the Up/Down model was
+   clearly worse than the market at 14 minutes; priced on the 60-second average, it is close
+   to the market, and in the cross-venue desk the pairs with the most entry
    edge were those whose two legs settle on different facts. Resolution rules are a risk
    factor, not a footnote.
 2. **These markets are hard to beat with public information and simple models.** A
    purpose-built model roughly matches the mid and does not pay its costs, favorites are not
-   cheap, and the in-sample edges went flat or reversed out of sample.
+   cheap, and the in-sample edges went flat or reversed out of sample, except a Dutch-book
+   residual too thin to size.
 3. **What is left looks like microstructure.** In the one market family measured, resting
    liquidity earns about the rebate and queue position decides who keeps it. That fits the
    queue-rationing account of large-tick markets (Yao and Ye 2018), but the data here is
@@ -183,8 +187,9 @@ arbitrage.
   tell a change of regime from noise.
 - The resolved-market intervals treat trades as independent. Many markets resolve on the
   same event night, so the intervals are too narrow.
-- The rules of the passive study sit in script docstrings committed with their results;
-  nothing in the repository history dates them.
+- The rules of the passive study sit in script docstrings, and the backtest's selection rule
+  in its configuration, committed with their results; nothing in the repository history dates
+  them. Only the Kalshi pre-registration was committed before its data was downloaded.
 - All fills are simulated from public data with conservative rules, and a paper order never
   moves the market. Order placement on Polymarket is geographically restricted, and Kalshi
   restricts access by country: this work reads public market data only.
@@ -205,6 +210,5 @@ and kalshi-maker (cross-venue desk and Kalshi maker study). Rebuild this documen
 - Burgi, C., Deng, W. and Whelan, K. (2025). Makers and Takers: The Economics of the Kalshi Prediction Market. CEPR Discussion Paper 20631.
 - Glosten, L. (1994). Is the electronic open limit order book inevitable? Journal of Finance 49(4), 1127-1161.
 - Huang, R. and Stoll, H. (1996). Dealer versus auction markets: a paired comparison of execution costs on NASDAQ and the NYSE. Journal of Financial Economics 41(3), 313-357.
-- Page, L. and Clemen, R. (2013). Do prediction markets produce well-calibrated probability forecasts? Economic Journal 123(568), 491-513.
 - Snowberg, E. and Wolfers, J. (2010). Explaining the favorite-longshot bias: is it risk-love or misperceptions? Journal of Political Economy 118(4), 723-746.
 - Yao, C. and Ye, M. (2018). Why trading speed matters: a tale of queue rationing under price controls. Review of Financial Studies 31(6), 2157-2183.
