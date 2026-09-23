@@ -9,10 +9,12 @@ from pmedge.tables import fixed_width, md_table, num
 # Digits allowed in template prose: fixed descriptions of the contracts and buckets, years,
 # section numbers and bibliographic references. Every measured figure must be a placeholder.
 ALLOWED = [
-    r"\b20\d\d\b", r"^\s*(\d+\.|##\s*\d+\.)", r"15-minute", r"60-second", r"30-second",
+    r"^\s*0\.5,",
+    r"\b(?:19|20)\d\d\b", r"^\s*(\d+\.|##\s*\d+\.)", r"15-minute", r"60-second", r"30-second",
     r"\b10 minutes\b", r"\b14 minutes\b", r"\b5 minutes\b", r"0\.1 to 0\.3", r"from 0\.5",
     r"\bSSRN \d+", r"Paper \d+", r"\d+\(\d+\), \d+-\d+", r"90th", r"one tick", r"SHA-256",
-    r"\bsum(?:ming)? away from one\b", r"MANIFEST\.sha256",
+    r"\bsum(?:ming)? away from one\b", r"MANIFEST\.sha256", r"t below -2",
+    r"0\.21 to 0\.39 and 0\.61 to 0\.79",
 ]
 
 

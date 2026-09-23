@@ -44,9 +44,24 @@
   "printed": "-1.8",
   "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
  },
- "ud_taker_trades": {
-  "value": 14470,
-  "printed": "14,470",
+ "ud_taker_n_lo": {
+  "value": 2501,
+  "printed": "2,501",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_taker_n_hi": {
+  "value": 5095,
+  "printed": "5,095",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_taker_sig": {
+  "value": 9,
+  "printed": "9",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_taker_nonsig": {
+  "value": 3,
+  "printed": "3",
   "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
  },
  "ud_fee_share_lo": {
@@ -57,6 +72,11 @@
  "ud_fee_share_hi": {
   "value": 86.84216227305416,
   "printed": "87 %",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_brier_n_840": {
+  "value": 1723,
+  "printed": "1,723",
   "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
  },
  "ud_brier_model_300": {
@@ -123,6 +143,26 @@
   "value": 16,
   "printed": "16",
   "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud0_windows": {
+  "value": 2548,
+  "printed": "2,548",
+  "source": "sources/updown-desk-b4c0c95/README.md"
+ },
+ "ud0_agree_twap60": {
+  "value": 98.8,
+  "printed": "98.8 %",
+  "source": "sources/updown-desk-b4c0c95/README.md"
+ },
+ "ud0_brier_spot_840": {
+  "value": 0.132,
+  "printed": "0.132",
+  "source": "sources/updown-desk-b4c0c95/README.md"
+ },
+ "ud0_brier_mkt_840": {
+  "value": 0.097,
+  "printed": "0.097",
+  "source": "sources/updown-desk-b4c0c95/README.md"
  },
  "ps_prints": {
   "value": 1512913,
@@ -324,6 +364,16 @@
   "printed": "43",
   "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
  },
+ "db_is_roc": {
+  "value": 5.26,
+  "printed": "5.3 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "db_oos_roc": {
+  "value": -0.04,
+  "printed": "0.0 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
  "bh_cells": {
   "value": 9,
   "printed": "9",
@@ -422,6 +472,51 @@
  "xa_exact_naked": {
   "value": 7,
   "printed": "7",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_onesided": {
+  "value": 14,
+  "printed": "14",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_naked_pnl": {
+  "value": -58.07,
+  "printed": "-58 USD",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_hedged_pnl": {
+  "value": -35.02,
+  "printed": "-35 USD",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_basis_traded_pairs": {
+  "value": 8,
+  "printed": "8",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_basis_traded_pnl": {
+  "value": -301.7,
+  "printed": "-302 USD",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_day": {
+  "value": "2026-09-22",
+  "printed": "2026-09-22",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_cf_pairs": {
+  "value": 17,
+  "printed": "17",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_cf_edge": {
+  "value": 0.64,
+  "printed": "0.6 cents",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_cf_pnl": {
+  "value": 0.64,
+  "printed": "0.6 cents",
   "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
  },
  "xa_basis_cf_pairs": {

@@ -19,12 +19,13 @@ def derived(values: dict[str, str], raw: dict) -> dict[str, str]:
     """Sentences whose wording depends on the data, chosen here and nowhere else."""
     out = {}
     if raw["km_status"] == "pending":
-        out["km_verdict"] = "Pending: the pre-registered backtest is downloading its sample."
+        out["km_verdict"] = "Pending: the pre-registered backtest has not written its decision yet."
         out["km_section"] = (TEMPLATES / "kalshi_pending.md").read_text(encoding="utf-8").strip()
     else:
         raise NotImplementedError("gate.json exists: write templates/kalshi_decided.md from its fields")
     out["pm_xarb_exact_verdict"] = (
-        f"edges of about {values['xa_exact_edge_mean']} that last seconds, and a net loss so far."
+        f"edges of about {values['xa_exact_edge_mean']} that rarely outlast a poll; sound at settlement, "
+        "lost in execution so far."
     )
     return out
 

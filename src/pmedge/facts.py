@@ -18,6 +18,7 @@ from .tables import fixed_width, md_table, num, read, text_section
 ROOT = Path(__file__).resolve().parents[2]
 SERVER = ROOT / "sources" / "server-20260923T2149Z"
 BACKTEST = ROOT / "sources" / "pm-backtest-86fa1aa" / "2026-09-18.md"
+UPDOWN_README = ROOT / "sources" / "updown-desk-b4c0c95" / "README.md"
 
 
 class ClaimError(AssertionError):
@@ -86,11 +87,18 @@ def updown(f: Facts) -> None:
     f.put("ud_taker_cells", len(grid), "{}", src)
     f.put("ud_taker_t_lo", min(ts), "{:.1f}", src)
     f.put("ud_taker_t_hi", max(ts), "{:.1f}", src)
-    f.put("ud_taker_trades", sum(int(num(r["n"])) for r in grid if r["latency_ms"] == "0"), "{:,}", src)
+    ns = [int(num(r["n"])) for r in grid]
+    f.put("ud_taker_n_lo", min(ns), "{:,}", src)
+    f.put("ud_taker_n_hi", max(ns), "{:,}", src)
+    f.put("ud_taker_sig", sum(t < -2 for t in ts), "{}", src)
+    f.put("ud_taker_nonsig", sum(t >= -2 for t in ts), "{}", src)
+    zero_lat = [num(r["t_stat"]) for r in grid if r["latency_ms"] == "0"]
+    claim(all(t < -2 for t in zero_lat), "the zero-latency cells, free of the fill-check bias, lose significantly")
     f.put("ud_fee_share_lo", min(fee_share) * 100, "{:.0f} %", src)
     f.put("ud_fee_share_hi", max(fee_share) * 100, "{:.0f} %", src)
 
     brier = {int(num(r["offset_s"])): r for r in md_table(text, "## Model versus market at fixed checkpoints")}
+    f.put("ud_brier_n_840", int(num(brier[840]["n"])), "{:,}", src)
     for off in (300, 600, 840):
         f.put(f"ud_brier_model_{off}", num(brier[off]["brier_model"]), "{:.4f}", src)
         f.put(f"ud_brier_market_{off}", num(brier[off]["brier_market"]), "{:.4f}", src)
@@ -113,6 +121,19 @@ def updown(f: Facts) -> None:
     f.put("ud_v02_cells", len(pgrid), "{}", src)
 
 
+def updown_readme(f: Facts) -> None:
+    src = UPDOWN_README
+    text = read(src)
+    m = re.search(r"First results \(six days, ([\d ]+) resolved windows", text)
+    f.put("ud0_windows", int(m.group(1).replace(" ", "")), "{:,}", src)
+    m = re.search(r"agrees with the settled outcome ([\d.]+) % of the time\s+on `crypto_prices_twap_sixty`", text)
+    f.put("ud0_agree_twap60", float(m.group(1)), "{:.1f} %", src)
+    m = re.search(r"\(Brier ([\d.]+)\s+against ([\d.]+) at 14 minutes\)", text)
+    f.put("ud0_brier_spot_840", float(m.group(1)), "{:.3f}", src)
+    f.put("ud0_brier_mkt_840", float(m.group(2)), "{:.3f}", src)
+    claim(float(m.group(1)) > float(m.group(2)), "the spot-settled model was worse than the market")
+
+
 def passive(f: Facts) -> None:
     src = SERVER / "updown-desk" / "tape_study.txt"
     text = read(src)
@@ -127,6 +148,7 @@ def passive(f: Facts) -> None:
     claim(num(rs["exploration"]["rs_30s"]) < 0 < num(rs["confirmation"]["rs_30s"]),
           "the 30 s realized spread before rebate is negative then positive across samples")
     claim(abs(num(rs["confirmation"]["t_rs_30s"])) < 2, "the confirmation 30 s realized spread is not significant")
+    claim(num(rs["exploration"]["t_rs_30s"]) < -2, "the exploration 30 s realized spread is a significant loss")
 
     buckets = fixed_width(text_section(text, 3))
     tested = len(buckets)
@@ -186,6 +208,12 @@ def backtest(f: Facts) -> None:
     f.put("db_yes_n", int(num(db_side["yes"]["n"])), "{}", src)
     f.put("db_yes_pnl", num(db_side["yes"]["pnl_total"]), "{:.0f}", src)
     claim(num(valid_oos["no"]["share_several_winners"]) > 0.5, "most NO books have several winners")
+    db_is = md_table(text, "## dutch_book", 0)
+    db_oos = md_table(text, "## dutch_book", 1)[0]
+    f.put("db_is_roc", max(num(r["return_on_capital"]) for r in db_is) * 100, "{:.1f} %", src)
+    f.put("db_oos_roc", num(db_oos["return_on_capital"]) * 100, "{:.1f} %", src)
+    claim(abs(num(db_oos["return_on_capital"])) < 0.005 < min(num(r["return_on_capital"]) for r in db_is),
+          "the Dutch-book return on capital is positive in sample and flat out of sample")
 
     bh_is = md_table(text, "## binary_hedge", 0)
     best = max(bh_is, key=lambda r: num(r["t_stat"]))
@@ -233,15 +261,28 @@ def xarb(f: Facts) -> None:
     f.put("xa_exact_resolved", int(num(se["resolved_pairs"])), "{}", src)
     f.put("xa_exact_pnl", num(se["pnl"]), "{:.0f} USD", src)
     f.put("xa_exact_naked", int(num(se["naked_pairs"])), "{}", src)
+    f.put("xa_exact_onesided", int(num(se["one_sided"])), "{}", src)
+    f.put("xa_exact_naked_pnl", num(se["pnl_naked"]), "{:.0f} USD", src)
+    f.put("xa_exact_hedged_pnl", num(se["pnl_hedged"]), "{:.0f} USD", src)
+    sb = since[("crypto", "basis")]
+    f.put("xa_basis_traded_pairs", int(num(sb["resolved_pairs"])), "{}", src)
+    f.put("xa_basis_traded_pnl", num(sb["pnl"]), "{:.0f} USD", src)
+    f.put("xa_day", re.search(r"(\d{4}-\d{2}-\d{2})", text.splitlines()[0]).group(1), "", src)
     claim(num(se["pnl"]) < 0, "exact pairs lose since inception")
 
     cf = {r["klass"]: r for r in md_table(text, "## Classes not traded: counterfactual")}
     b = cf["basis"]
+    e = cf["exact"]
+    f.put("xa_exact_cf_pairs", int(num(e["pairs"])), "{}", src)
+    f.put("xa_exact_cf_edge", num(e["mean_edge_at_entry"]) * 100, "{:.1f} cents", src)
+    f.put("xa_exact_cf_pnl", num(e["mean_pnl_per_contract"]) * 100, "{:.1f} cents", src)
+    claim(int(num(e["divergent"])) == 0 and num(e["mean_pnl_per_contract"]) > 0,
+          "held without execution, exact pairs settle without divergence and at a small profit")
     f.put("xa_basis_cf_pairs", int(num(b["pairs"])), "{}", src)
     f.put("xa_basis_div", int(num(b["divergent"])), "{}", src)
     f.put("xa_basis_edge", num(b["mean_edge_at_entry"]) * 100, "{:.1f} cents", src)
     f.put("xa_basis_pnl", num(b["mean_pnl_per_contract"]) * 100, "{:.1f} cents", src)
-    claim(num(b["mean_edge_at_entry"]) > wmean, "basis pairs show more entry edge than exact pairs")
+    claim(num(b["mean_edge_at_entry"]) > num(e["mean_edge_at_entry"]), "basis pairs show more entry edge than exact pairs")
     claim(num(b["mean_edge_at_entry"]) > 0 > num(b["mean_pnl_per_contract"]),
           "basis pairs show a positive entry edge and a negative result")
 
@@ -261,6 +302,6 @@ def kalshi(f: Facts) -> None:
 
 def build_facts() -> Facts:
     f = Facts()
-    for step in (updown, passive, backtest, xarb, kalshi):
+    for step in (updown, updown_readme, passive, backtest, xarb, kalshi):
         step(f)
     return f
