@@ -1,0 +1,457 @@
+{
+ "ud_report_head": {
+  "value": "Up/Down desk report (2026-09-23 06:09 UTC, last 7 complete days)",
+  "printed": "Up/Down desk report (2026-09-23 06:09 UTC, last 7 complete days)",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_windows": {
+  "value": 2680,
+  "printed": "2,680",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_agree_twap60": {
+  "value": 100.0,
+  "printed": "100.0 %",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_agree_twap30": {
+  "value": 97.35000000000001,
+  "printed": "97.4 %",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_agree_chainlink": {
+  "value": 94.25,
+  "printed": "94.3 %",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_agree_binance": {
+  "value": 93.92,
+  "printed": "93.9 %",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_taker_cells": {
+  "value": 12,
+  "printed": "12",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_taker_t_lo": {
+  "value": -3.4135,
+  "printed": "-3.4",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_taker_t_hi": {
+  "value": -1.7824,
+  "printed": "-1.8",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_taker_trades": {
+  "value": 14470,
+  "printed": "14,470",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_fee_share_lo": {
+  "value": 52.78535893391145,
+  "printed": "53 %",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_fee_share_hi": {
+  "value": 86.84216227305416,
+  "printed": "87 %",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_brier_model_300": {
+  "value": 0.185,
+  "printed": "0.1850",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_brier_market_300": {
+  "value": 0.1821,
+  "printed": "0.1821",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_brier_model_600": {
+  "value": 0.1177,
+  "printed": "0.1177",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_brier_market_600": {
+  "value": 0.1186,
+  "printed": "0.1186",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_brier_model_840": {
+  "value": 0.0461,
+  "printed": "0.0461",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_brier_market_840": {
+  "value": 0.0497,
+  "printed": "0.0497",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_cal_top_model": {
+  "value": 0.9789,
+  "printed": "0.979",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_cal_top_market": {
+  "value": 0.933,
+  "printed": "0.933",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_cal_top_real": {
+  "value": 0.9536,
+  "printed": "0.954",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_cal_bot_model": {
+  "value": 0.0209,
+  "printed": "0.021",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_cal_bot_market": {
+  "value": 0.0724,
+  "printed": "0.072",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_cal_bot_real": {
+  "value": 0.0381,
+  "printed": "0.038",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ud_v02_cells": {
+  "value": 16,
+  "printed": "16",
+  "source": "sources/server-20260923T2149Z/updown-desk/latest.md"
+ },
+ "ps_prints": {
+  "value": 1512913,
+  "printed": "1,512,913",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_study.txt"
+ },
+ "ps_windows": {
+  "value": 4956,
+  "printed": "4,956",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_study.txt"
+ },
+ "ps_days": {
+  "value": 13,
+  "printed": "13",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_study.txt"
+ },
+ "ps_rs30_x": {
+  "value": -0.255,
+  "printed": "-0.26",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_study.txt"
+ },
+ "ps_rs30_t_x": {
+  "value": -2.41,
+  "printed": "-2.4",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_study.txt"
+ },
+ "ps_rs30_c": {
+  "value": 0.046,
+  "printed": "+0.05",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_study.txt"
+ },
+ "ps_rs30_t_c": {
+  "value": 0.73,
+  "printed": "0.7",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_study.txt"
+ },
+ "ps_buckets": {
+  "value": 12,
+  "printed": "12",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_study.txt"
+ },
+ "pq_all_rs_x": {
+  "value": 0.053,
+  "printed": "+0.05",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_all_stat_x": {
+  "value": 0.347,
+  "printed": "+0.35",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_rebate_x": {
+  "value": 0.294,
+  "printed": "0.29",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_front_rs_x": {
+  "value": 0.36,
+  "printed": "+0.36",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_back_loss_x": {
+  "value": 0.555,
+  "printed": "0.56",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_back_stat_x": {
+  "value": -0.262,
+  "printed": "-0.26",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_back_stat_t_x": {
+  "value": -1.35,
+  "printed": "-1.4",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_all_rs_c": {
+  "value": 0.063,
+  "printed": "+0.06",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_all_stat_c": {
+  "value": 0.354,
+  "printed": "+0.35",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_rebate_c": {
+  "value": 0.291,
+  "printed": "0.29",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_front_rs_c": {
+  "value": 0.245,
+  "printed": "+0.25",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_back_loss_c": {
+  "value": 0.347,
+  "printed": "0.35",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_back_stat_c": {
+  "value": -0.056,
+  "printed": "-0.06",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "pq_back_stat_t_c": {
+  "value": -0.38,
+  "printed": "-0.4",
+  "source": "sources/server-20260923T2149Z/updown-desk/tape_queue.txt"
+ },
+ "bt_universe_line": {
+  "value": "Universe: 84160 resolved markets, 54520 in sample (resolved before 2026-06-01), 29640 out of sample. Costs: CostModel(half_spread=0.01, slippage=0.0, venue='polymarket', spot_fee_bps=5).",
+  "printed": "Universe: 84160 resolved markets, 54520 in sample (resolved before 2026-06-01), 29640 out of sample. Costs: CostModel(half_spread=0.01, slippage=0.0, venue='polymarket', spot_fee_bps=5).",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "bt_markets": {
+  "value": 84160,
+  "printed": "84,160",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "bt_is": {
+  "value": 54520,
+  "printed": "54,520",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "bt_split": {
+  "value": "2026-06-01",
+  "printed": "2026-06-01",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "bt_oos": {
+  "value": 29640,
+  "printed": "29,640",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "fc_n": {
+  "value": 10825,
+  "printed": "10,825",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "fc_loss": {
+  "value": 0.83,
+  "printed": "0.8 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "fc_t": {
+  "value": -6.5441,
+  "printed": "-6.5",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "fc_loss_0": {
+  "value": 0.52,
+  "printed": "0.5 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "fc_t_0": {
+  "value": -4.0788,
+  "printed": "-4.1",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "fc_mid_95": {
+  "value": 95.84,
+  "printed": "95.8 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "fc_win_95": {
+  "value": 93.24,
+  "printed": "93.2 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "fc_mid_98": {
+  "value": 99.62,
+  "printed": "99.6 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "fc_win_98": {
+  "value": 99.42999999999999,
+  "printed": "99.4 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "db_no_several": {
+  "value": 53.54,
+  "printed": "54 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "db_yes_one": {
+  "value": 67.82000000000001,
+  "printed": "68 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "db_yes_n": {
+  "value": 289,
+  "printed": "289",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "db_yes_pnl": {
+  "value": 42.618,
+  "printed": "43",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "bh_cells": {
+  "value": 9,
+  "printed": "9",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "bh_is_t": {
+  "value": 4.1257,
+  "printed": "4.1",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "bh_oos_loss": {
+  "value": 8.97,
+  "printed": "9 %",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "bh_oos_t": {
+  "value": -2.4002,
+  "printed": "-2.4",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "bh_var_ratio": {
+  "value": 0.611,
+  "printed": "0.61",
+  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+ },
+ "xa_report_head": {
+  "value": "pm-xarb daily report, 2026-09-22 (UTC)",
+  "printed": "pm-xarb daily report, 2026-09-22 (UTC)",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_pairs": {
+  "value": 54,
+  "printed": "54",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_basis_pairs": {
+  "value": 15,
+  "printed": "15",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_kalshi_unmatched": {
+  "value": 87.94788273615634,
+  "printed": "88 %",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_polls": {
+  "value": 28769,
+  "printed": "28,769",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_skew": {
+  "value": 0.112,
+  "printed": "0.11 s",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_det": {
+  "value": 91,
+  "printed": "91",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_edge_max": {
+  "value": 1.15,
+  "printed": "1.2 cents",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_edge_mean": {
+  "value": 0.5845054945054945,
+  "printed": "0.6 cents",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_life_med": {
+  "value": 0.0,
+  "printed": "0 s",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_life_p90": {
+  "value": 60.1,
+  "printed": "60 s",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_fill_ratio": {
+  "value": 53.1,
+  "printed": "53 %",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_resolved": {
+  "value": 46,
+  "printed": "46",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_pnl": {
+  "value": -93.09,
+  "printed": "-93 USD",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_exact_naked": {
+  "value": 7,
+  "printed": "7",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_basis_cf_pairs": {
+  "value": 22,
+  "printed": "22",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_basis_div": {
+  "value": 2,
+  "printed": "2",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_basis_edge": {
+  "value": 1.94,
+  "printed": "1.9 cents",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "xa_basis_pnl": {
+  "value": -7.16,
+  "printed": "-7.2 cents",
+  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ },
+ "km_prereg_sha": {
+  "value": "02e4f9180ac2b8b0",
+  "printed": "02e4f9180ac2b8b0",
+  "source": "sources/server-20260923T2149Z/kalshi-maker/PREREGISTRATION.md"
+ },
+ "km_status": {
+  "value": "pending",
+  "printed": "pending",
+  "source": "sources/server-20260923T2149Z/kalshi-maker/PREREGISTRATION.md"
+ }
+}

@@ -1,0 +1,14 @@
+[project]
+name = "pmedge"
+version = "0.1.0"
+description = "Synthesis of pre-registered prediction-market studies, generated from their outputs"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
