@@ -21,15 +21,15 @@ test is running.
 | Resolved-market strategies ([pm-backtest](https://github.com/paandrighetti/pm-backtest)) | Do favorite carry, Dutch books or hedged crypto binaries survive out of sample? | No. Favorite carry loses and the best hedge cell reverses; the only Dutch-book residual sits in a few cheap books and cannot be sized on hourly data. |
 | Passive quoting (updown-desk) | Does resting liquidity earn the spread plus the maker rebate? | About the rebate, in one price bucket, and not at the back of the queue. |
 | Cross-venue arbitrage (pm-xarb) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: edges of about 0.6 cents that often last a single poll; no divergence at settlement, a net loss so far. Basis pairs: more entry edge, and a negative result. |
-| Kalshi maker premium (kalshi-maker) | Does the published maker premium survive for a slow maker at the back of the queue? | 7 of 289 pre-registered pairs pass in both periods, all with the maker selling YES; forward paper test running. |
+| Kalshi maker premium (kalshi-maker) | Does the published maker premium survive for a small maker who improves the price or waits at the back of the queue? | 7 of 289 pre-registered pairs pass in both sets of markets, all with the maker selling YES; forward paper test running. |
 
-The common thread: where the flow is fast and informed, as on Polymarket's 15-minute crypto
-markets, prices reflect the contract that actually settles better than simple models do, and
-what liquidity provision earns depends on queue position and speed, which a small participant
-does not have. Four studies found no edge that survives their own costs and checks. The fifth
-found one on Kalshi, in a few non-crypto categories: a slow maker selling YES earned a positive
-premium in two separate periods. That is a backtest result until the forward paper test
-confirms it.
+The common thread: on Polymarket's 15-minute crypto markets, prices reflect the contract that
+actually settles better than simple models do, and what liquidity provision earns depends on
+queue position and speed, which a small participant does not have. Four studies found no edge
+that survives their own costs and checks. The fifth found a candidate on Kalshi: in a few
+non-crypto categories, the pre-registered statistics for a maker selling YES were positive in
+two sets of markets. It rests on fill assumptions and on outcomes already known; only the
+forward paper test, on new outcomes, can confirm it.
 
 ## 1. Settlement first: which price does a market resolve on?
 
@@ -164,88 +164,112 @@ arbitrage.
 Three studies of Kalshi trades find that takers overpay for YES and for longshots (Becker
 2026; Burgi, Deng and Whelan 2025; Bartlett and O'Hara 2026), and the two built on tens of
 millions of trades find that makers earn a positive return at settlement on average. An average
-over all makers is not a strategy. This study asks what is left for a maker who improves the
-best price by one tick (PENNY) or joins at the back of the queue (JOIN), reacts in tens of
-seconds and pays Kalshi's maker fees, on non-sports markets and on trades none of those studies
-used.
+over all makers is not a strategy. This study asks what is left, after Kalshi's maker fees and
+on non-sports markets and trades none of those studies used, for a small maker in two
+positions: one who improves the best price by one tick (PENNY, decided by statistic B) and one
+whose order waits at the back of the queue (JOIN, decided by statistic C, which uses only the
+price levels that a taker order emptied). The backtest has no latency; the slow reaction of a
+real small maker is part of the forward test only.
 
 The pre-registration fixed the sample, the statistics, the cells and the rule before any trade
 was downloaded, and the decision was taken under the same file (SHA-256 beginning
 `02e4f9180ac2b8b0`). A pair (variant, category, side, YES price bucket) qualifies if its mean
-profit per contract, after maker fees, is positive with t ≥ 2 in each of two periods separately,
-with floors on clusters, events, contracts and losing clusters; a cluster is a category and a
-settlement date, and the periods are split by each market's latest expiration time, fixed at
-listing. The sample is one UTC hour in twelve from December 2025 to September 2026:
-52,975,705 trades, 41,722,550 of them in eligible markets after excluding
-9,967,010 trades in multivariate markets, over 43,393 events. Every data-validity
-check passed.
+profit per contract, after maker fees, is positive with t ≥ 2 in each of two sets of markets
+separately, with floors on clusters, events, contracts and losing clusters (at least
+10 losing clusters). The two sets are split by each market's latest expiration
+time, assumed fixed at listing; they overlap in trading time. A cluster is a category and a
+settlement date. The sample is one UTC hour in twelve from December 2025 to September 2026:
+52,975,705 trades, of which 41,722,550 remain after the pre-registered exclusions (among
+them 9,967,010 trades in multivariate markets and 1,270,909 in markets expiring
+after the cutoff), over 43,393 events. Every data-validity check passed.
 
-**Decision** (written 2026-09-24 11:20 UTC): 7 of 289 pairs qualify. If
-the pairs were independent and had no edge, about 0.15 would qualify by chance.
-They are not independent (the same trades appear under both variants), so the
+**Decision** (written 2026-09-24 11:20 UTC): 7 of 289 pairs qualify. If no
+pair had an edge and each t were standard normal and independent across the two sets of
+markets, about 0.15 would qualify by chance; shared settlement dates and heavy
+tails make that figure a rough guide. The same trades appear under both variants, so the
 7 results cover 6 distinct cells.
 
-| variant | category | YES price | exploration: cents (t) | confirmation: cents (t) | every maker (A): exploration, confirmation | clusters (losing) |
+| variant | category | YES price | exploration: cents (t) | confirmation: cents (t) | every maker (A): exploration, confirmation | clusters (losing): exploration / confirmation |
 |---|---|---|---|---|---|---|
-| PENNY | Entertainment | [0.00, 0.10) | 3.10 (6.7) | 1.73 (3.1) | 1.94, 1.73 | 241 (45) |
-| PENNY | Entertainment | [0.10, 0.30) | 7.89 (3.5) | 9.97 (5.4) | 9.76, 8.59 | 236 (67) |
-| PENNY | Mentions | [0.10, 0.30) | 7.14 (4.8) | 6.27 (4.4) | 4.99, 5.69 | 269 (73) |
-| PENNY | Mentions | [0.30, 0.70) | 14.21 (7.3) | 7.86 (5.1) | 12.86, 6.07 | 272 (85) |
-| PENNY | Politics | [0.00, 0.10) | 2.82 (3.0) | 3.64 (7.8) | 2.97, 3.09 | 191 (32) |
-| JOIN | Climate and Weather | [0.00, 0.10) | 1.15 (2.7) | 1.46 (2.8) | 0.76, 0.84 | 275 (53) |
-| JOIN | Entertainment | [0.10, 0.30) | 10.69 (4.9) | 6.49 (2.6) | 9.76, 8.59 | 210 (50) |
+| PENNY | Entertainment | [0.00, 0.10) | 3.10 (6.7) | 1.73 (3.1) | 1.94, 1.73 | 122 (12) / 130 (33) |
+| PENNY | Entertainment | [0.10, 0.30) | 7.89 (3.5) | 9.97 (5.4) | 9.76, 8.59 | 122 (23) / 127 (45) |
+| PENNY | Mentions | [0.10, 0.30) | 7.14 (4.8) | 6.27 (4.4) | 4.99, 5.69 | 144 (43) / 180 (49) |
+| PENNY | Mentions | [0.30, 0.70) | 14.21 (7.3) | 7.86 (5.1) | 12.86, 6.07 | 146 (43) / 183 (71) |
+| PENNY | Politics | [0.00, 0.10) | 2.82 (3.0) | 3.64 (7.8) | 2.97, 3.09 | 72 (13) / 134 (19) |
+| JOIN | Climate and Weather | [0.00, 0.10) | 1.15 (2.7) | 1.46 (2.8) | 0.76, 0.84 | 138 (26) / 142 (27) |
+| JOIN | Entertainment | [0.10, 0.30) | 10.69 (4.9) | 6.49 (2.6) | 9.76, 8.59 | 101 (18) / 119 (32) |
 
-Cents per contract of one dollar, after maker fees; t is cluster-robust. PENNY is decided by
-statistic B, JOIN by statistic C; column A is every maker at the price actually traded, in the
-same cell.
+Cents per contract of one dollar, after maker fees; t is cluster-robust. Column A is every maker
+at the price actually traded, in the same cell. The last column is for the statistic that
+decides the pair; the thinnest margin is 12 losing clusters against the floor of
+10.
 
 What the result says:
 
-- **Every qualifying pair has the maker selling YES.** In the qualifying categories, takers
-  bought YES in 49 % to 73 % of the contracts (above half in 7
-  of 8 category-periods), against 52 % to 53 % in
-  crypto and financials (share of contracts where the taker bought YES):
+- **Every qualifying pair has the maker selling YES.** Takers buy YES more often than they sell
+  in most non-sports categories, including some with no qualifying pair, so the side of the
+  flow alone does not explain where the premium is (share of contracts where the taker bought
+  YES, categories with enough events in both sets of markets):
 
-| category | exploration | confirmation |
-|---|---|---|
-| Climate and Weather | 65 % | 63 % |
-| Entertainment | 73 % | 66 % |
-| Mentions | 72 % | 64 % |
-| Politics | 49 % | 60 % |
-| Crypto | 53 % | 52 % |
-| Financials | 53 % | 53 % |
+| category | qualifying pair | exploration | confirmation |
+|---|---|---|---|
+| Climate and Weather | yes | 65 % | 63 % |
+| Commodities | no | 58 % | 53 % |
+| Crypto | no | 53 % | 52 % |
+| Economics | no | 64 % | 66 % |
+| Entertainment | yes | 73 % | 66 % |
+| Financials | no | 53 % | 53 % |
+| Mentions | yes | 72 % | 65 % |
+| Politics | yes | 49 % | 60 % |
+| Science and Technology | no | 74 % | 70 % |
 
-- **It does not rest on the one-tick assumption alone.** Statistic A, every maker at the price
-  actually traded, is positive with t ≥ 2 in both periods in 5 of the 6
-  cells.
+- **It does not rest on the fill assumption alone.** Statistic A, every maker at the price
+  actually traded, is positive with t ≥ 2 in both sets of markets in 5 of the
+  6 cells.
 - **In Climate and Weather the premium goes to orders already resting at the best price.** A maker
   who improves the price by one tick earns 0.01 and 0.07 cents per
-  contract in the two periods, nothing distinguishable from zero, while the last order in the
-  queue at the best price earns 1.15 and 1.46.
+  contract in the two sets, nothing distinguishable from zero, while statistic C earns
+  1.15 and 1.46.
 - **The average premium is not the finding.** Pooled over all non-sports categories,
-  statistic A is 0.63 cents per contract in the exploration period and 0.15 in
-  the confirmation period, never significant (largest t in absolute value 1.7). The
+  statistic A is 0.63 cents per contract in the exploration markets and 0.15 in
+  the confirmation markets; its t by side never exceeds 1.7 in absolute value. The
   pooled figure weights contracts, and crypto markets hold 68 % of the exploration
-  contracts and 90 % of the confirmation contracts. The premium lives in a few
-  categories, not in the volume.
-- **It is shrinking in most pairs.** 4 of the 7 pairs earn less in the
-  confirmation period than in the exploration period, and so does the pooled figure.
-- **A check made after the decision** (exploratory; it cannot change the gate): the
-  pre-registration assumed that a market's latest expiration time is not moved after listing.
-  In the qualifying categories, 1,271 of 101,092 markets settled
-  more than a day after it, and they carry at most 2.2 % of the traded contracts of any
-  qualifying cell (measured on all trades of the cell, before the PENNY and JOIN selections).
+  contracts and 90 % of the confirmation contracts. The premium lives in a few cells,
+  not in the volume.
+- **It is not stable.** 4 of the 7 pairs earn less in the
+  confirmation markets and 3 earn more; only one change is significant on its own,
+  PENNY Mentions [0.30, 0.70), from 14.21 to 7.86 cents (t of the difference
+  -2.6). The pooled figure also fell, while crypto's share of the contracts rose.
+- **Time to settlement** (exploratory, after the decision; it cannot change the gate). A query
+  that reproduces statistic A of the qualifying cells exactly, split by the time from each
+  trade to settlement, finds the premium at every horizon from one hour up: 5.31 cents
+  (t = 3.0) between one and six hours, 2.73 (6.0) up to a day,
+  3.07 (7.5) up to a week and 4.14 (9.5) beyond. Trades less
+  than a week before settlement carry 91 % of the contracts, so the forward
+  universe below, markets closing within a week, covers where the premium was earned.
+- **Moved expiration times** (exploratory, after the decision). The pre-registration assumed
+  that a market's latest expiration time is not moved after listing; the downloaded data only
+  serve the last value and cannot show a move. What they can show is late settlement: the
+  backtest counts 1,487 eligible markets that settled more than a day after their
+  latest expiration time, and a query over the markets traded in the qualifying categories
+  finds 1,271 of 101,092. They carry at most 2.2 % of the traded
+  contracts of any qualifying cell (all trades of the cell, before the PENNY and JOIN
+  selections). The pre-registered test of the assumption is the forward test, which logs any
+  change of the field.
 
 What the backtest cannot say. PENNY assumes the improved quote stood alone at its price and
-would have been filled by the same order; JOIN only sees the levels that an order emptied, a
-lower bound. Neither sees competing makers or the size a slow maker would actually get, and
-cells chosen as the best of 289 overstate their own magnitude. The forward paper
-test replaces the fill assumptions with the live order book: it started when the decision was
-written, quotes only the qualifying pairs, and succeeds if its profit per contract is positive
-with t ≥ 2 once 200 events have settled with at least 10 losing
-clusters; a variant whose mean is negative after 30 days is abandoned. The
-holdout, trades from another twelfth of the hours, is downloading; a qualifying pair whose
-holdout mean is negative will be reported as contradicted.
+would have been filled by the same order; statistic C counts every emptied level, including
+levels deeper than the best price. Neither sees competing makers or the size a slow maker would
+actually get, and cells chosen as the best of 289 overstate their own magnitude.
+The holdout draws other trades from another twelfth of the hours on the same markets, so it
+tests the sampling of trades, not new outcomes; it had downloaded 121 of
+600 hours at 2026-09-24 11:43 UTC. The forward paper test is the only test on new
+outcomes. It started when the decision was written and quotes only the qualifying pairs, on the
+400 most active markets closing within 7 days (PENNY joins the best price
+when the spread is one tick); its first 67 cycles produced 16
+fills and no error. It succeeds if its profit per contract is positive with t ≥ 2 once
+200 events have settled with at least 10 losing clusters, and a variant
+whose mean is negative after 30 days is abandoned.
 
 ## 7. What the five studies say together
 
@@ -258,12 +282,15 @@ holdout mean is negative will be reported as contradicted.
    purpose-built model roughly matches the mid and does not pay its costs, favorites are not
    cheap, and the in-sample edges went flat or reversed out of sample, except a Dutch-book
    residual too thin to size.
-3. **Who is on the other side decides what a maker earns.** On Polymarket's 15-minute crypto
-   markets, resting liquidity earns about the rebate and queue position decides who keeps it,
-   which fits the queue-rationing account of large-tick markets (Yao and Ye 2018) without
-   testing it. In a few of Kalshi's non-crypto categories, even the last order in the queue
-   earned a positive premium, in 2 cells. That is consistent with less informed flow
-   there, where speed matters less; the studies do not measure information directly.
+3. **The flow on the other side may matter as much as speed.** On Polymarket's 15-minute
+   crypto markets, resting liquidity earns about the rebate and queue position decides who
+   keeps it, which fits the queue-rationing account of large-tick markets (Yao and Ye 2018)
+   without testing it. On Kalshi, statistic C, orders at the back of the queue, qualifies in
+   2 cells. That is consistent with less informed flow in those categories, but also
+   with a premium for the tail risk of selling longshot YES, or with chance in a selected cell.
+   The two venues are measured differently (a realized spread at a short horizon on
+   Polymarket, profit at settlement on Kalshi), and the studies do not measure information
+   directly.
 4. **Method.** Where a study has a decision rule, the rule was stated before the statistic it
    governs was computed, the backtest, the passive study and the Kalshi study each test on a
    second sample, and the cells that failed are reported. Independent reviews of the Kalshi
@@ -284,8 +311,9 @@ holdout mean is negative will be reported as contradicted.
   moves the market. Order placement on Polymarket is geographically restricted, and Kalshi
   restricts access by country: this work reads public market data only.
 - The maker rebate is an estimate from the fee schedule; the tape does not carry it.
-- The Kalshi cells were selected as the best of the pairs tested, so their magnitudes are
-  likely overstated; the holdout and the forward test give the unbiased estimates.
+- The Kalshi cells were selected from the pairs tested, so their magnitudes are likely
+  overstated. The holdout reuses the same markets and outcomes and cannot remove that bias;
+  the forward test sees new outcomes but trades a narrower universe than the backtest.
 
 ## Reproduce
 

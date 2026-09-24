@@ -21,15 +21,15 @@ test is running.
 | Resolved-market strategies ([pm-backtest](https://github.com/paandrighetti/pm-backtest)) | Do favorite carry, Dutch books or hedged crypto binaries survive out of sample? | No. Favorite carry loses and the best hedge cell reverses; the only Dutch-book residual sits in a few cheap books and cannot be sized on hourly data. |
 | Passive quoting (updown-desk) | Does resting liquidity earn the spread plus the maker rebate? | About the rebate, in one price bucket, and not at the back of the queue. |
 | Cross-venue arbitrage (pm-xarb) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: {pm_xarb_exact_verdict} Basis pairs: more entry edge, and a negative result. |
-| Kalshi maker premium (kalshi-maker) | Does the published maker premium survive for a slow maker at the back of the queue? | {km_verdict} |
+| Kalshi maker premium (kalshi-maker) | Does the published maker premium survive for a small maker who improves the price or waits at the back of the queue? | {km_verdict} |
 
-The common thread: where the flow is fast and informed, as on Polymarket's 15-minute crypto
-markets, prices reflect the contract that actually settles better than simple models do, and
-what liquidity provision earns depends on queue position and speed, which a small participant
-does not have. Four studies found no edge that survives their own costs and checks. The fifth
-found one on Kalshi, in a few non-crypto categories: a slow maker selling YES earned a positive
-premium in two separate periods. That is a backtest result until the forward paper test
-confirms it.
+The common thread: on Polymarket's 15-minute crypto markets, prices reflect the contract that
+actually settles better than simple models do, and what liquidity provision earns depends on
+queue position and speed, which a small participant does not have. Four studies found no edge
+that survives their own costs and checks. The fifth found a candidate on Kalshi: in a few
+non-crypto categories, the pre-registered statistics for a maker selling YES were positive in
+two sets of markets. It rests on fill assumptions and on outcomes already known; only the
+forward paper test, on new outcomes, can confirm it.
 
 ## 1. Settlement first: which price does a market resolve on?
 
@@ -174,12 +174,15 @@ arbitrage.
    purpose-built model roughly matches the mid and does not pay its costs, favorites are not
    cheap, and the in-sample edges went flat or reversed out of sample, except a Dutch-book
    residual too thin to size.
-3. **Who is on the other side decides what a maker earns.** On Polymarket's 15-minute crypto
-   markets, resting liquidity earns about the rebate and queue position decides who keeps it,
-   which fits the queue-rationing account of large-tick markets (Yao and Ye 2018) without
-   testing it. In a few of Kalshi's non-crypto categories, even the last order in the queue
-   earned a positive premium, in {km_join_n} cells. That is consistent with less informed flow
-   there, where speed matters less; the studies do not measure information directly.
+3. **The flow on the other side may matter as much as speed.** On Polymarket's 15-minute
+   crypto markets, resting liquidity earns about the rebate and queue position decides who
+   keeps it, which fits the queue-rationing account of large-tick markets (Yao and Ye 2018)
+   without testing it. On Kalshi, statistic C, orders at the back of the queue, qualifies in
+   {km_join_n} cells. That is consistent with less informed flow in those categories, but also
+   with a premium for the tail risk of selling longshot YES, or with chance in a selected cell.
+   The two venues are measured differently (a realized spread at a short horizon on
+   Polymarket, profit at settlement on Kalshi), and the studies do not measure information
+   directly.
 4. **Method.** Where a study has a decision rule, the rule was stated before the statistic it
    governs was computed, the backtest, the passive study and the Kalshi study each test on a
    second sample, and the cells that failed are reported. Independent reviews of the Kalshi
@@ -200,8 +203,9 @@ arbitrage.
   moves the market. Order placement on Polymarket is geographically restricted, and Kalshi
   restricts access by country: this work reads public market data only.
 - The maker rebate is an estimate from the fee schedule; the tape does not carry it.
-- The Kalshi cells were selected as the best of the pairs tested, so their magnitudes are
-  likely overstated; the holdout and the forward test give the unbiased estimates.
+- The Kalshi cells were selected from the pairs tested, so their magnitudes are likely
+  overstated. The holdout reuses the same markets and outcomes and cannot remove that bias;
+  the forward test sees new outcomes but trades a narrower universe than the backtest.
 
 ## Reproduce
 

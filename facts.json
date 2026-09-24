@@ -589,6 +589,11 @@
   "printed": "0.15",
   "source": "sources/kalshi-20260924T1145Z/gate.json"
  },
+ "km_qual_cats": {
+  "value": "climate and weather, entertainment, mentions and politics",
+  "printed": "climate and weather, entertainment, mentions and politics",
+  "source": "sources/kalshi-20260924T1145Z/gate.json"
+ },
  "km_trades": {
   "value": 52975705,
   "printed": "52,975,705",
@@ -604,9 +609,9 @@
   "printed": "9,967,010",
   "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/summary.json"
  },
- "km_markets": {
-  "value": 230739,
-  "printed": "230,739",
+ "km_trades_late": {
+  "value": 1270909,
+  "printed": "1,270,909",
   "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/summary.json"
  },
  "km_events": {
@@ -614,10 +619,15 @@
   "printed": "43,393",
   "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/summary.json"
  },
- "km_hours": {
-  "value": 576,
-  "printed": "576",
+ "km_flagged_all": {
+  "value": 1487,
+  "printed": "1,487",
   "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/summary.json"
+ },
+ "km_floor_losing": {
+  "value": 10,
+  "printed": "10",
+  "source": "sources/kalshi-20260924T1145Z/PREREGISTRATION.md"
  },
  "km_rep_x": {
   "value": 0.6263,
@@ -637,51 +647,26 @@
  "km_crypto_x": {
   "value": 67.8883163968574,
   "printed": "68 %",
-  "source": "sources/kalshi-20260924T1145Z/reports/BACKTEST.md"
+  "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/volume.csv"
  },
  "km_crypto_c": {
   "value": 90.29515473483119,
   "printed": "90 %",
-  "source": "sources/kalshi-20260924T1145Z/reports/BACKTEST.md"
+  "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/volume.csv"
  },
  "km_taker_yes_table": {
-  "value": "| category | exploration | confirmation |\n|---|---|---|\n| Climate and Weather | 65 % | 63 % |\n| Entertainment | 73 % | 66 % |\n| Mentions | 72 % | 64 % |\n| Politics | 49 % | 60 % |\n| Crypto | 53 % | 52 % |\n| Financials | 53 % | 53 % |",
-  "printed": "| category | exploration | confirmation |\n|---|---|---|\n| Climate and Weather | 65 % | 63 % |\n| Entertainment | 73 % | 66 % |\n| Mentions | 72 % | 64 % |\n| Politics | 49 % | 60 % |\n| Crypto | 53 % | 52 % |\n| Financials | 53 % | 53 % |",
-  "source": "sources/kalshi-20260924T1145Z/reports/BACKTEST.md"
- },
- "km_yes_lo": {
-  "value": 48.699999999999996,
-  "printed": "49 %",
-  "source": "sources/kalshi-20260924T1145Z/reports/BACKTEST.md"
- },
- "km_yes_hi": {
-  "value": 73.2,
-  "printed": "73 %",
-  "source": "sources/kalshi-20260924T1145Z/reports/BACKTEST.md"
- },
- "km_yes_other_lo": {
-  "value": 51.5,
-  "printed": "52 %",
-  "source": "sources/kalshi-20260924T1145Z/reports/BACKTEST.md"
- },
- "km_yes_other_hi": {
-  "value": 53.400000000000006,
-  "printed": "53 %",
-  "source": "sources/kalshi-20260924T1145Z/reports/BACKTEST.md"
- },
- "km_yes_above_half": {
-  "value": 7,
-  "printed": "7",
-  "source": "sources/kalshi-20260924T1145Z/reports/BACKTEST.md"
- },
- "km_yes_cases": {
-  "value": 8,
-  "printed": "8",
-  "source": "sources/kalshi-20260924T1145Z/reports/BACKTEST.md"
+  "value": "| category | qualifying pair | exploration | confirmation |\n|---|---|---|---|\n| Climate and Weather | yes | 65 % | 63 % |\n| Commodities | no | 58 % | 53 % |\n| Crypto | no | 53 % | 52 % |\n| Economics | no | 64 % | 66 % |\n| Entertainment | yes | 73 % | 66 % |\n| Financials | no | 53 % | 53 % |\n| Mentions | yes | 72 % | 65 % |\n| Politics | yes | 49 % | 60 % |\n| Science and Technology | no | 74 % | 70 % |",
+  "printed": "| category | qualifying pair | exploration | confirmation |\n|---|---|---|---|\n| Climate and Weather | yes | 65 % | 63 % |\n| Commodities | no | 58 % | 53 % |\n| Crypto | no | 53 % | 52 % |\n| Economics | no | 64 % | 66 % |\n| Entertainment | yes | 73 % | 66 % |\n| Financials | no | 53 % | 53 % |\n| Mentions | yes | 72 % | 65 % |\n| Politics | yes | 49 % | 60 % |\n| Science and Technology | no | 74 % | 70 % |",
+  "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/volume.csv"
  },
  "km_qual_table": {
-  "value": "| variant | category | YES price | exploration: cents (t) | confirmation: cents (t) | every maker (A): exploration, confirmation | clusters (losing) |\n|---|---|---|---|---|---|---|\n| PENNY | Entertainment | [0.00, 0.10) | 3.10 (6.7) | 1.73 (3.1) | 1.94, 1.73 | 241 (45) |\n| PENNY | Entertainment | [0.10, 0.30) | 7.89 (3.5) | 9.97 (5.4) | 9.76, 8.59 | 236 (67) |\n| PENNY | Mentions | [0.10, 0.30) | 7.14 (4.8) | 6.27 (4.4) | 4.99, 5.69 | 269 (73) |\n| PENNY | Mentions | [0.30, 0.70) | 14.21 (7.3) | 7.86 (5.1) | 12.86, 6.07 | 272 (85) |\n| PENNY | Politics | [0.00, 0.10) | 2.82 (3.0) | 3.64 (7.8) | 2.97, 3.09 | 191 (32) |\n| JOIN | Climate and Weather | [0.00, 0.10) | 1.15 (2.7) | 1.46 (2.8) | 0.76, 0.84 | 275 (53) |\n| JOIN | Entertainment | [0.10, 0.30) | 10.69 (4.9) | 6.49 (2.6) | 9.76, 8.59 | 210 (50) |",
-  "printed": "| variant | category | YES price | exploration: cents (t) | confirmation: cents (t) | every maker (A): exploration, confirmation | clusters (losing) |\n|---|---|---|---|---|---|---|\n| PENNY | Entertainment | [0.00, 0.10) | 3.10 (6.7) | 1.73 (3.1) | 1.94, 1.73 | 241 (45) |\n| PENNY | Entertainment | [0.10, 0.30) | 7.89 (3.5) | 9.97 (5.4) | 9.76, 8.59 | 236 (67) |\n| PENNY | Mentions | [0.10, 0.30) | 7.14 (4.8) | 6.27 (4.4) | 4.99, 5.69 | 269 (73) |\n| PENNY | Mentions | [0.30, 0.70) | 14.21 (7.3) | 7.86 (5.1) | 12.86, 6.07 | 272 (85) |\n| PENNY | Politics | [0.00, 0.10) | 2.82 (3.0) | 3.64 (7.8) | 2.97, 3.09 | 191 (32) |\n| JOIN | Climate and Weather | [0.00, 0.10) | 1.15 (2.7) | 1.46 (2.8) | 0.76, 0.84 | 275 (53) |\n| JOIN | Entertainment | [0.10, 0.30) | 10.69 (4.9) | 6.49 (2.6) | 9.76, 8.59 | 210 (50) |",
+  "value": "| variant | category | YES price | exploration: cents (t) | confirmation: cents (t) | every maker (A): exploration, confirmation | clusters (losing): exploration / confirmation |\n|---|---|---|---|---|---|---|\n| PENNY | Entertainment | [0.00, 0.10) | 3.10 (6.7) | 1.73 (3.1) | 1.94, 1.73 | 122 (12) / 130 (33) |\n| PENNY | Entertainment | [0.10, 0.30) | 7.89 (3.5) | 9.97 (5.4) | 9.76, 8.59 | 122 (23) / 127 (45) |\n| PENNY | Mentions | [0.10, 0.30) | 7.14 (4.8) | 6.27 (4.4) | 4.99, 5.69 | 144 (43) / 180 (49) |\n| PENNY | Mentions | [0.30, 0.70) | 14.21 (7.3) | 7.86 (5.1) | 12.86, 6.07 | 146 (43) / 183 (71) |\n| PENNY | Politics | [0.00, 0.10) | 2.82 (3.0) | 3.64 (7.8) | 2.97, 3.09 | 72 (13) / 134 (19) |\n| JOIN | Climate and Weather | [0.00, 0.10) | 1.15 (2.7) | 1.46 (2.8) | 0.76, 0.84 | 138 (26) / 142 (27) |\n| JOIN | Entertainment | [0.10, 0.30) | 10.69 (4.9) | 6.49 (2.6) | 9.76, 8.59 | 101 (18) / 119 (32) |",
+  "printed": "| variant | category | YES price | exploration: cents (t) | confirmation: cents (t) | every maker (A): exploration, confirmation | clusters (losing): exploration / confirmation |\n|---|---|---|---|---|---|---|\n| PENNY | Entertainment | [0.00, 0.10) | 3.10 (6.7) | 1.73 (3.1) | 1.94, 1.73 | 122 (12) / 130 (33) |\n| PENNY | Entertainment | [0.10, 0.30) | 7.89 (3.5) | 9.97 (5.4) | 9.76, 8.59 | 122 (23) / 127 (45) |\n| PENNY | Mentions | [0.10, 0.30) | 7.14 (4.8) | 6.27 (4.4) | 4.99, 5.69 | 144 (43) / 180 (49) |\n| PENNY | Mentions | [0.30, 0.70) | 14.21 (7.3) | 7.86 (5.1) | 12.86, 6.07 | 146 (43) / 183 (71) |\n| PENNY | Politics | [0.00, 0.10) | 2.82 (3.0) | 3.64 (7.8) | 2.97, 3.09 | 72 (13) / 134 (19) |\n| JOIN | Climate and Weather | [0.00, 0.10) | 1.15 (2.7) | 1.46 (2.8) | 0.76, 0.84 | 138 (26) / 142 (27) |\n| JOIN | Entertainment | [0.10, 0.30) | 10.69 (4.9) | 6.49 (2.6) | 9.76, 8.59 | 101 (18) / 119 (32) |",
+  "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/cells.csv"
+ },
+ "km_losing_min": {
+  "value": 12,
+  "printed": "12",
   "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/cells.csv"
  },
  "km_cells": {
@@ -724,19 +709,34 @@
   "printed": "2",
   "source": "sources/kalshi-20260924T1145Z/gate.json"
  },
- "km_qual_cats": {
-  "value": "climate and weather, entertainment, mentions, politics",
-  "printed": "climate and weather, entertainment, mentions, politics",
-  "source": "sources/kalshi-20260924T1145Z/gate.json"
- },
  "km_decay_n": {
   "value": 4,
   "printed": "4",
+  "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/cells.csv"
+ },
+ "km_rise_n": {
+  "value": 3,
+  "printed": "3",
+  "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/cells.csv"
+ },
+ "km_sig_change": {
+  "value": "PENNY Mentions [0.30, 0.70)",
+  "printed": "PENNY Mentions [0.30, 0.70)",
+  "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/cells.csv"
+ },
+ "km_sig_change_x": {
+  "value": 14.2088,
+  "printed": "14.21",
   "source": "sources/kalshi-20260924T1145Z/gate.json"
  },
- "km_losing_min": {
-  "value": 32,
-  "printed": "32",
+ "km_sig_change_c": {
+  "value": 7.8598,
+  "printed": "7.86",
+  "source": "sources/kalshi-20260924T1145Z/gate.json"
+ },
+ "km_sig_change_t": {
+  "value": -2.5599774631542154,
+  "printed": "-2.6",
   "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/cells.csv"
  },
  "km_fwd_events": {
@@ -754,6 +754,16 @@
   "printed": "30",
   "source": "sources/kalshi-20260924T1145Z/PREREGISTRATION.md"
  },
+ "km_fwd_n": {
+  "value": 400,
+  "printed": "400",
+  "source": "sources/kalshi-20260924T1145Z/PREREGISTRATION.md"
+ },
+ "km_fwd_window": {
+  "value": 7,
+  "printed": "7",
+  "source": "sources/kalshi-20260924T1145Z/PREREGISTRATION.md"
+ },
  "km_late_universe": {
   "value": 101092,
   "printed": "101,092",
@@ -768,5 +778,75 @@
   "value": 2.24,
   "printed": "2.2 %",
   "source": "sources/kalshi-sensitivity-20260924/late_settlement.txt"
+ },
+ "km_h1_mean": {
+  "value": 5.309505404998756,
+  "printed": "5.31",
+  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+ },
+ "km_h1_t": {
+  "value": 3.0124550229430023,
+  "printed": "3.0",
+  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+ },
+ "km_h6_mean": {
+  "value": 2.727150861057053,
+  "printed": "2.73",
+  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+ },
+ "km_h6_t": {
+  "value": 6.000569115667472,
+  "printed": "6.0",
+  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+ },
+ "km_h24_mean": {
+  "value": 3.072729826514068,
+  "printed": "3.07",
+  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+ },
+ "km_h24_t": {
+  "value": 7.492662831157235,
+  "printed": "7.5",
+  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+ },
+ "km_h168_mean": {
+  "value": 4.144663923841218,
+  "printed": "4.14",
+  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+ },
+ "km_h168_t": {
+  "value": 9.456370449189034,
+  "printed": "9.5",
+  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+ },
+ "km_short_share": {
+  "value": 90.88237213606675,
+  "printed": "91 %",
+  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+ },
+ "km_holdout_done": {
+  "value": 121,
+  "printed": "121",
+  "source": "sources/kalshi-status-20260924/status.txt"
+ },
+ "km_holdout_total": {
+  "value": 600,
+  "printed": "600",
+  "source": "sources/kalshi-status-20260924/status.txt"
+ },
+ "km_holdout_time": {
+  "value": "2026-09-24 11:43 UTC",
+  "printed": "2026-09-24 11:43 UTC",
+  "source": "sources/kalshi-status-20260924/status.txt"
+ },
+ "km_paper_cycles": {
+  "value": 67,
+  "printed": "67",
+  "source": "sources/kalshi-status-20260924/status.txt"
+ },
+ "km_paper_fills": {
+  "value": 16,
+  "printed": "16",
+  "source": "sources/kalshi-status-20260924/status.txt"
  }
 }
