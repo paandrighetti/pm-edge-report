@@ -1,3 +1,7 @@
+# job: jobs/0015-kalshi-horizon.sh
+# commit: 01c1f72715d1f7007a5ed48850078c260a416979
+# started: 2026-09-24T12:08:16Z
+market columns: ['ticker', 'event_ticker', 'series', 'status', 'result', 'close_us', 'expected_expiration_us', 'latest_expiration_us', 'settlement_us', 'mve', 'price_ranges']
 --- check against cells.csv, statistic A, all horizons: cat, bucket, clusters, contracts, mean_c, t
 ('Climate and Weather', 0, 278, 25889404.0, 0.797269835749685, 5.715054280487213)
 ('Entertainment', 0, 244, 14340657.0, 1.8206844504863735, 9.19678811736646)
@@ -42,3 +46,4 @@
 ('168h+', 417, 6087022.0, 4.144663923841218, 9.456370449189034)
 ('24-168h', 922, 18245562.0, 3.072729826514068, 7.492662831157235)
 ('6-24h', 769, 32919963.0, 2.727150861057053, 6.000569115667472)
+# exit: 0

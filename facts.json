@@ -641,7 +641,7 @@
  },
  "km_rep_tmax": {
   "value": 1.72,
-  "printed": "1.7",
+  "printed": "1.72",
   "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/summary.json"
  },
  "km_crypto_x": {
@@ -767,86 +767,126 @@
  "km_late_universe": {
   "value": 101092,
   "printed": "101,092",
-  "source": "sources/kalshi-sensitivity-20260924/late_settlement.txt"
+  "source": "sources/kalshi-sensitivity-20260924/0014-kalshi-late-settlement.log"
  },
  "km_late_markets": {
   "value": 1271,
   "printed": "1,271",
-  "source": "sources/kalshi-sensitivity-20260924/late_settlement.txt"
+  "source": "sources/kalshi-sensitivity-20260924/0014-kalshi-late-settlement.log"
  },
  "km_late_max": {
   "value": 2.24,
-  "printed": "2.2 %",
-  "source": "sources/kalshi-sensitivity-20260924/late_settlement.txt"
+  "printed": "2.24 %",
+  "source": "sources/kalshi-sensitivity-20260924/0014-kalshi-late-settlement.log"
+ },
+ "km_late_lo": {
+  "value": 1103,
+  "printed": "1,103",
+  "source": "sources/kalshi-sensitivity-20260924/0014-kalshi-late-settlement.log"
+ },
+ "km_late_lo_share": {
+  "value": 74.1761936785474,
+  "printed": "74 %",
+  "source": "sources/kalshi-sensitivity-20260924/0014-kalshi-late-settlement.log"
+ },
+ "km_elig_q_share": {
+  "value": 43.73946320301293,
+  "printed": "44 %",
+  "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/volume.csv"
  },
  "km_h1_mean": {
   "value": 5.309505404998756,
   "printed": "5.31",
-  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
  },
  "km_h1_t": {
   "value": 3.0124550229430023,
   "printed": "3.0",
-  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
  },
  "km_h6_mean": {
   "value": 2.727150861057053,
   "printed": "2.73",
-  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
  },
  "km_h6_t": {
   "value": 6.000569115667472,
   "printed": "6.0",
-  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
  },
  "km_h24_mean": {
   "value": 3.072729826514068,
   "printed": "3.07",
-  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
  },
  "km_h24_t": {
   "value": 7.492662831157235,
   "printed": "7.5",
-  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
  },
  "km_h168_mean": {
   "value": 4.144663923841218,
   "printed": "4.14",
-  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
  },
  "km_h168_t": {
   "value": 9.456370449189034,
   "printed": "9.5",
-  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
  },
  "km_short_share": {
   "value": 90.88237213606675,
   "printed": "91 %",
-  "source": "sources/kalshi-horizon-20260924/horizon.txt"
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
+ },
+ "km_short_min": {
+  "value": 53.82135432885371,
+  "printed": "54 %",
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
+ },
+ "km_short_min_cell": {
+  "value": "Politics [0.00, 0.10)",
+  "printed": "Politics [0.00, 0.10)",
+  "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
  },
  "km_holdout_done": {
   "value": 121,
   "printed": "121",
-  "source": "sources/kalshi-status-20260924/status.txt"
+  "source": "sources/kalshi-status-20260924/0012-kalshi-decision.log"
  },
  "km_holdout_total": {
   "value": 600,
   "printed": "600",
-  "source": "sources/kalshi-status-20260924/status.txt"
+  "source": "sources/kalshi-status-20260924/0012-kalshi-decision.log"
  },
  "km_holdout_time": {
   "value": "2026-09-24 11:43 UTC",
   "printed": "2026-09-24 11:43 UTC",
-  "source": "sources/kalshi-status-20260924/status.txt"
+  "source": "sources/kalshi-status-20260924/0012-kalshi-decision.log"
+ },
+ "km_paper_time": {
+  "value": "2026-09-24 11:48 UTC",
+  "printed": "2026-09-24 11:48 UTC",
+  "source": "sources/kalshi-status-20260924/0013-kalshi-code-peek.log"
  },
  "km_paper_cycles": {
   "value": 67,
   "printed": "67",
-  "source": "sources/kalshi-status-20260924/status.txt"
+  "source": "sources/kalshi-status-20260924/0013-kalshi-code-peek.log"
  },
  "km_paper_fills": {
   "value": 16,
   "printed": "16",
-  "source": "sources/kalshi-status-20260924/status.txt"
+  "source": "sources/kalshi-status-20260924/0013-kalshi-code-peek.log"
+ },
+ "km_paper_top": {
+  "value": "JOIN Climate and Weather [0.00, 0.10)",
+  "printed": "JOIN Climate and Weather [0.00, 0.10)",
+  "source": "sources/kalshi-status-20260924/0013-kalshi-code-peek.log"
+ },
+ "km_paper_top_n": {
+  "value": 13,
+  "printed": "13",
+  "source": "sources/kalshi-status-20260924/0013-kalshi-code-peek.log"
  }
 }

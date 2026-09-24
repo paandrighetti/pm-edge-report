@@ -1,0 +1,98 @@
+# job: jobs/0013-kalshi-code-peek.sh
+# commit: 70a065f2a96c3c0eb86c205af560296ae0207f68
+# started: 2026-09-24T11:48:08Z
+/opt/kalshi-maker/src/kmaker/ingest.py:45:TRADE_SCHEMA = pa.schema(
+/opt/kalshi-maker/src/kmaker/ingest.py-46-    [
+/opt/kalshi-maker/src/kmaker/ingest.py-47-        ("ticker", pa.string()),
+/opt/kalshi-maker/src/kmaker/ingest.py-48-        ("trade_id", pa.string()),
+/opt/kalshi-maker/src/kmaker/ingest.py-49-        ("count", pa.float64()),
+/opt/kalshi-maker/src/kmaker/ingest.py-50-        ("yes_price", pa.float64()),
+/opt/kalshi-maker/src/kmaker/ingest.py-51-        ("taker_yes", pa.bool_()),
+/opt/kalshi-maker/src/kmaker/ingest.py-52-        ("created_us", pa.int64()),
+/opt/kalshi-maker/src/kmaker/ingest.py-53-        ("is_block", pa.bool_()),
+/opt/kalshi-maker/src/kmaker/ingest.py-54-    ]
+/opt/kalshi-maker/src/kmaker/ingest.py-55-)
+/opt/kalshi-maker/src/kmaker/ingest.py:56:MARKET_SCHEMA = pa.schema(
+/opt/kalshi-maker/src/kmaker/ingest.py-57-    [
+/opt/kalshi-maker/src/kmaker/ingest.py-58-        ("ticker", pa.string()),
+/opt/kalshi-maker/src/kmaker/ingest.py-59-        ("event_ticker", pa.string()),
+/opt/kalshi-maker/src/kmaker/ingest.py-60-        ("series", pa.string()),
+/opt/kalshi-maker/src/kmaker/ingest.py-61-        ("status", pa.string()),
+/opt/kalshi-maker/src/kmaker/ingest.py-62-        ("result", pa.string()),
+/opt/kalshi-maker/src/kmaker/ingest.py-63-        ("close_us", pa.int64()),
+/opt/kalshi-maker/src/kmaker/ingest.py-64-        ("expected_expiration_us", pa.int64()),
+/opt/kalshi-maker/src/kmaker/ingest.py-65-        ("latest_expiration_us", pa.int64()),
+/opt/kalshi-maker/src/kmaker/ingest.py-66-        ("settlement_us", pa.int64()),
+--
+/opt/kalshi-maker/src/kmaker/ingest.py:71:RANGE_SCHEMA = pa.schema(
+/opt/kalshi-maker/src/kmaker/ingest.py-72-    [("ticker", pa.string()), ("lo", pa.float64()), ("hi", pa.float64()), ("step", pa.float64())]
+/opt/kalshi-maker/src/kmaker/ingest.py-73-)
+/opt/kalshi-maker/src/kmaker/ingest.py-74-DEFAULT_RANGES = [(0.0, 1.0, 0.01)]
+/opt/kalshi-maker/src/kmaker/ingest.py-75-
+/opt/kalshi-maker/src/kmaker/ingest.py-76-
+/opt/kalshi-maker/src/kmaker/ingest.py-77-def hour_key(hour_start: int) -> str:
+--- settled_after_latest_expiration and period split in backtest.py
+1-"""Statistics A, B and C of PREREGISTRATION.md on the downloaded sample, and the gate.
+2-
+3-Every decision uses only what was known when a trade printed: its market, category, price,
+4-size and the direction of the taker. Markets are selected, and assigned to a period, on
+5:`latest_expiration_time`, fixed at listing. The outcome enters only as the settlement value of
+6-the maker's position, and the settlement date only as a cluster label.
+7-
+8-All per-print work happens in a DuckDB file on disk with a memory cap. Strings are replaced by
+9-integer codes before any large aggregation, and taker orders are built with aggregations and
+10-joins rather than window functions, so that the work spills to disk instead of failing when the
+11-sample is larger than memory. pandas only sees one row per cell.
+12-"""
+13-
+--
+103-        SELECT row_number() OVER (ORDER BY m.ticker) AS mid, m.ticker, m.part,
+104-               dense_rank() OVER (ORDER BY m.event_ticker) AS eid,
+105-               dense_rank() OVER (ORDER BY coalesce(s.category, '')) AS cid,
+106-               coalesce(s.category, '') AS category, m.settlement_us,
+107-               CASE WHEN m.result = 'yes' THEN 1.0 ELSE 0.0 END AS o,
+108-               CASE WHEN s.fee_type = 'quadratic_with_maker_fees'
+109-                    THEN {coef} * coalesce(s.fee_multiplier, 1.0) ELSE 0.0 END AS fee_rate,
+110-               CAST(floor(m.settlement_us / 86400e6) AS BIGINT) AS sday,
+111:               CASE WHEN m.latest_expiration_us < {_us(PREREG.split)} THEN 0 ELSE 1 END
+112-                   AS period,
+113:               m.settlement_us > m.latest_expiration_us + 86400e6 AS settled_late,
+114-               CASE
+115-                   WHEN s.series IS NULL THEN 'unknown_series'
+116-                   WHEN s.category IN ({excluded}) THEN 'excluded_category'
+117-                   WHEN m.mve THEN 'multivariate'
+118:                   WHEN m.latest_expiration_us IS NULL
+119:                        OR m.latest_expiration_us > {_us(PREREG.latest_expiration_cutoff)}
+120-                        THEN 'late_expiration'
+121-                   WHEN m.status NOT IN ({finals}) THEN 'not_final'
+122-                   WHEN m.result NOT IN ('yes', 'no') THEN 'not_binary'
+123-                   ELSE 'ok'
+124-               END AS reason
+125-        FROM mk0 m LEFT JOIN sr s ON s.series = m.series
+126-        """
+127-    )
+--
+175-
+176-    counts["levels"] = one("SELECT count(*) FROM lv")
+177-    counts["orders"] = one("SELECT count(*) FROM ord")
+178-    counts["events"] = one("SELECT count(DISTINCT eid) FROM mka WHERE mid IN (SELECT mid FROM lv)")
+179-    counts["markets"] = one("SELECT count(DISTINCT mid) FROM lv")
+180-    counts["markets_without_settlement_time"] = one(
+181-        "SELECT count(*) FROM mka WHERE settlement_us IS NULL AND mid IN (SELECT mid FROM lv)"
+182-    )
+183:    counts["markets_settled_after_latest_expiration"] = one(
+184-        "SELECT count(*) FROM mka WHERE settled_late AND mid IN (SELECT mid FROM lv)"
+185-    )
+186-    return counts
+187-
+188-
+189-def create_src(con: duckdb.DuckDBPyConnection) -> None:
+190-    """Rows of statistics A (0), B (1) and C (2): integer keys, event, cluster, weight, value."""
+191-    cap = PREREG.penny_fill_cap
+--- paper fills by variant and category
+('JOIN', 'Climate and Weather', 'short_yes', 0, 13, 120.0, 0.044)
+('PENNY', 'Entertainment', 'short_yes', 0, 2, 20.0, 0.06)
+('PENNY', 'Mentions', 'short_yes', 1, 1, 10.0, 0.29)
+(1790249694510849, 1790250474239431)
+(67, 244.77611940298507, 1476.6119402985075, 127.31343283582089, 16, 0.0, 3.467576069618339)
+# exit: 0

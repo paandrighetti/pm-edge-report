@@ -45,33 +45,41 @@ What the result says:
 - **It does not rest on the fill assumption alone.** Statistic A, every maker at the price
   actually traded, is positive with t ≥ 2 in both sets of markets in {km_a_sig} of the
   {km_cells} cells.
-- **In {km_join_only} the premium goes to orders already resting at the best price.** A maker
+- **In {km_join_only} the premium goes to resting orders, not to a maker who improves the
+  price.** A maker
   who improves the price by one tick earns {km_join_only_b_x} and {km_join_only_b_c} cents per
   contract in the two sets, nothing distinguishable from zero, while statistic C earns
   {km_join_only_c_x} and {km_join_only_c_c}.
 - **The average premium is not the finding.** Pooled over all non-sports categories,
   statistic A is {km_rep_x} cents per contract in the exploration markets and {km_rep_c} in
-  the confirmation markets; its t by side never exceeds {km_rep_tmax} in absolute value. The
+  the confirmation markets; its largest t by side, in absolute value, is {km_rep_tmax}. The
   pooled figure weights contracts, and crypto markets hold {km_crypto_x} of the exploration
   contracts and {km_crypto_c} of the confirmation contracts. The premium lives in a few cells,
   not in the volume.
-- **It is not stable.** {km_decay_n} of the {km_qualifying} pairs earn less in the
-  confirmation markets and {km_rise_n} earn more; only one change is significant on its own,
-  {km_sig_change}, from {km_sig_change_x} to {km_sig_change_c} cents (t of the difference
-  {km_sig_change_t}). The pooled figure also fell, while crypto's share of the contracts rose.
+- **Its size varies between the two sets.** {km_decay_n} of the {km_qualifying} pairs earn
+  less in the confirmation markets and {km_rise_n} earn more; one change is significant on its
+  own, {km_sig_change}, from {km_sig_change_x} to {km_sig_change_c} cents (t of the difference
+  {km_sig_change_t}, treating the two sets as independent, which shared settlement dates make
+  approximate). The pooled figure also fell, while crypto's share of the contracts rose.
 - **Time to settlement** (exploratory, after the decision; it cannot change the gate). A query
   that reproduces statistic A of the qualifying cells exactly, split by the time from each
-  trade to settlement, finds the premium at every horizon from one hour up: {km_h1_mean} cents
-  (t = {km_h1_t}) between one and six hours, {km_h6_mean} ({km_h6_t}) up to a day,
-  {km_h24_mean} ({km_h24_t}) up to a week and {km_h168_mean} ({km_h168_t}) beyond. Trades less
-  than a week before settlement carry {km_short_share} of the contracts, so the forward
-  universe below, markets closing within a week, covers where the premium was earned.
+  trade to settlement, finds the pooled premium at every horizon from one hour up:
+  {km_h1_mean} cents (t = {km_h1_t}) between one and six hours, {km_h6_mean} ({km_h6_t}) up to
+  a day, {km_h24_mean} ({km_h24_t}) up to a week and {km_h168_mean} ({km_h168_t}) beyond.
+  Trades less than a week before settlement carry {km_short_share} of the pooled contracts, but
+  only {km_short_min} in {km_short_min_cell}, and not every cell earns at every horizon. This
+  is statistic A on realized time to settlement, which depends on the outcome when a market
+  resolves early; the forward universe selects on the scheduled close. It suggests, without
+  showing, that the forward test trades where most of the premium was earned.
 - **Moved expiration times** (exploratory, after the decision). The pre-registration assumed
   that a market's latest expiration time is not moved after listing; the downloaded data only
   serve the last value and cannot show a move. What they can show is late settlement: the
   backtest counts {km_flagged_all} eligible markets that settled more than a day after their
   latest expiration time, and a query over the markets traded in the qualifying categories
-  finds {km_late_markets} of {km_late_universe}. They carry at most {km_late_max} of the traded
+  finds {km_late_markets} of {km_late_universe}; since that universe is at most slightly wider
+  than the eligible markets, at least {km_late_lo} ({km_late_lo_share}) of the flagged markets
+  are in the qualifying categories, which hold {km_elig_q_share} of the eligible markets. Late
+  settlement is concentrated there. These markets carry at most {km_late_max} of the traded
   contracts of any qualifying cell (all trades of the cell, before the PENNY and JOIN
   selections). The pre-registered test of the assumption is the forward test, which logs any
   change of the field.
@@ -82,10 +90,13 @@ levels deeper than the best price. Neither sees competing makers or the size a s
 actually get, and cells chosen as the best of {km_pairs_tested} overstate their own magnitude.
 The holdout draws other trades from another twelfth of the hours on the same markets, so it
 tests the sampling of trades, not new outcomes; it had downloaded {km_holdout_done} of
-{km_holdout_total} hours at {km_holdout_time}. The forward paper test is the only test on new
-outcomes. It started when the decision was written and quotes only the qualifying pairs, on the
-{km_fwd_n} most active markets closing within {km_fwd_window} days (PENNY joins the best price
-when the spread is one tick); its first {km_paper_cycles} cycles produced {km_paper_fills}
-fills and no error. It succeeds if its profit per contract is positive with t ≥ 2 once
+{km_holdout_total} hours at {km_holdout_time}; it can remove the part of the selection bias
+that comes from sampling trades, not the part that comes from outcomes. The forward paper test
+is the only test on new outcomes. It started when the decision was written and quotes only the
+qualifying pairs, on up to the {km_fwd_n} most active markets closing within {km_fwd_window}
+days (PENNY joins the best price when the spread is one tick). By {km_paper_time} its first
+{km_paper_cycles} cycles had produced {km_paper_fills} fills, {km_paper_top_n} of them in
+{km_paper_top}, and its cycle log recorded no error. Its success criterion pools the qualifying
+pairs, so it will test the pool more than each pair. It succeeds if its profit per contract is positive with t ≥ 2 once
 {km_fwd_events} events have settled with at least {km_fwd_neg} losing clusters, and a variant
 whose mean is negative after {km_fwd_days} days is abandoned.

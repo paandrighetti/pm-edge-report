@@ -226,33 +226,41 @@ What the result says:
 - **It does not rest on the fill assumption alone.** Statistic A, every maker at the price
   actually traded, is positive with t ≥ 2 in both sets of markets in 5 of the
   6 cells.
-- **In Climate and Weather the premium goes to orders already resting at the best price.** A maker
+- **In Climate and Weather the premium goes to resting orders, not to a maker who improves the
+  price.** A maker
   who improves the price by one tick earns 0.01 and 0.07 cents per
   contract in the two sets, nothing distinguishable from zero, while statistic C earns
   1.15 and 1.46.
 - **The average premium is not the finding.** Pooled over all non-sports categories,
   statistic A is 0.63 cents per contract in the exploration markets and 0.15 in
-  the confirmation markets; its t by side never exceeds 1.7 in absolute value. The
+  the confirmation markets; its largest t by side, in absolute value, is 1.72. The
   pooled figure weights contracts, and crypto markets hold 68 % of the exploration
   contracts and 90 % of the confirmation contracts. The premium lives in a few cells,
   not in the volume.
-- **It is not stable.** 4 of the 7 pairs earn less in the
-  confirmation markets and 3 earn more; only one change is significant on its own,
-  PENNY Mentions [0.30, 0.70), from 14.21 to 7.86 cents (t of the difference
-  -2.6). The pooled figure also fell, while crypto's share of the contracts rose.
+- **Its size varies between the two sets.** 4 of the 7 pairs earn
+  less in the confirmation markets and 3 earn more; one change is significant on its
+  own, PENNY Mentions [0.30, 0.70), from 14.21 to 7.86 cents (t of the difference
+  -2.6, treating the two sets as independent, which shared settlement dates make
+  approximate). The pooled figure also fell, while crypto's share of the contracts rose.
 - **Time to settlement** (exploratory, after the decision; it cannot change the gate). A query
   that reproduces statistic A of the qualifying cells exactly, split by the time from each
-  trade to settlement, finds the premium at every horizon from one hour up: 5.31 cents
-  (t = 3.0) between one and six hours, 2.73 (6.0) up to a day,
-  3.07 (7.5) up to a week and 4.14 (9.5) beyond. Trades less
-  than a week before settlement carry 91 % of the contracts, so the forward
-  universe below, markets closing within a week, covers where the premium was earned.
+  trade to settlement, finds the pooled premium at every horizon from one hour up:
+  5.31 cents (t = 3.0) between one and six hours, 2.73 (6.0) up to
+  a day, 3.07 (7.5) up to a week and 4.14 (9.5) beyond.
+  Trades less than a week before settlement carry 91 % of the pooled contracts, but
+  only 54 % in Politics [0.00, 0.10), and not every cell earns at every horizon. This
+  is statistic A on realized time to settlement, which depends on the outcome when a market
+  resolves early; the forward universe selects on the scheduled close. It suggests, without
+  showing, that the forward test trades where most of the premium was earned.
 - **Moved expiration times** (exploratory, after the decision). The pre-registration assumed
   that a market's latest expiration time is not moved after listing; the downloaded data only
   serve the last value and cannot show a move. What they can show is late settlement: the
   backtest counts 1,487 eligible markets that settled more than a day after their
   latest expiration time, and a query over the markets traded in the qualifying categories
-  finds 1,271 of 101,092. They carry at most 2.2 % of the traded
+  finds 1,271 of 101,092; since that universe is at most slightly wider
+  than the eligible markets, at least 1,103 (74 %) of the flagged markets
+  are in the qualifying categories, which hold 44 % of the eligible markets. Late
+  settlement is concentrated there. These markets carry at most 2.24 % of the traded
   contracts of any qualifying cell (all trades of the cell, before the PENNY and JOIN
   selections). The pre-registered test of the assumption is the forward test, which logs any
   change of the field.
@@ -263,11 +271,14 @@ levels deeper than the best price. Neither sees competing makers or the size a s
 actually get, and cells chosen as the best of 289 overstate their own magnitude.
 The holdout draws other trades from another twelfth of the hours on the same markets, so it
 tests the sampling of trades, not new outcomes; it had downloaded 121 of
-600 hours at 2026-09-24 11:43 UTC. The forward paper test is the only test on new
-outcomes. It started when the decision was written and quotes only the qualifying pairs, on the
-400 most active markets closing within 7 days (PENNY joins the best price
-when the spread is one tick); its first 67 cycles produced 16
-fills and no error. It succeeds if its profit per contract is positive with t ≥ 2 once
+600 hours at 2026-09-24 11:43 UTC; it can remove the part of the selection bias
+that comes from sampling trades, not the part that comes from outcomes. The forward paper test
+is the only test on new outcomes. It started when the decision was written and quotes only the
+qualifying pairs, on up to the 400 most active markets closing within 7
+days (PENNY joins the best price when the spread is one tick). By 2026-09-24 11:48 UTC its first
+67 cycles had produced 16 fills, 13 of them in
+JOIN Climate and Weather [0.00, 0.10), and its cycle log recorded no error. Its success criterion pools the qualifying
+pairs, so it will test the pool more than each pair. It succeeds if its profit per contract is positive with t ≥ 2 once
 200 events have settled with at least 10 losing clusters, and a variant
 whose mean is negative after 30 days is abandoned.
 
@@ -312,8 +323,9 @@ whose mean is negative after 30 days is abandoned.
   restricts access by country: this work reads public market data only.
 - The maker rebate is an estimate from the fee schedule; the tape does not carry it.
 - The Kalshi cells were selected from the pairs tested, so their magnitudes are likely
-  overstated. The holdout reuses the same markets and outcomes and cannot remove that bias;
-  the forward test sees new outcomes but trades a narrower universe than the backtest.
+  overstated. The holdout reuses the same markets and outcomes, so it can only remove the part
+  of that bias that comes from sampling trades; the forward test sees new outcomes but trades a
+  narrower universe than the backtest.
 
 ## Reproduce
 

@@ -204,8 +204,9 @@ arbitrage.
   restricts access by country: this work reads public market data only.
 - The maker rebate is an estimate from the fee schedule; the tape does not carry it.
 - The Kalshi cells were selected from the pairs tested, so their magnitudes are likely
-  overstated. The holdout reuses the same markets and outcomes and cannot remove that bias;
-  the forward test sees new outcomes but trades a narrower universe than the backtest.
+  overstated. The holdout reuses the same markets and outcomes, so it can only remove the part
+  of that bias that comes from sampling trades; the forward test sees new outcomes but trades a
+  narrower universe than the backtest.
 
 ## Reproduce
 

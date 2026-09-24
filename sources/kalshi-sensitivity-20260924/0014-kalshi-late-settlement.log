@@ -1,3 +1,22 @@
+# job: jobs/0014-kalshi-late-settlement.sh
+# commit: 15d77bef392038c770978c5be3ca2b0d7e4aa9f5
+# started: 2026-09-24T11:49:49Z
+32:CELL_KEYS = ["stat", "sample", "category", "side", "bucket"]
+43:def _bucket_sql(col: str) -> str:
+44:    edges = PREREG.buckets
+214:        SELECT 0 AS stat, a.period, a.cid, {side} AS side, {_bucket_sql("l.p")} AS bucket,
+219:        SELECT 2, a.period, a.cid, {side}, {_bucket_sql("l.p")}, a.eid, {cl("l")}, l.qty,
+227:        SELECT 1, a.period, a.cid, {side}, {_bucket_sql("b.a_price")}, a.eid, {cl("b")}, b.q,
+434:        allc = cell_stats(con, "src", ["stat", "side"], ["period", "cid", "bucket"])
+446:    cells = allc[allc["bucket"] >= 0][CELL_KEYS + OUT_COLUMNS]
+447:    cells = cells.sort_values(["stat", "category", "side", "bucket", "sample"])
+448:    overall = allc[allc["bucket"] < 0][CELL_KEYS + OUT_COLUMNS]
+510:            & (cells["bucket"] == q["bucket"])
+25:    split: datetime = _utc("2026-05-01T00:00:00")  # on settlement date (Amendment 2)
+26:    latest_expiration_cutoff: datetime = _utc("2026-09-15T00:00:00")
+32:    buckets: tuple[float, ...] = (0.0, 0.10, 0.30, 0.70, 0.90)
+70:            ).split(",")
+[('series', 'VARCHAR', 'YES', None, None, None), ('category', 'VARCHAR', 'YES', None, None, None), ('fee_type', 'VARCHAR', 'YES', None, None, None), ('fee_multiplier', 'DOUBLE', 'YES', None, None, None), ('title', 'VARCHAR', 'YES', None, None, None)]
 markets in the four categories: (101092, 1271)
 Climate and Weather  long_yes  b0 contracts      8,472,885 late       11,793 share  0.14%
 Climate and Weather  long_yes  b1 contracts      4,332,638 late        8,311 share  0.19%
@@ -39,3 +58,4 @@ Politics             short_yes b1 contracts      3,391,080 late        8,900 sha
 Politics             short_yes b2 contracts      2,147,987 late        2,859 share  0.13%
 Politics             short_yes b3 contracts        841,356 late            9 share  0.00%
 Politics             short_yes b4 contracts      2,580,543 late            7 share  0.00%
+# exit: 0

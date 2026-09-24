@@ -1,0 +1,101 @@
+# job: jobs/0012-kalshi-decision.sh
+# commit: 914806e0c7f55a0bb0824008907a1121da486112
+# started: 2026-09-24T11:45:31Z
+--- snapshot
+    1998 ./gate.json
+     892 ./MANIFEST.sha256
+   14208 ./PREREGISTRATION.md
+  104741 ./reports/BACKTEST.md
+    9747 ./reports/backtest/primary/calibration.csv
+  149720 ./reports/backtest/primary/cells.csv
+    1225 ./reports/backtest/primary/horizon_expost.csv
+   33235 ./reports/backtest/primary/overall.csv
+    3154 ./reports/backtest/primary/summary.json
+    1900 ./reports/backtest/primary/volume.csv
+--- digest order (exploration / confirmation?)
+38:def _gate_digest(gate: dict, summary: dict) -> str:
+39-    lines = ["kalshi-maker backtest (primary sample)"]
+40-    if not gate.get("valid", True):
+41-        return "\n".join(
+42-            lines + ["NO CONCLUSION, invalid data: " + "; ".join(gate.get("invalid_reasons", []))]
+43-        )
+44-    lines.append(f"pairs tested {gate['pairs_tested']}, qualifying {len(gate['qualifying'])}")
+45-    lines.append(
+46-        "replication check FAILED"
+47-        if summary["replication_fails"]
+48-        else "replication (A, cents per contract): "
+49-        + ", ".join(f"{k} {v['mean_c']:.2f}" for k, v in summary["replication_A_pooled"].items())
+50-    )
+51-    lines += [
+52-        f"{q['variant']} {q['category']} {q['side']} b{q['bucket']}: "
+53-        f"{q['exploration_mean_c']:.2f}c t{q['exploration_t']} / "
+54-        f"{q['confirmation_mean_c']:.2f}c t{q['confirmation_t']}"
+55-        for q in gate["qualifying"][:15]
+56-    ]
+57-    return "\n".join(lines)
+58-
+59-
+60-def _retry(fn, *args, tries: int = 12, wait_s: float = 300.0):
+61-    """Retry transient failures (API unreachable, 429 or 5xx after the client's own retries,
+62-    file system errors) for about an hour, so that a long download does not burn the
+63-    container's few restarts on network hiccups."""
+--- backtest log (last 25)
+2026-09-24 10:26:45,021 INFO kmaker.ingest: markets: 5480000 of 5788398 fetched, 219238 requests so far
+2026-09-24 10:30:08,087 INFO kmaker.ingest: markets: 5500000 of 5788398 fetched, 220146 requests so far
+2026-09-24 10:33:31,340 INFO kmaker.ingest: markets: 5520000 of 5788398 fetched, 221051 requests so far
+2026-09-24 10:36:53,936 INFO kmaker.ingest: markets: 5540000 of 5788398 fetched, 221953 requests so far
+2026-09-24 10:40:16,850 INFO kmaker.ingest: markets: 5560000 of 5788398 fetched, 222860 requests so far
+2026-09-24 10:43:39,061 INFO kmaker.ingest: markets: 5580000 of 5788398 fetched, 223763 requests so far
+2026-09-24 10:47:02,346 INFO kmaker.ingest: markets: 5600000 of 5788398 fetched, 224672 requests so far
+2026-09-24 10:50:22,824 INFO kmaker.ingest: markets: 5620000 of 5788398 fetched, 225568 requests so far
+2026-09-24 10:53:45,948 INFO kmaker.ingest: markets: 5640000 of 5788398 fetched, 226475 requests so far
+2026-09-24 10:57:09,710 INFO kmaker.ingest: markets: 5660000 of 5788398 fetched, 227383 requests so far
+2026-09-24 11:00:33,006 INFO kmaker.ingest: markets: 5680000 of 5788398 fetched, 228289 requests so far
+2026-09-24 11:03:42,184 INFO kmaker.ingest: markets: 5700000 of 5788398 fetched, 229135 requests so far
+2026-09-24 11:06:56,191 INFO kmaker.ingest: markets: 5720000 of 5788398 fetched, 230006 requests so far
+2026-09-24 11:09:51,949 INFO kmaker.ingest: markets: 5740000 of 5788398 fetched, 230793 requests so far
+2026-09-24 11:12:46,393 INFO kmaker.ingest: markets: 5760000 of 5788398 fetched, 231575 requests so far
+2026-09-24 11:15:47,778 INFO kmaker.ingest: markets: 5780000 of 5788398 fetched, 232387 requests so far
+2026-09-24 11:17:02,223 INFO kmaker.ingest: series missing from the listing: 2, fetched: 0
+2026-09-24 11:19:39,086 INFO kmaker.backtest: backtest primary: {'trades_unknown_series': 3118, 'trades_not_final': 5, 'trades_block': 2, 'trades_multivariate': 9967010, 'trades_ok': 41722550, 'trades_not_binary': 12111, 'trades_late_expiration': 1270909, 'trades': 52975705, 'levels': 28674589, 'orders': 24149206, 'events': 43393, 'markets': 230739, 'markets_without_settlement_time': 0, 'markets_settled_after_latest_expiration': 1487}
+2026-09-24 11:20:52,557 INFO kmaker.ingest: trades r1: hour 1 of 600 (2025-12-01T01): 12393 rows, 232799 requests so far
+2026-09-24 11:23:11,468 INFO kmaker.ingest: trades r1: hour 21 of 600 (2025-12-12T10): 1598 rows, 233534 requests so far
+2026-09-24 11:27:01,091 INFO kmaker.ingest: trades r1: hour 41 of 600 (2025-12-23T03): 11112 rows, 234737 requests so far
+2026-09-24 11:29:45,142 INFO kmaker.ingest: trades r1: hour 61 of 600 (2026-01-02T13): 8701 rows, 235603 requests so far
+2026-09-24 11:34:48,860 INFO kmaker.ingest: trades r1: hour 81 of 600 (2026-01-12T01): 45434 rows, 237173 requests so far
+2026-09-24 11:38:57,422 INFO kmaker.ingest: trades r1: hour 101 of 600 (2026-01-22T23): 23190 rows, 238468 requests so far
+2026-09-24 11:43:40,372 INFO kmaker.ingest: trades r1: hour 121 of 600 (2026-02-01T05): 21540 rows, 239957 requests so far
+--- paper log (last 25)
+2026-09-24 07:15:51,173 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 07:25:51,173 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 07:35:51,174 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 07:45:51,174 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 07:55:51,175 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 08:05:51,175 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 08:15:51,175 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 08:25:51,176 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 08:35:51,176 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 08:45:51,176 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 08:55:51,177 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 09:05:51,177 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 09:15:51,177 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 09:25:51,178 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 09:35:51,178 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 09:45:51,178 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 09:55:51,179 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 10:05:51,179 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 10:15:51,179 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 10:25:51,180 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 10:35:51,180 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 10:45:51,181 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 10:55:51,181 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 11:05:51,181 INFO kmaker: no gate yet, waiting for the backtest
+2026-09-24 11:15:51,181 INFO kmaker: no gate yet, waiting for the backtest
+--- paper.sqlite (read-only)
+cycles: 59 rows; columns ['ts_us', 'duration_s', 'active', 'candidates', 'orders', 'taker_orders', 'fills', 'requests', 'trade_lag_s', 'errors']
+field_changes: 0 rows; columns ['ticker', 'field', 'old', 'new', 'seen_us']
+fills: 15 rows; columns ['id', 'ts_us', 'ticker', 'event', 'category', 'variant', 'side', 'price', 'qty', 'bucket', 'via', 'improved', 'queue_ahead', 'fee_rate', 'expiry_us', 'oid', 'taker_qty', 'run']
+meta: 1 rows; columns ['k', 'v']
+settlements: 0 rows; columns ['ticker', 'result', 'status', 'settled_us', 'seen_us']
+sqlite_sequence: 1 rows; columns ['name', 'seq']
+# exit: 0

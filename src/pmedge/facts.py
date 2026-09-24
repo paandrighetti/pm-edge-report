@@ -22,9 +22,10 @@ SERVER = ROOT / "sources" / "server-20260923T2149Z"
 BACKTEST = ROOT / "sources" / "pm-backtest-86fa1aa" / "2026-09-18.md"
 UPDOWN_README = ROOT / "sources" / "updown-desk-b4c0c95" / "README.md"
 KALSHI = ROOT / "sources" / "kalshi-20260924T1145Z"
-KALSHI_SENS = ROOT / "sources" / "kalshi-sensitivity-20260924" / "late_settlement.txt"
-KALSHI_HORIZON = ROOT / "sources" / "kalshi-horizon-20260924" / "horizon.txt"
-KALSHI_STATUS = ROOT / "sources" / "kalshi-status-20260924" / "status.txt"
+KALSHI_SENS = ROOT / "sources" / "kalshi-sensitivity-20260924" / "0014-kalshi-late-settlement.log"
+KALSHI_HORIZON = ROOT / "sources" / "kalshi-horizon-20260924" / "0015-kalshi-horizon.log"
+KALSHI_HOLDOUT = ROOT / "sources" / "kalshi-status-20260924" / "0012-kalshi-decision.log"
+KALSHI_PAPER = ROOT / "sources" / "kalshi-status-20260924" / "0013-kalshi-code-peek.log"
 
 
 class ClaimError(AssertionError):
@@ -352,7 +353,7 @@ def kalshi(f: Facts) -> None:
     f.put("km_rep_x", rep["exploration"]["mean_c"], "{:.2f}", summary_path)
     f.put("km_rep_c", rep["confirmation"]["mean_c"], "{:.2f}", summary_path)
     tmax = max(abs(t) for v in rep.values() for t in v["t_by_side"].values())
-    f.put("km_rep_tmax", tmax, "{:.1f}", summary_path)
+    f.put("km_rep_tmax", tmax, "{:.2f}", summary_path)
     claim(tmax < 2, "the pooled maker premium is not significant for either side in any period")
     claim(rep["confirmation"]["mean_c"] < rep["exploration"]["mean_c"], "the pooled premium is lower in the confirmation markets")
 
@@ -466,10 +467,23 @@ def kalshi(f: Facts) -> None:
         m = re.match(r"(.+?)\s+(short_yes|long_yes)\s+b(\d)\s+contracts.*share\s+([\d.]+)%", line)
         if m:
             shares[(m.group(1).strip(), m.group(2), int(m.group(3)))] = float(m.group(4))
-    f.put("km_late_max", max(shares[(q["category"], q["side"], q["bucket"])] for q in qual), "{:.1f} %", KALSHI_SENS)
+    f.put("km_late_max", max(shares[(q["category"], q["side"], q["bucket"])] for q in qual), "{:.2f} %", KALSHI_SENS)
+    # concentration: eligible markets of the qualifying categories (volume.csv) against all eligible markets
+    elig_q = sum(int(float(by[smp][cat]["markets"])) for smp in by for cat in cats if cat in by[smp])
+    elig_all = c["markets"]
+    universe, flagged_q = (int(g) for g in re.search(r"markets in the four categories: \((\d+), (\d+)\)", sens).groups())
+    wider = universe - elig_q
+    claim(wider >= 0, "the query's universe contains the eligible markets of the qualifying categories")
+    late_lo = flagged_q - wider
+    f.put("km_late_lo", late_lo, "{:,}", KALSHI_SENS)
+    f.put("km_late_lo_share", late_lo / c["markets_settled_after_latest_expiration"] * 100, "{:.0f} %", KALSHI_SENS)
+    f.put("km_elig_q_share", elig_q / elig_all * 100, "{:.0f} %", volume_path)
+    claim(late_lo / c["markets_settled_after_latest_expiration"] > elig_q / elig_all,
+          "late settlement is concentrated in the qualifying categories")
 
     # exploratory, after the decision: statistic A of the qualifying cells by time to settlement
     hz = read(KALSHI_HORIZON)
+    claim("'mve'" in hz.split("--- check")[0], "the horizon query had the multivariate flag available")
     tup = re.compile(r"\('([^']+)', (\d)(?:, '([^']+)')?, (\d+), ([\d.]+), (-?[\d.]+), (-?[\d.]+|None)\)")
     check = hz.split("--- by horizon")[0]
     for mm in tup.finditer(check):
@@ -487,17 +501,36 @@ def kalshi(f: Facts) -> None:
         claim(rows[h][2] > 0 and rows[h][3] >= 2, f"statistic A of the qualifying cells is positive with t >= 2 at {h}")
     total = sum(v[1] for v in rows.values())
     f.put("km_short_share", (total - rows["168h+"][1]) / total * 100, "{:.0f} %", KALSHI_HORIZON)
+    per, weak = {}, 0
+    blk = hz.split("--- by horizon")[1].split("--- pooled")[0]
+    for mm in re.finditer(r"\('([^']+)', (\d), '([^']+)', (\d+), ([\d.]+), (-?[\d.]+), (-?[\d.]+|None)\)", blk):
+        per.setdefault((mm.group(1), int(mm.group(2))), {})[mm.group(3)] = float(mm.group(5))
+        if mm.group(3) != "0-1h" and mm.group(7) != "None" and float(mm.group(7)) < 2:
+            weak += 1
+    claim(weak > 0, "not every cell earns at every horizon from one hour up")
+    short = {k: (sum(v.values()) - v.get("168h+", 0.0)) / sum(v.values()) for k, v in per.items()}
+    kmin = min(short, key=short.get)
+    f.put("km_short_min", short[kmin] * 100, "{:.0f} %", KALSHI_HORIZON)
+    f.put("km_short_min_cell", f"{kmin[0]} {label(kmin[1])}", "", KALSHI_HORIZON)
 
     # status of the holdout download and of the paper maker, from the server logs
-    st = read(KALSHI_STATUS)
+    st = read(KALSHI_HOLDOUT)
     hrs = re.findall(r"^(\S+ \d\d:\d\d):\S+ INFO kmaker.ingest: trades r1: hour (\d+) of (\d+)", st, re.M)
-    f.put("km_holdout_done", int(hrs[-1][1]), "{}", KALSHI_STATUS)
-    f.put("km_holdout_total", int(hrs[-1][2]), "{}", KALSHI_STATUS)
-    f.put("km_holdout_time", hrs[-1][0] + " UTC", "", KALSHI_STATUS)
-    mm = re.search(r"^\((\d+), [\d.]+, [\d.]+, [\d.]+, (\d+), ([\d.]+), [\d.]+\)$", st, re.M)
-    f.put("km_paper_cycles", int(mm.group(1)), "{}", KALSHI_STATUS)
-    f.put("km_paper_fills", int(mm.group(2)), "{}", KALSHI_STATUS)
-    claim(float(mm.group(3)) == 0, "the paper maker logged no errors")
+    f.put("km_holdout_done", int(hrs[-1][1]), "{}", KALSHI_HOLDOUT)
+    f.put("km_holdout_total", int(hrs[-1][2]), "{}", KALSHI_HOLDOUT)
+    f.put("km_holdout_time", hrs[-1][0] + " UTC", "", KALSHI_HOLDOUT)
+    pp = read(KALSHI_PAPER)
+    started = re.search(r"^# started: (\S+)T(\d\d:\d\d)", pp, re.M)
+    f.put("km_paper_time", f"{started.group(1)} {started.group(2)} UTC", "", KALSHI_PAPER)
+    mm = re.search(r"^\((\d+), [\d.]+, [\d.]+, [\d.]+, (\d+), ([\d.]+), [\d.]+\)$", pp, re.M)
+    f.put("km_paper_cycles", int(mm.group(1)), "{}", KALSHI_PAPER)
+    f.put("km_paper_fills", int(mm.group(2)), "{}", KALSHI_PAPER)
+    claim(float(mm.group(3)) == 0, "the cycle log of the paper maker records no error")
+    fills = re.findall(r"^\('(PENNY|JOIN)', '([^']+)', '(short_yes|long_yes)', (\d), (\d+), ([\d.]+), [\d.]+\)$", pp, re.M)
+    claim(sum(int(x[4]) for x in fills) == int(mm.group(2)), "the fills table adds up to the cycle log")
+    top = max(fills, key=lambda x: int(x[4]))
+    f.put("km_paper_top", f"{top[0]} {top[1]} {label(int(top[3]))}", "", KALSHI_PAPER)
+    f.put("km_paper_top_n", int(top[4]), "{}", KALSHI_PAPER)
 
 
 def build_facts() -> Facts:
