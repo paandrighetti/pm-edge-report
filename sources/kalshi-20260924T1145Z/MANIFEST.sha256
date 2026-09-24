@@ -1,0 +1,9 @@
+54822ef4cd5b9b01648e7825de263bdf907d13f402e86aff73c52927dcc13a8a  ./gate.json
+02e4f9180ac2b8b08b46401119b2e9bce9614561dbfd912b78dc922045da8f45  ./PREREGISTRATION.md
+612c37a8059abb13c568e7657b7a073334bf0291665aeb0720fca9884776049c  ./reports/BACKTEST.md
+980dfcb01627318e4472bad62900a5f6ffabfafe7c3c4669245c237d6ede9563  ./reports/backtest/primary/calibration.csv
+b98ebb387b1159a092f746ed3482be85b45370f1b425f8e18ae60463dfb5e38e  ./reports/backtest/primary/cells.csv
+734618ac349fef2448e12b11f6dbe9d9db57299eee32f940babf80417c1d3d60  ./reports/backtest/primary/horizon_expost.csv
+1083fcb133822c27fc5a0f0061d2fa497aeaf96b2b5b55836a54ca98df020706  ./reports/backtest/primary/overall.csv
+f76fd3d953eba99dbc4f26a0562f2caa335b48d056ff95f162f4c85b3498ee19  ./reports/backtest/primary/summary.json
+2e7c29e18f0f297711ccd004692678c093f64737bee4f2ea2203e937b04cdee8  ./reports/backtest/primary/volume.csv

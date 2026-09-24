@@ -6,8 +6,10 @@ contradicts one, the build fails instead of printing a sentence the data no long
 """
 from __future__ import annotations
 
+import csv
 import hashlib
 import json
+import math
 import re
 from decimal import ROUND_HALF_UP, Decimal
 from dataclasses import dataclass, field
@@ -19,6 +21,8 @@ ROOT = Path(__file__).resolve().parents[2]
 SERVER = ROOT / "sources" / "server-20260923T2149Z"
 BACKTEST = ROOT / "sources" / "pm-backtest-86fa1aa" / "2026-09-18.md"
 UPDOWN_README = ROOT / "sources" / "updown-desk-b4c0c95" / "README.md"
+KALSHI = ROOT / "sources" / "kalshi-20260924T1145Z"
+KALSHI_SENS = ROOT / "sources" / "kalshi-sensitivity-20260924" / "late_settlement.txt"
 
 
 class ClaimError(AssertionError):
@@ -297,14 +301,152 @@ def xarb(f: Facts) -> None:
 # --------------------------------------------------------------------------- kalshi-maker
 def kalshi(f: Facts) -> None:
     src = SERVER / "kalshi-maker" / "PREREGISTRATION.md"
-    f.put("km_prereg_sha", hashlib.sha256(src.read_bytes()).hexdigest()[:16], "", src)
-    gate = SERVER / "kalshi-maker" / "gate.json"
-    if gate.exists():
-        g = json.loads(read(gate))
-        f.put("km_status", "decided", "", gate)
-        f.put("km_gate", json.dumps(g)[:400], "", gate)
-    else:
+    sha = hashlib.sha256(src.read_bytes()).hexdigest()
+    f.put("km_prereg_sha", sha[:16], "", src)
+    gate_path = KALSHI / "gate.json"
+    if not gate_path.exists():
         f.put("km_status", "pending", "", src)
+        return
+    gate = json.loads(read(gate_path))
+    summary_path = KALSHI / "reports" / "backtest" / "primary" / "summary.json"
+    summary = json.loads(read(summary_path))
+    report_path = KALSHI / "reports" / "BACKTEST.md"
+    report = read(report_path)
+    cells_path = KALSHI / "reports" / "backtest" / "primary" / "cells.csv"
+    cells = list(csv.DictReader(cells_path.open(encoding="utf-8")))
+    prereg_path = KALSHI / "PREREGISTRATION.md"
+    prereg = read(prereg_path)
+
+    claim(gate["prereg_sha256"] == sha == hashlib.sha256(prereg_path.read_bytes()).hexdigest(),
+          "the decision was taken under the pre-registration registered on 23 September, unchanged")
+    claim(gate["valid"] and not gate["invalid_reasons"] and not gate["replication_fails"],
+          "the data checks passed and the replication check did not fail")
+    f.put("km_status", "decided", "", gate_path)
+    f.put("km_gate_time", gate["generated_at"][:16].replace("T", " ") + " UTC", "", gate_path)
+    qual = gate["qualifying"]
+    f.put("km_pairs_tested", gate["pairs_tested"], "{}", gate_path)
+    f.put("km_qualifying", len(qual), "{}", gate_path)
+    claim(all(q["side"] == "short_yes" for q in qual), "every qualifying pair has the maker selling YES")
+    p2 = 0.5 * math.erfc(2 / math.sqrt(2))  # P(t >= 2) under the null, one period
+    f.put("km_expected_false", gate["pairs_tested"] * p2 * p2, "{:.2f}", gate_path)
+
+    c = summary["counts"]
+    f.put("km_trades", c["trades"], "{:,}", summary_path)
+    f.put("km_trades_ok", c["trades_ok"], "{:,}", summary_path)
+    f.put("km_trades_mve", c["trades_multivariate"], "{:,}", summary_path)
+    f.put("km_markets", c["markets"], "{:,}", summary_path)
+    f.put("km_events", c["events"], "{:,}", summary_path)
+    f.put("km_hours", summary["validity"]["hours"], "{}", summary_path)
+
+    rep = summary["replication_A_pooled"]
+    f.put("km_rep_x", rep["exploration"]["mean_c"], "{:.2f}", summary_path)
+    f.put("km_rep_c", rep["confirmation"]["mean_c"], "{:.2f}", summary_path)
+    tmax = max(abs(t) for v in rep.values() for t in v["t_by_side"].values())
+    f.put("km_rep_tmax", tmax, "{:.1f}", summary_path)
+    claim(tmax < 2, "the pooled maker premium is not significant in any period or side")
+    claim(rep["confirmation"]["mean_c"] < rep["exploration"]["mean_c"], "the pooled premium is lower in the confirmation period")
+
+    # contracts and taker YES share by category and period (second table of the validity section)
+    cats = md_table(report, "## Sample and validity checks", 1)
+    by = {}
+    for r in cats:
+        by.setdefault(r["sample"], {})[r["category"]] = (num(r["contracts"]), num(r["taker_yes_share"]))
+    for s, tag in (("exploration", "x"), ("confirmation", "c")):
+        total = sum(v[0] for v in by[s].values())
+        f.put(f"km_crypto_{tag}", by[s]["Crypto"][0] / total * 100, "{:.0f} %", report_path)
+    shown = sorted({q["category"] for q in qual}) + ["Crypto", "Financials"]
+    lines = ["| category | exploration | confirmation |", "|---|---|---|"]
+    for cat in shown:
+        lines.append(f"| {cat} | {by['exploration'][cat][1] * 100:.0f} % | {by['confirmation'][cat][1] * 100:.0f} % |")
+    f.put("km_taker_yes_table", "\n".join(lines), "", report_path)
+    qcats = {q["category"] for q in qual}
+    qy = [by[s][cat][1] for s in ("exploration", "confirmation") for cat in qcats]
+    oy = [by[s][cat][1] for s in ("exploration", "confirmation") for cat in ("Crypto", "Financials")]
+    f.put("km_yes_lo", min(qy) * 100, "{:.0f} %", report_path)
+    f.put("km_yes_hi", max(qy) * 100, "{:.0f} %", report_path)
+    f.put("km_yes_other_lo", min(oy) * 100, "{:.0f} %", report_path)
+    f.put("km_yes_other_hi", max(oy) * 100, "{:.0f} %", report_path)
+    f.put("km_yes_above_half", sum(v > 0.5 for v in qy), "{}", report_path)
+    f.put("km_yes_cases", len(qy), "{}", report_path)
+
+    # qualifying pairs with the same cell under statistic A, and cluster counts
+    def cell(stat, sample, q):
+        rows = [r for r in cells if r["stat"] == stat and r["sample"] == sample and r["category"] == q["category"]
+                and r["side"] == q["side"] and r["bucket"] == str(q["bucket"])]
+        claim(len(rows) == 1, f"one row per cell in cells.csv ({stat} {sample} {q['category']})")
+        return rows[0]
+
+    stat_of = {"PENNY": "B", "JOIN": "C"}
+    labels = {(r["variant"], r["category"], r["bucket"]) for r in md_table(report, "## Verdict")}
+    label_of = {}
+    for v, cat, b in labels:
+        label_of[(v, cat)] = label_of.get((v, cat), []) + [b]
+    lines = ["| variant | category | YES price | exploration: cents (t) | confirmation: cents (t) | every maker (A): exploration, confirmation | clusters (losing) |",
+             "|---|---|---|---|---|---|---|"]
+    edges = [0.0, 0.10, 0.30, 0.70, 0.90, 1.0]
+    for q in qual:
+        lab = f"[{edges[q['bucket']]:.2f}, {edges[q['bucket'] + 1]:.2f})"
+        claim(lab in label_of[(q["variant"], q["category"])], f"bucket label {lab} matches BACKTEST.md")
+        ax, ac, al = cell("A", "exploration", q), cell("A", "confirmation", q), cell(stat_of[q["variant"]], "all", q)
+        lines.append(
+            f"| {q['variant']} | {q['category']} | {lab} | {_fmt(q['exploration_mean_c'], '{:.2f}')} ({q['exploration_t']:.1f}) "
+            f"| {_fmt(q['confirmation_mean_c'], '{:.2f}')} ({q['confirmation_t']:.1f}) "
+            f"| {_fmt(float(ax['mean_c']), '{:.2f}')}, {_fmt(float(ac['mean_c']), '{:.2f}')} "
+            f"| {int(float(al['clusters']))} ({int(float(al['losing']))}) |")
+    f.put("km_qual_table", "\n".join(lines), "", cells_path)
+
+    distinct = {(q["category"], q["side"], q["bucket"]) for q in qual}
+    a_sig = 0
+    for cat, side, b in distinct:
+        q = {"category": cat, "side": side, "bucket": b}
+        ax, ac = cell("A", "exploration", q), cell("A", "confirmation", q)
+        if min(float(ax["t"]), float(ac["t"])) >= 2 and min(float(ax["mean_c"]), float(ac["mean_c"])) > 0:
+            a_sig += 1
+    f.put("km_cells", len(distinct), "{}", cells_path)
+    f.put("km_a_sig", a_sig, "{}", cells_path)
+    claim(a_sig >= len(distinct) - 1, "statistic A confirms all but at most one qualifying cell")
+
+    # cells that qualify only through JOIN while the one-tick improvement earns nothing
+    join_only = []
+    for cat, side, b in distinct:
+        variants = {q["variant"] for q in qual if (q["category"], q["side"], q["bucket"]) == (cat, side, b)}
+        q = {"category": cat, "side": side, "bucket": b}
+        bx, bc = cell("B", "exploration", q), cell("B", "confirmation", q)
+        if variants == {"JOIN"} and max(abs(float(bx["t"])), abs(float(bc["t"]))) < 2:
+            join_only.append((cat, bx, bc, cell("C", "exploration", q), cell("C", "confirmation", q)))
+    claim(len(join_only) == 1, "exactly one qualifying cell passes on JOIN while PENNY earns nothing")
+    cat, bx, bc, cx, cc = join_only[0]
+    f.put("km_join_only", cat, "", cells_path)
+    f.put("km_join_only_b_x", float(bx["mean_c"]), "{:.2f}", cells_path)
+    f.put("km_join_only_b_c", float(bc["mean_c"]), "{:.2f}", cells_path)
+    f.put("km_join_only_c_x", float(cx["mean_c"]), "{:.2f}", cells_path)
+    f.put("km_join_only_c_c", float(cc["mean_c"]), "{:.2f}", cells_path)
+    f.put("km_join_n", sum(q["variant"] == "JOIN" for q in qual), "{}", gate_path)
+    f.put("km_qual_cats", ", ".join(sorted({q["category"].lower() for q in qual})), "", gate_path)
+
+    decay = sum(q["confirmation_mean_c"] < q["exploration_mean_c"] for q in qual)
+    f.put("km_decay_n", decay, "{}", gate_path)
+    f.put("km_losing_min", min(int(float(cell(stat_of[q["variant"]], "all", q)["losing"])) for q in qual), "{}", cells_path)
+
+    # forward test rule, read from the pre-registration
+    m = re.search(r"once (\d+) events have settled and at least (\d+) clusters are negative", prereg)
+    f.put("km_fwd_events", int(m.group(1)), "{}", prereg_path)
+    f.put("km_fwd_neg", int(m.group(2)), "{}", prereg_path)
+    m = re.search(r"abandoned if its mean is negative after (\d+) days", prereg)
+    f.put("km_fwd_days", int(m.group(1)), "{}", prereg_path)
+
+    # exploratory sensitivity: markets settled more than a day after their latest expiration
+    sens = read(KALSHI_SENS)
+    m = re.search(r"markets in the four categories: \((\d+), (\d+)\)", sens)
+    f.put("km_late_universe", int(m.group(1)), "{:,}", KALSHI_SENS)
+    f.put("km_late_markets", int(m.group(2)), "{:,}", KALSHI_SENS)
+    shares = {}
+    for line in sens.splitlines():
+        m = re.match(r"(.+?)\s+(short_yes|long_yes)\s+b(\d)\s+contracts.*share\s+([\d.]+)%", line)
+        if m:
+            shares[(m.group(1).strip(), m.group(2), int(m.group(3)))] = float(m.group(4))
+    late = [shares[(q["category"], q["side"], q["bucket"])] for q in qual]
+    f.put("km_late_max", max(late), "{:.1f} %", KALSHI_SENS)
 
 
 def build_facts() -> Facts:

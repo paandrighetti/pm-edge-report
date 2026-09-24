@@ -21,7 +21,10 @@ stated before the statistic it governs; the other two are measurements. Full rep
   entry edge, sound at settlement but hard to fill (median episode a single poll); pairs
   settling on different sources or at different instants show more edge (1.9 cents) and a negative result
   (-7.2 cents per contract, 2 divergent settlements).
-- **Kalshi maker premium.** Pending: the pre-registered backtest has not written its decision yet.
+- **Kalshi maker premium.** On 41,722,550 eligible trades, 7 of
+  289 pre-registered pairs pass in both periods, all with the maker selling YES,
+  in climate and weather, entertainment, mentions, politics. The pooled
+  premium over all non-sports markets is not significant. A forward paper test is running.
 
 Tools: Python, DuckDB, Docker on a self-hosted server, public REST and websocket APIs,
 cluster-robust inference, reproducible reports generated from raw outputs.

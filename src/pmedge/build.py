@@ -22,7 +22,11 @@ def derived(values: dict[str, str], raw: dict) -> dict[str, str]:
         out["km_verdict"] = "Pending: the pre-registered backtest has not written its decision yet."
         out["km_section"] = (TEMPLATES / "kalshi_pending.md").read_text(encoding="utf-8").strip()
     else:
-        raise NotImplementedError("gate.json exists: write templates/kalshi_decided.md from its fields")
+        out["km_verdict"] = (
+            f"{values['km_qualifying']} of {values['km_pairs_tested']} pre-registered pairs pass in both "
+            "periods, all with the maker selling YES; forward paper test running."
+        )
+        out["km_section"] = (TEMPLATES / "kalshi_decided.md").read_text(encoding="utf-8").strip()
     out["pm_xarb_exact_verdict"] = (
         f"edges of about {values['xa_exact_edge_mean']} that often last a single poll; no divergence at "
         "settlement, a net loss so far."

@@ -1,0 +1,41 @@
+markets in the four categories: (101092, 1271)
+Climate and Weather  long_yes  b0 contracts      8,472,885 late       11,793 share  0.14%
+Climate and Weather  long_yes  b1 contracts      4,332,638 late        8,311 share  0.19%
+Climate and Weather  long_yes  b2 contracts      3,731,805 late        8,414 share  0.23%
+Climate and Weather  long_yes  b3 contracts      1,141,754 late        3,061 share  0.27%
+Climate and Weather  long_yes  b4 contracts      6,612,737 late       26,630 share  0.40%
+Climate and Weather  short_yes b0 contracts     25,907,837 late       22,171 share  0.09%
+Climate and Weather  short_yes b1 contracts      5,398,180 late       12,583 share  0.23%
+Climate and Weather  short_yes b2 contracts      6,377,987 late        7,636 share  0.12%
+Climate and Weather  short_yes b3 contracts      2,022,872 late        3,391 share  0.17%
+Climate and Weather  short_yes b4 contracts      3,574,687 late       11,424 share  0.32%
+Entertainment        long_yes  b0 contracts      3,506,917 late      108,922 share  3.11%
+Entertainment        long_yes  b1 contracts      1,275,612 late       17,669 share  1.39%
+Entertainment        long_yes  b2 contracts      1,303,397 late        8,145 share  0.62%
+Entertainment        long_yes  b3 contracts        901,843 late        3,629 share  0.40%
+Entertainment        long_yes  b4 contracts      2,800,620 late          872 share  0.03%
+Entertainment        short_yes b0 contracts     14,340,657 late      197,443 share  1.38%
+Entertainment        short_yes b1 contracts      2,542,114 late       28,386 share  1.12%
+Entertainment        short_yes b2 contracts      2,071,740 late       12,709 share  0.61%
+Entertainment        short_yes b3 contracts      1,126,169 late        1,332 share  0.12%
+Entertainment        short_yes b4 contracts      1,778,235 late        4,381 share  0.25%
+Mentions             long_yes  b0 contracts      4,431,089 late      171,219 share  3.86%
+Mentions             long_yes  b1 contracts      2,436,359 late       75,819 share  3.11%
+Mentions             long_yes  b2 contracts      4,210,026 late       76,365 share  1.81%
+Mentions             long_yes  b3 contracts      2,264,013 late       35,241 share  1.56%
+Mentions             long_yes  b4 contracts     12,841,646 late      377,395 share  2.94%
+Mentions             short_yes b0 contracts     32,665,406 late    1,389,098 share  4.25%
+Mentions             short_yes b1 contracts      7,044,286 late      157,847 share  2.24%
+Mentions             short_yes b2 contracts      9,701,679 late      185,371 share  1.91%
+Mentions             short_yes b3 contracts      3,073,790 late       53,730 share  1.75%
+Mentions             short_yes b4 contracts      4,444,360 late      116,806 share  2.63%
+Politics             long_yes  b0 contracts      3,610,358 late       13,220 share  0.37%
+Politics             long_yes  b1 contracts      2,183,495 late        2,780 share  0.13%
+Politics             long_yes  b2 contracts      1,788,168 late        1,286 share  0.07%
+Politics             long_yes  b3 contracts      1,099,294 late        1,483 share  0.13%
+Politics             long_yes  b4 contracts      5,178,687 late          713 share  0.01%
+Politics             short_yes b0 contracts      7,267,216 late       22,400 share  0.31%
+Politics             short_yes b1 contracts      3,391,080 late        8,900 share  0.26%
+Politics             short_yes b2 contracts      2,147,987 late        2,859 share  0.13%
+Politics             short_yes b3 contracts        841,356 late            9 share  0.00%
+Politics             short_yes b4 contracts      2,580,543 late            7 share  0.00%
