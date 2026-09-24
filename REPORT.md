@@ -20,8 +20,8 @@ test is running.
 | Up/Down taker ([updown-desk](https://github.com/paandrighetti/updown-desk)) | Does taking against a diffusion fair value pay on 15-minute crypto markets? | No. All 12 cells lose, t from -3.4 to -1.8. |
 | Resolved-market strategies ([pm-backtest](https://github.com/paandrighetti/pm-backtest)) | Do favorite carry, Dutch books or hedged crypto binaries survive out of sample? | No. Favorite carry loses and the best hedge cell reverses; the only Dutch-book residual sits in a few cheap books and cannot be sized on hourly data. |
 | Passive quoting (updown-desk) | Does resting liquidity earn the spread plus the maker rebate? | About the rebate, in one price bucket, and not at the back of the queue. |
-| Cross-venue arbitrage (pm-xarb) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: edges of about 0.6 cents that often last a single poll; no divergence at settlement, a net loss so far. Basis pairs: more entry edge, and a negative result. |
-| Kalshi maker premium (kalshi-maker) | Does the published maker premium survive for a small maker who improves the price or waits at the back of the queue? | 7 of 289 pre-registered pairs pass in both sets of markets, all with the maker selling YES; forward paper test running. |
+| Cross-venue arbitrage ([pm-xarb](https://github.com/paandrighetti/pm-xarb)) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: edges of about 0.6 cents that often last a single poll; no divergence at settlement, a net loss so far. Basis pairs: more entry edge, and a negative result. |
+| Kalshi maker premium ([kalshi-maker](https://github.com/paandrighetti/kalshi-maker)) | Does the published maker premium survive for a small maker who improves the price or waits at the back of the queue? | 7 of 289 pre-registered pairs pass in both sets of markets, all with the maker selling YES; forward paper test running. |
 
 The common thread: on Polymarket's 15-minute crypto markets, prices reflect the contract that
 actually settles better than simple models do, and what liquidity provision earns depends on
@@ -331,8 +331,10 @@ whose mean is negative after 30 days is abandoned.
 
 Source outputs, with their SHA-256 in `sources/*/MANIFEST.sha256` where the server produced
 them. Code: [updown-desk](https://github.com/paandrighetti/updown-desk) (Up/Down taker and passive studies),
-[pm-backtest](https://github.com/paandrighetti/pm-backtest) (resolved-market strategies), pm-xarb
-and kalshi-maker (cross-venue desk and Kalshi maker study). Rebuild this document with
+[pm-backtest](https://github.com/paandrighetti/pm-backtest) (resolved-market strategies),
+[pm-xarb](https://github.com/paandrighetti/pm-xarb) (cross-venue desk) and
+[kalshi-maker](https://github.com/paandrighetti/kalshi-maker) (Kalshi maker study, with the
+pre-registration as its first commit). Rebuild this document with
 `python -m pmedge.build`; `pytest` fails if it is out of date.
 
 ## References

@@ -20,8 +20,8 @@ test is running.
 | Up/Down taker ([updown-desk](https://github.com/paandrighetti/updown-desk)) | Does taking against a diffusion fair value pay on 15-minute crypto markets? | No. All {ud_taker_cells} cells lose, t from {ud_taker_t_lo} to {ud_taker_t_hi}. |
 | Resolved-market strategies ([pm-backtest](https://github.com/paandrighetti/pm-backtest)) | Do favorite carry, Dutch books or hedged crypto binaries survive out of sample? | No. Favorite carry loses and the best hedge cell reverses; the only Dutch-book residual sits in a few cheap books and cannot be sized on hourly data. |
 | Passive quoting (updown-desk) | Does resting liquidity earn the spread plus the maker rebate? | About the rebate, in one price bucket, and not at the back of the queue. |
-| Cross-venue arbitrage (pm-xarb) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: {pm_xarb_exact_verdict} Basis pairs: more entry edge, and a negative result. |
-| Kalshi maker premium (kalshi-maker) | Does the published maker premium survive for a small maker who improves the price or waits at the back of the queue? | {km_verdict} |
+| Cross-venue arbitrage ([pm-xarb](https://github.com/paandrighetti/pm-xarb)) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: {pm_xarb_exact_verdict} Basis pairs: more entry edge, and a negative result. |
+| Kalshi maker premium ([kalshi-maker](https://github.com/paandrighetti/kalshi-maker)) | Does the published maker premium survive for a small maker who improves the price or waits at the back of the queue? | {km_verdict} |
 
 The common thread: on Polymarket's 15-minute crypto markets, prices reflect the contract that
 actually settles better than simple models do, and what liquidity provision earns depends on
@@ -212,8 +212,10 @@ arbitrage.
 
 Source outputs, with their SHA-256 in `sources/*/MANIFEST.sha256` where the server produced
 them. Code: [updown-desk](https://github.com/paandrighetti/updown-desk) (Up/Down taker and passive studies),
-[pm-backtest](https://github.com/paandrighetti/pm-backtest) (resolved-market strategies), pm-xarb
-and kalshi-maker (cross-venue desk and Kalshi maker study). Rebuild this document with
+[pm-backtest](https://github.com/paandrighetti/pm-backtest) (resolved-market strategies),
+[pm-xarb](https://github.com/paandrighetti/pm-xarb) (cross-venue desk) and
+[kalshi-maker](https://github.com/paandrighetti/kalshi-maker) (Kalshi maker study, with the
+pre-registration as its first commit). Rebuild this document with
 `python -m pmedge.build`; `pytest` fails if it is out of date.
 
 ## References
