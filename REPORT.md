@@ -270,17 +270,32 @@ would have been filled by the same order; statistic C counts every emptied level
 levels deeper than the best price. Neither sees competing makers or the size a slow maker would
 actually get, and cells chosen as the best of 289 overstate their own magnitude.
 The holdout draws other trades from another twelfth of the hours on the same markets, so it
-tests the sampling of trades, not new outcomes; it had downloaded 121 of
-600 hours at 2026-09-24 11:43 UTC; it can remove the part of the selection bias
-that comes from sampling trades, not the part that comes from outcomes. The forward paper test
-is the only test on new outcomes. It started when the decision was written and quotes only the
-qualifying pairs, on up to the 400 most active markets closing within 7
-days (PENNY joins the best price when the spread is one tick). By 2026-09-24 11:48 UTC its first
-67 cycles had produced 16 fills, 13 of them in
-JOIN Climate and Weather [0.00, 0.10), and its cycle log recorded no error. Its success criterion pools the qualifying
-pairs, so it will test the pool more than each pair. It succeeds if its profit per contract is positive with t ≥ 2 once
-200 events have settled with at least 10 losing clusters, and a variant
-whose mean is negative after 30 days is abandoned.
+tests the sampling of trades, not new outcomes: it can remove the part of the selection bias
+that comes from sampling trades, not the part that comes from outcomes. By 2026-09-25 12:46 UTC it
+had downloaded all 600 of its hours (52,655,628 trades) and
+1,280,000 of the 5,514,825 market records they need; it has not
+reported yet.
+
+The forward paper test is the only test on new outcomes. It started when the decision was
+written and quotes only the qualifying pairs, on up to the 400 most active markets
+closing within 7 days (PENNY joins the best price when the spread is one tick).
+Its success criterion pools the qualifying pairs of a variant, so it tests the pool more than
+each pair. The first rule checked success in every daily report once the minimums were
+reached, with no end date; on simulated daily results with no edge, checking every day from
+day 20 to day 60 gives 8.2 % false successes. The fourth amendment
+(25 September 2026, before any look; the file's SHA-256 now begins `be8decba1c6aff37`, and the
+forward report prints it next to the one the decision was taken under) keeps two looks per
+variant: the first report with 200 settled events and at least 10 losing
+clusters, if it comes before day 60, and the first report on or after day
+60, counting from the variant's first fill. Each look needs a positive profit per
+contract with t ≥ 2.28: the one-sided error of t ≥ 2 is split between the two looks
+(Bonferroni), and the same simulation gives 2.0 % false successes. A variant without
+success at day 60 is inconclusive, and one whose mean is negative in a report on or
+after day 30 is abandoned. By 2026-09-25 12:48 UTC, day 1 of the test,
+4,566 cycles had produced 3,877 fills; 37 events had
+settled for JOIN and 1 for PENNY, short of the first look's minimums.
+63 cycles had a stage fail on a Kalshi API error, none before the holdout started
+downloading market records at 08:34 UTC that day.
 
 ## 7. What the five studies say together
 

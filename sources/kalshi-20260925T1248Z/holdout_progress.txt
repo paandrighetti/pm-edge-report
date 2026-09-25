@@ -1,0 +1,10 @@
+checked_at 2026-09-25 12:48 UTC
+holdout_residue 1
+hours_total 600
+hours_done 600
+trades_done 52655628
+summary_exists False
+2026-09-25T12:40:20.276882232Z 2026-09-25 12:40:20,276 INFO kmaker.ingest: markets: 1220000 of 5514825 fetched, 58151 requests so far
+2026-09-25T12:42:22.839321314Z 2026-09-25 12:42:22,839 INFO kmaker.ingest: markets: 1240000 of 5514825 fetched, 58628 requests so far
+2026-09-25T12:44:25.192747691Z 2026-09-25 12:44:25,192 INFO kmaker.ingest: markets: 1260000 of 5514825 fetched, 59106 requests so far
+2026-09-25T12:46:28.628191011Z 2026-09-25 12:46:28,627 INFO kmaker.ingest: markets: 1280000 of 5514825 fetched, 59584 requests so far

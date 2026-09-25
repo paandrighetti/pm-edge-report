@@ -15,7 +15,7 @@ from decimal import ROUND_HALF_UP, Decimal
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .tables import fixed_width, md_table, num, read, text_section
+from .tables import fixed_width, md_table, md_tables_after, num, read, text_section
 
 ROOT = Path(__file__).resolve().parents[2]
 SERVER = ROOT / "sources" / "server-20260923T2149Z"
@@ -24,8 +24,8 @@ UPDOWN_README = ROOT / "sources" / "updown-desk-b4c0c95" / "README.md"
 KALSHI = ROOT / "sources" / "kalshi-20260924T1145Z"
 KALSHI_SENS = ROOT / "sources" / "kalshi-sensitivity-20260924" / "0014-kalshi-late-settlement.log"
 KALSHI_HORIZON = ROOT / "sources" / "kalshi-horizon-20260924" / "0015-kalshi-horizon.log"
-KALSHI_HOLDOUT = ROOT / "sources" / "kalshi-status-20260924" / "0012-kalshi-decision.log"
-KALSHI_PAPER = ROOT / "sources" / "kalshi-status-20260924" / "0013-kalshi-code-peek.log"
+KALSHI_NOW = ROOT / "sources" / "kalshi-20260925T1248Z"
+KALSHI_STATUS = ROOT / "sources" / "kalshi-status-20260925"
 
 
 class ClaimError(AssertionError):
@@ -448,14 +448,7 @@ def kalshi(f: Facts) -> None:
     f.put("km_sig_change_c", q["confirmation_mean_c"], "{:.2f}", gate_path)
     f.put("km_sig_change_t", t, "{:.1f}", cells_path)
 
-    m = re.search(r"once (\d+) events have settled and at least (\d+) clusters are negative", prereg)
-    f.put("km_fwd_events", int(m.group(1)), "{}", prereg_path)
-    f.put("km_fwd_neg", int(m.group(2)), "{}", prereg_path)
-    m = re.search(r"abandoned if its mean is negative after (\d+) days", prereg)
-    f.put("km_fwd_days", int(m.group(1)), "{}", prereg_path)
-    m = re.search(r"the forward universe is the (\d+) most active markets closing within (\d+) days", prereg)
-    f.put("km_fwd_n", int(m.group(1)), "{}", prereg_path)
-    f.put("km_fwd_window", int(m.group(2)), "{}", prereg_path)
+    kalshi_forward(f, gate, sha)
 
     # exploratory, after the decision: markets settled more than a day after their latest expiration
     sens = read(KALSHI_SENS)
@@ -513,24 +506,109 @@ def kalshi(f: Facts) -> None:
     f.put("km_short_min", short[kmin] * 100, "{:.0f} %", KALSHI_HORIZON)
     f.put("km_short_min_cell", f"{kmin[0]} {label(kmin[1])}", "", KALSHI_HORIZON)
 
-    # status of the holdout download and of the paper maker, from the server logs
-    st = read(KALSHI_HOLDOUT)
-    hrs = re.findall(r"^(\S+ \d\d:\d\d):\S+ INFO kmaker.ingest: trades r1: hour (\d+) of (\d+)", st, re.M)
-    f.put("km_holdout_done", int(hrs[-1][1]), "{}", KALSHI_HOLDOUT)
-    f.put("km_holdout_total", int(hrs[-1][2]), "{}", KALSHI_HOLDOUT)
-    f.put("km_holdout_time", hrs[-1][0] + " UTC", "", KALSHI_HOLDOUT)
-    pp = read(KALSHI_PAPER)
-    started = re.search(r"^# started: (\S+)T(\d\d:\d\d)", pp, re.M)
-    f.put("km_paper_time", f"{started.group(1)} {started.group(2)} UTC", "", KALSHI_PAPER)
-    mm = re.search(r"^\((\d+), [\d.]+, [\d.]+, [\d.]+, (\d+), ([\d.]+), [\d.]+\)$", pp, re.M)
-    f.put("km_paper_cycles", int(mm.group(1)), "{}", KALSHI_PAPER)
-    f.put("km_paper_fills", int(mm.group(2)), "{}", KALSHI_PAPER)
-    claim(float(mm.group(3)) == 0, "the cycle log of the paper maker records no error")
-    fills = re.findall(r"^\('(PENNY|JOIN)', '([^']+)', '(short_yes|long_yes)', (\d), (\d+), ([\d.]+), [\d.]+\)$", pp, re.M)
-    claim(sum(int(x[4]) for x in fills) == int(mm.group(2)), "the fills table adds up to the cycle log")
-    top = max(fills, key=lambda x: int(x[4]))
-    f.put("km_paper_top", f"{top[0]} {top[1]} {label(int(top[3]))}", "", KALSHI_PAPER)
-    f.put("km_paper_top_n", int(top[4]), "{}", KALSHI_PAPER)
+
+
+def kalshi_forward(f: Facts, gate: dict, decision_sha: str) -> None:
+    """The forward rule as amended on 25 September (Amendment 4), and where the forward test and
+    the holdout stood in the snapshot taken from the server."""
+    prereg_path = KALSHI_NOW / "PREREGISTRATION.md"
+    prereg = re.sub(r"\s+", " ", read(prereg_path))
+    now_sha = hashlib.sha256(prereg_path.read_bytes()).hexdigest()
+    f.put("km_prereg_now_sha", now_sha[:16], "", prereg_path)
+    gate_now_path = KALSHI_NOW / "gate.json"
+    claim(json.loads(read(gate_now_path)) == gate, "the gate has not been rewritten since the decision")
+
+    m = re.search(r"Amendment 4, (\d+ \w+ \d{4}), after the forward test started", prereg)
+    f.put("km_amend_date", m.group(1), "", prereg_path)
+    claim("It changes the forward test only." in prereg, "the fourth amendment changes the forward test only")
+    claim("No look had taken place when this amendment was written" in prereg,
+          "no look had taken place when the fourth amendment was written")
+    m = re.search(
+        r"Success \(Amendment 4\): pooled strategy-view profit per contract > 0 with t >= ([\d.]+) \(clusters "
+        r"as in the backtest\), checked at two looks per variant: the first report in which (\d+) events "
+        r"have settled and at least (\d+) clusters are negative, if it comes before day (\d+), and the first "
+        r"report on or after day (\d+), counting days from the variant's first fill\. A variant that has not "
+        r"succeeded at the day-(\d+) look is inconclusive\. A variant is abandoned if its mean is negative in a "
+        r"report on or after day (\d+)\.", prereg)
+    t_look = float(m.group(1))
+    f.put("km_fwd_t", t_look, "{:.2f}", prereg_path)
+    f.put("km_fwd_events", int(m.group(2)), "{}", prereg_path)
+    f.put("km_fwd_neg", int(m.group(3)), "{}", prereg_path)
+    claim(m.group(4) == m.group(5) == m.group(6), "the second look and the end of the test are the same day")
+    f.put("km_fwd_final", int(m.group(4)), "{}", prereg_path)
+    f.put("km_fwd_days", int(m.group(7)), "{}", prereg_path)
+    one_sided = lambda t: 0.5 * math.erfc(t / math.sqrt(2))
+    claim(abs(one_sided(t_look) - one_sided(2) / 2) < 5e-4,
+          "the threshold of each look is the one-sided error of t >= 2 split in two")
+    m = re.search(
+        r"a check every day from day (\d+) to day (\d+) gives ([\d.]+) %, .*? The two looks below give "
+        r"([\d.]+) % in the same simulation", prereg)
+    f.put("km_sim_from", int(m.group(1)), "{}", prereg_path)
+    f.put("km_sim_to", int(m.group(2)), "{}", prereg_path)
+    f.put("km_sim_daily", float(m.group(3)), "{:.1f} %", prereg_path)
+    f.put("km_sim_two", float(m.group(4)), "{:.1f} %", prereg_path)
+    claim(float(m.group(4)) < float(m.group(3)), "the two looks give fewer false successes than daily checks")
+    m = re.search(r"the forward universe is the (\d+) most active markets closing within (\d+) days", prereg)
+    f.put("km_fwd_n", int(m.group(1)), "{}", prereg_path)
+    f.put("km_fwd_window", int(m.group(2)), "{}", prereg_path)
+
+    # the forward report, computed on a copy of the paper database by the deployed reporter
+    fwd_path = KALSHI_NOW / "reports" / "FORWARD.md"
+    fwd = read(fwd_path)
+    head = re.search(r"Generated (\S+)T(\d\d:\d\d):\d\d\+00:00\. Pre-registration SHA-256 `([0-9a-f]{64})`; "
+                     r"gate of \S+, written under `([0-9a-f]{64})`", fwd)
+    claim(head.group(3) == now_sha, "the forward report runs under the amended pre-registration")
+    claim(head.group(4) == gate["prereg_sha256"] == decision_sha,
+          "the forward report keeps the pre-registration the decision was taken under")
+    f.put("km_fwd_time", f"{head.group(1)} {head.group(2)} UTC", "", fwd_path)
+    days, fills, events = [], 0, {}
+    for variant in ("JOIN", "PENNY"):
+        blk = fwd.split(f"## {variant}\n", 1)[1].split("\n## ")[0]
+        st = re.search(r"Status: running, day (\d+) of (\d+); look 1 at (\d+) events and (\d+) losing clusters "
+                       r"\(now (\d+) and (\d+)\)\.", blk)
+        claim(st is not None, f"{variant} is running and has had no look")
+        claim(int(st.group(2)) == f.raw["km_fwd_final"] and int(st.group(3)) == f.raw["km_fwd_events"]
+              and int(st.group(4)) == f.raw["km_fwd_neg"], f"the {variant} status uses the amended rule")
+        days.append(int(st.group(1)))
+        events[variant] = (int(st.group(5)), int(st.group(6)))
+        mech = md_tables_after(fwd, f"## {variant}")[-1]
+        claim(bool(mech) and "via" in mech[0], f"the last {variant} table is the fill mechanics")
+        fills += sum(int(num(r["fills"])) for r in mech)
+    f.put("km_fwd_day", max(days), "{}", fwd_path)
+    f.put("km_fwd_fills", fills, "{:,}", fwd_path)
+    f.put("km_fwd_join_events", events["JOIN"][0], "{}", fwd_path)
+    f.put("km_fwd_penny_events", events["PENNY"][0], "{}", fwd_path)
+    claim(all(n < f.raw["km_fwd_events"] or neg < f.raw["km_fwd_neg"] for n, neg in events.values()),
+          "neither variant has reached the minimums of the first look")
+    m = re.search(r"^(\d+) cycles; .*?; (\d+) cycles with a failed stage\.$", fwd, re.M)
+    f.put("km_fwd_cycles", int(m.group(1)), "{:,}", fwd_path)
+    f.put("km_fwd_failed", int(m.group(2)), "{}", fwd_path)
+
+    # which stage failed, and when the holdout's download of market records started
+    errs_path = KALSHI_STATUS / "0028-paper-errors-updown-files.log"
+    errs = read(errs_path)
+    m = re.search(r"^(\d+) cycles with a failed stage\nfirst (\d\d-\d\d) (\d\d:\d\d) last", errs, re.M)
+    claim(int(m.group(1)) >= f.raw["km_fwd_failed"], "the error query covers the cycles counted by the report")
+    first_fail = (m.group(2), m.group(3))
+    kinds = re.findall(r"^(\d+) \| (.+)$", errs.split("--- updown-desk")[0], re.M)
+    claim(sum(int(n) for n, _ in kinds) == int(m.group(1)) and all("KalshiError" in k for _, k in kinds),
+          "every failed stage is a Kalshi API error")
+    snap_path = KALSHI_STATUS / "0027-publish-snapshot.log"
+    m = re.search(r"^backtest restarts=\d+ status=running started=\d{4}-(\d\d-\d\d)T(\d\d:\d\d)", read(snap_path), re.M)
+    claim(m.groups() <= first_fail, "no stage failed before the holdout started downloading market records")
+    f.put("km_holdout_mk_start", m.group(2) + " UTC", "", snap_path)
+
+    hold_path = KALSHI_NOW / "holdout_progress.txt"
+    hold = read(hold_path)
+    kv = dict(re.findall(r"^(\w+) (\S+)$", hold, re.M))
+    claim(kv["hours_done"] == kv["hours_total"], "every holdout hour has been downloaded")
+    claim(kv["summary_exists"] == "False", "the holdout has not reported yet")
+    f.put("km_holdout_total", int(kv["hours_total"]), "{}", hold_path)
+    f.put("km_holdout_trades", int(kv["trades_done"]), "{:,}", hold_path)
+    mk = re.findall(r"^\S+ (\d{4}-\d\d-\d\d) (\d\d:\d\d):\S+ INFO kmaker\.ingest: markets: (\d+) of (\d+) fetched", hold, re.M)
+    f.put("km_holdout_time", f"{mk[-1][0]} {mk[-1][1]} UTC", "", hold_path)
+    f.put("km_holdout_mk_done", int(mk[-1][2]), "{:,}", hold_path)
+    f.put("km_holdout_mk_total", int(mk[-1][3]), "{:,}", hold_path)
 
 
 def build_facts() -> Facts:

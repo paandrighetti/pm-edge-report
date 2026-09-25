@@ -1,0 +1,134 @@
+# job: jobs/0027-publish-snapshot.sh
+# commit: bdb1948098d9e59d22b95118e32e5c0fb4a7738a
+# started: 2026-09-25T12:48:00Z
+--- kalshi-maker deployed version
+ba941ec Holdout market step within memory; alert and back off on repeated starts
+100d5ad Amendment 4: two looks for the forward test, t >= 2.28, end at day 60
+25b050f Backtest decision of 24 September 2026 (primary sample)
+no forward_status.json yet
+no manifest_r1.json yet
+--- forward report on a copy of the paper database (reporter image, Amendment 4 code)
+# Forward paper maker
+
+Generated 2026-09-25T12:48:00+00:00. Pre-registration SHA-256 `be8decba1c6aff37d635d2f4790fb97d997751f679e2e40e07937bf1090532e5`; gate of 2026-09-24T11:20:36+00:00, written under `02e4f9180ac2b8b08b46401119b2e9bce9614561dbfd912b78dc922045da8f45`, with 7 qualifying pairs.
+
+## JOIN
+
+Status: running, day 1 of 60; look 1 at 200 events and 10 losing clusters (now 37 and 0).
+
+Settled: 37 events in 2 clusters (0 negative), 2996 contracts, 1.702 cents per contract (t = 23.17), PnL 50.99 USD.
+
+| category | side | bucket | clusters | events | losing | contracts | rows | mean_c | se_c | t |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Climate and Weather | short_yes | [0.00, 0.10) | 2 | 37 | 0 | 2996 | 364 | 1.702 | 0.073 | 23.17 |
+
+Open: 442 fills, 3275.62 USD at risk.
+
+Fill mechanics (all fills, before limits):
+
+| via | improved | fills | contracts | mean_queue_ahead |
+|---|---|---|---|---|
+| cross | 0 | 253 | 2153 | 21.4 |
+| tape | 0 | 1658 | 13776 | 35.4 |
+
+## PENNY
+
+Status: running, day 1 of 60; look 1 at 200 events and 10 losing clusters (now 1 and 0).
+
+Settled: 1 events in 1 clusters (0 negative), 274 contracts, 5.044 cents per contract (t = n/a), PnL 13.82 USD.
+
+| category | side | bucket | clusters | events | losing | contracts | rows | mean_c | se_c | t |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Politics | short_yes | [0.00, 0.10) | 1 | 1 | 0 | 274 | 32 | 5.044 | n/a | n/a |
+
+Open: 752 fills, 4511.29 USD at risk.
+
+Fill mechanics (all fills, before limits):
+
+| via | improved | fills | contracts | mean_queue_ahead |
+|---|---|---|---|---|
+| cross | 0 | 67 | 594 | 59.4 |
+| cross | 1 | 520 | 4149 | 0.0 |
+| tape | 0 | 137 | 1202 | 93.4 |
+| tape | 1 | 1242 | 9675 | 0.0 |
+
+## Cycles
+
+4566 cycles; duration median 5.1 s, 95th percentile 6.9 s; median 400 active markets, 203 live quotes, 20 requests per cycle; median age of the newest trade at poll -0.1 s; 63 cycles with a failed stage.
+
+
+<!-- digest
+kalshi-maker forward
+last cycle 0 min ago; 63 of 4319 cycles in 24 h with a failed stage; markets with a moved latest expiration: 0
+JOIN: 37 ev, 1.70 c/ct, t 23.17, PnL 50.99 USD, running, day 1 of 60; look 1 at 200 events and 10 losing clusters (now 37 and 0)
+PENNY: 1 ev, 5.04 c/ct, t n/a, PnL 13.82 USD, running, day 1 of 60; look 1 at 200 events and 10 losing clusters (now 1 and 0)
+-->
+--- holdout progress
+checked_at 2026-09-25 12:48 UTC
+holdout_residue 1
+hours_total 600
+hours_done 600
+trades_done 52655628
+summary_exists False
+2026-09-25T12:40:20.276882232Z 2026-09-25 12:40:20,276 INFO kmaker.ingest: markets: 1220000 of 5514825 fetched, 58151 requests so far
+2026-09-25T12:42:22.839321314Z 2026-09-25 12:42:22,839 INFO kmaker.ingest: markets: 1240000 of 5514825 fetched, 58628 requests so far
+2026-09-25T12:44:25.192747691Z 2026-09-25 12:44:25,192 INFO kmaker.ingest: markets: 1260000 of 5514825 fetched, 59106 requests so far
+2026-09-25T12:46:28.628191011Z 2026-09-25 12:46:28,627 INFO kmaker.ingest: markets: 1280000 of 5514825 fetched, 59584 requests so far
+backtest restarts=0 status=running started=2026-09-25T08:34:18.792898081Z
+--- updown-desk deployed version
+14df763 daily report in a worker thread, rolling seven-day window, memory headroom
+476b142 twap settlement model, spot and reference feeds, findings in readme
+a56d42b memory-bounded report: arrow categoricals, duckdb agreement, numpy replay
+9e329a2 restore pyarrow dependency
+ M README.md
+ M pyproject.toml
+ M src/updown/__init__.py
+ M src/updown/replay.py
+ M src/updown/store.py
+?? docs/
+?? reports/2026-09-10.md
+?? reports/2026-09-16.md
+?? reports/2026-09-17.md
+?? reports/2026-09-18.md
+--- pm-xarb deployed files
+49961f75fec9e5fe5cf86ac57fe779859f47dc7f6b93c4028d4fa1aef4437806  config/pair_overrides.yaml
+8a613a9aa6875dfc967221f95d81773d0c0e3403a61d259bd5bac872dd33c393  config/teams.yaml
+6b10f577009569326a461428ac7c584bb42127c9878ba48f477efa791f145989  config.yaml
+75e64657301422347368fd37e4682fc0e3225c3cd323acbe9259b62c74d49031  deploy/DEPLOY.md
+b79eea091e7dff80bbdefa00d373735a8a8c1a1233269a70a0b1b389cf44eba1  docker-compose.yml
+3e5401df8cc05c8b9c38e1d7cbd3b06358dc93c2a664289c6b77749242bec65f  Dockerfile
+9d815ef1935841350e219992c71c841589e09b4d8aaa137470a9ff4436752fe0  pyproject.toml
+7509765899c07223f92148061b52eda4ecaf08f6077c8abdc6090f74a4b4581b  README.md
+f43a399cdcfa65dbe1074b2a4cc4589e190e27edf7ee3beae1929ee7878b57ec  src/pmxarb/books.py
+818db1e8ebd9d81eb20dfeea1f5ecec6c197e292cd5223bc4c201a43f9211ffe  src/pmxarb/cli.py
+d384d63a9f54f46882db61d2aaf1967b837db2cdd0c484a4750087c4f6f2934e  src/pmxarb/config.py
+a3524562e326924e9304b435ad8af4c7d06a1c09c081e3c10bb4c471ea48c742  src/pmxarb/desk.py
+37db04239ec108f98271938ac6489a41031f0c762fb8d6fc181be0a7c7800a98  src/pmxarb/fees.py
+e2cb715d0a408063d6fcf9402421fc72072f2450ade7e73a199566cdd3682f8b  src/pmxarb/history.py
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  src/pmxarb/__init__.py
+206e288865adb43789a07a605a70b46c657422d185cd92080d8c87fb34cd93dc  src/pmxarb/matching/families.py
+74ad83be27599b1bef97376f5437f9862b918535242f1ffa96881231496b55d7  src/pmxarb/matching/__init__.py
+25003ff4eb98838df5db26ecb54b97c186fb7f83e26516cb8aeb737106252858  src/pmxarb/matching/matcher.py
+8e9978a8b08a913983fe4988eb5e6327224b3b90b02b997e779f6c5f49b52f4a  src/pmxarb/matching/normalize.py
+2bf439270903b5b5d85c1cd84df6321707034d801695dedda08f428970d357c2  src/pmxarb/models.py
+fd62b0261d9263edb42bc32550882c249109fd5231d3d22b790063059270b65d  src/pmxarb/paper.py
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  src/pmxarb/py.typed
+1da0c7fafcea6fc21f296f1b043e304327cbd46e0f51de54c7c574ad881f2071  src/pmxarb/recorder.py
+6853691de477dc4a1ec1ede92552dc82497b2a34d89c55790ff6c228756bcb89  src/pmxarb/report.py
+dc53f6acada131944a1c95194958feeece992e9496b3c7403e6223f376773ad4  src/pmxarb/resolution.py
+ad53e00b58a23c10b6adc71faf3b7fae05c9287d96522a31a90125981304142c  src/pmxarb/runner.py
+f491e9c508072944754845cd2c9e8526473742cae9bf65836018a3a9787c0718  src/pmxarb/scanner.py
+ffc898b505e754f2ad8447778582707af21c32505e3061471d6fd72c39f08d81  src/pmxarb/telegram.py
+95f2e1114f831c1c24098e124d95fda8c59ea657ad9660ca84d2b46c9f12335d  src/pmxarb/universe.py
+c8bf9174871a983eaa3b52de7aad565b643ed2e289f8cc9e6aacb0a37a6a5f6f  src/pmxarb/venues/base.py
+0706c335a9998e53e2b9fdba2651d6421024b741547b9a886ab0e10821af9c0a  src/pmxarb/venues/__init__.py
+37d6800b6f03bca5e317a49cfbd642c6475959c10d67e253b2dae1bb2c6cea64  src/pmxarb/venues/kalshi.py
+ca730091e09a036e695ded0f0f0ad05e775a4b1e81f557f27705bddb53678504  src/pmxarb/venues/polymarket.py
+fe397c93fa658107ea7e73921ad4934de4ec4b4d9dbecdfedc44d660ee8de9c9  tests/conftest.py
+171b2d95bd496acb7e1f0d8c1b218191e998e039899d978c7c40c4e1dd04a222  tests/test_clients.py
+3cb2f040aaf06a1aa4a2446876165e7f004641748f48dca929bc74b04718ac77  tests/test_desk_report.py
+86df12947861578803dc72fb974d074bcce24704dc687d5619d7e8a349202096  tests/test_fees_books.py
+5aa26a3c9e1ac4c81139b1880642f1efd17e97033f90f148b6905d75ce4918f1  tests/test_matching.py
+4cab7d135a8e2645d362e4ce031b632f5d6e8a0763c97f3e5c73c35319fd8819  tests/test_paper.py
+fatal: not a git repository (or any of the parent directories): .git
+# exit: 0

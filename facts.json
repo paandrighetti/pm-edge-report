@@ -739,30 +739,135 @@
   "printed": "-2.6",
   "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/cells.csv"
  },
+ "km_prereg_now_sha": {
+  "value": "be8decba1c6aff37",
+  "printed": "be8decba1c6aff37",
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
+ },
+ "km_amend_date": {
+  "value": "25 September 2026",
+  "printed": "25 September 2026",
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
+ },
+ "km_fwd_t": {
+  "value": 2.28,
+  "printed": "2.28",
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
+ },
  "km_fwd_events": {
   "value": 200,
   "printed": "200",
-  "source": "sources/kalshi-20260924T1145Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
  },
  "km_fwd_neg": {
   "value": 10,
   "printed": "10",
-  "source": "sources/kalshi-20260924T1145Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
+ },
+ "km_fwd_final": {
+  "value": 60,
+  "printed": "60",
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
  },
  "km_fwd_days": {
   "value": 30,
   "printed": "30",
-  "source": "sources/kalshi-20260924T1145Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
+ },
+ "km_sim_from": {
+  "value": 20,
+  "printed": "20",
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
+ },
+ "km_sim_to": {
+  "value": 60,
+  "printed": "60",
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
+ },
+ "km_sim_daily": {
+  "value": 8.2,
+  "printed": "8.2 %",
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
+ },
+ "km_sim_two": {
+  "value": 2.0,
+  "printed": "2.0 %",
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
  },
  "km_fwd_n": {
   "value": 400,
   "printed": "400",
-  "source": "sources/kalshi-20260924T1145Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
  },
  "km_fwd_window": {
   "value": 7,
   "printed": "7",
-  "source": "sources/kalshi-20260924T1145Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20260925T1248Z/PREREGISTRATION.md"
+ },
+ "km_fwd_time": {
+  "value": "2026-09-25 12:48 UTC",
+  "printed": "2026-09-25 12:48 UTC",
+  "source": "sources/kalshi-20260925T1248Z/reports/FORWARD.md"
+ },
+ "km_fwd_day": {
+  "value": 1,
+  "printed": "1",
+  "source": "sources/kalshi-20260925T1248Z/reports/FORWARD.md"
+ },
+ "km_fwd_fills": {
+  "value": 3877,
+  "printed": "3,877",
+  "source": "sources/kalshi-20260925T1248Z/reports/FORWARD.md"
+ },
+ "km_fwd_join_events": {
+  "value": 37,
+  "printed": "37",
+  "source": "sources/kalshi-20260925T1248Z/reports/FORWARD.md"
+ },
+ "km_fwd_penny_events": {
+  "value": 1,
+  "printed": "1",
+  "source": "sources/kalshi-20260925T1248Z/reports/FORWARD.md"
+ },
+ "km_fwd_cycles": {
+  "value": 4566,
+  "printed": "4,566",
+  "source": "sources/kalshi-20260925T1248Z/reports/FORWARD.md"
+ },
+ "km_fwd_failed": {
+  "value": 63,
+  "printed": "63",
+  "source": "sources/kalshi-20260925T1248Z/reports/FORWARD.md"
+ },
+ "km_holdout_mk_start": {
+  "value": "08:34 UTC",
+  "printed": "08:34 UTC",
+  "source": "sources/kalshi-status-20260925/0027-publish-snapshot.log"
+ },
+ "km_holdout_total": {
+  "value": 600,
+  "printed": "600",
+  "source": "sources/kalshi-20260925T1248Z/holdout_progress.txt"
+ },
+ "km_holdout_trades": {
+  "value": 52655628,
+  "printed": "52,655,628",
+  "source": "sources/kalshi-20260925T1248Z/holdout_progress.txt"
+ },
+ "km_holdout_time": {
+  "value": "2026-09-25 12:46 UTC",
+  "printed": "2026-09-25 12:46 UTC",
+  "source": "sources/kalshi-20260925T1248Z/holdout_progress.txt"
+ },
+ "km_holdout_mk_done": {
+  "value": 1280000,
+  "printed": "1,280,000",
+  "source": "sources/kalshi-20260925T1248Z/holdout_progress.txt"
+ },
+ "km_holdout_mk_total": {
+  "value": 5514825,
+  "printed": "5,514,825",
+  "source": "sources/kalshi-20260925T1248Z/holdout_progress.txt"
  },
  "km_late_universe": {
   "value": 101092,
@@ -848,45 +953,5 @@
   "value": "Politics [0.00, 0.10)",
   "printed": "Politics [0.00, 0.10)",
   "source": "sources/kalshi-horizon-20260924/0015-kalshi-horizon.log"
- },
- "km_holdout_done": {
-  "value": 121,
-  "printed": "121",
-  "source": "sources/kalshi-status-20260924/0012-kalshi-decision.log"
- },
- "km_holdout_total": {
-  "value": 600,
-  "printed": "600",
-  "source": "sources/kalshi-status-20260924/0012-kalshi-decision.log"
- },
- "km_holdout_time": {
-  "value": "2026-09-24 11:43 UTC",
-  "printed": "2026-09-24 11:43 UTC",
-  "source": "sources/kalshi-status-20260924/0012-kalshi-decision.log"
- },
- "km_paper_time": {
-  "value": "2026-09-24 11:48 UTC",
-  "printed": "2026-09-24 11:48 UTC",
-  "source": "sources/kalshi-status-20260924/0013-kalshi-code-peek.log"
- },
- "km_paper_cycles": {
-  "value": 67,
-  "printed": "67",
-  "source": "sources/kalshi-status-20260924/0013-kalshi-code-peek.log"
- },
- "km_paper_fills": {
-  "value": 16,
-  "printed": "16",
-  "source": "sources/kalshi-status-20260924/0013-kalshi-code-peek.log"
- },
- "km_paper_top": {
-  "value": "JOIN Climate and Weather [0.00, 0.10)",
-  "printed": "JOIN Climate and Weather [0.00, 0.10)",
-  "source": "sources/kalshi-status-20260924/0013-kalshi-code-peek.log"
- },
- "km_paper_top_n": {
-  "value": 13,
-  "printed": "13",
-  "source": "sources/kalshi-status-20260924/0013-kalshi-code-peek.log"
  }
 }

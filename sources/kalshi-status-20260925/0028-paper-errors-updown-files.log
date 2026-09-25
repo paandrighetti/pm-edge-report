@@ -1,0 +1,52 @@
+# job: jobs/0028-paper-errors-updown-files.sh
+# commit: a0394e6ec77c2b810e3a2e2a6c519fd9d882c2bc
+# started: 2026-09-25T12:50:29Z
+--- paper maker: failed stages
+65 cycles with a failed stage
+first 09-25 08:35 last 09-25 12:49
+39 | books: KalshiError
+18 | scan: KalshiError
+5 | scan: KalshiError;books: KalshiError
+1 | incremental: KalshiError
+1 | listing: KalshiError
+1 | settlements: KalshiError
+by hour: {'09-25 08': 4, '09-25 09': 15, '09-25 10': 18, '09-25 11': 12, '09-25 12': 16}
+--- updown-desk deployed files
+96278a6b10cf1dd1be7de63a65705640d96b3d8040d6351b2ce11c47614d9f0f  docs/passive-quoting.md
+8a7d69364416e4b512e9fb3d1997e47f0278ae1abb3d9965f25565f462d69dda  docs/results/diag_passive.txt
+687cb5354ee4954e1b40b858c0bb16dfb495f0d6aa94c701677c3360089760d8  docs/results/diag_timing.txt
+a1034121f84cb8ca87529f384261485bc8379344af9c7b49b9acbb5cf9902ee7  docs/results/tape_queue.txt
+a568abf4d1fb2b2bd688cebb8c4a33d2c7902fe1aeff316073595a9ba1fa2ea3  docs/results/tape_study.txt
+26be544a20bbf3d587f7813e73bd38e8753d3071a8b40ec6008bba4b99be2bd8  docs/results/v02_passive_grid.txt
+4fe01dfc09561cca4b3a7ac4ebd08d00b168f06e8ad9b2b80d3a9bb506268f7f  pyproject.toml
+c0a0ccb080579ae579bda9df6c9894e8222b6b378caa7587ac92335e2e014e86  README.md
+011a4f86505feab012a7e857b6663df8a40c9faff06a054f821ebeb366798a63  scripts/publish_reports.sh
+2f1db69d0d5567209de99a696c924e75a874058d5883a5712ccfdd276f40b136  scripts/research/diag_passive.py
+c19af8767e6ebdec222bc33ee920ecc4940abad0ba891bb5c1a8433ce5338d1f  scripts/research/diag_timing.py
+da04fc470c1be5430af849c6e5598e9c2b98d94be4c70c79ad81c1121cc778d1  scripts/research/passive_note.py
+c66f0605004df03430dbf1daa4c239d84018f0b314b43e8858a2951b3d93b1e6  scripts/research/tape_queue.py
+a384a81095de2f189ff03eadd4d58780d8ff1d7284aa5bb8c99ace6aeda8b19c  scripts/research/tape_study.py
+fa9925e5b951ef9449ecfc3e4dfe64f07ab010dc9fc75d1ffb9ee235de54a40b  src/updown/collector.py
+512be9e5692fa5cb76cb93282f5dcb3c18a4c17fb5882ae832f885ff7b9aebcf  src/updown/config.py
+01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b  src/updown_desk.egg-info/dependency_links.txt
+ca7cf70de8a58978e71bb7a2916f0c0177239f9553907936899eeb2f25bebabd  src/updown_desk.egg-info/entry_points.txt
+eb98dfc6bc1bf6f7a2b409b4e784e84e594126f37b8d0c52e557f6d1195d9455  src/updown_desk.egg-info/PKG-INFO
+e5904c5e7f3e91414289d5d3d6dcdf40973f429746ae226de0e557235d16fc55  src/updown_desk.egg-info/requires.txt
+53bfcd2629fe3cc24900a01215256c2b3d97eaee4b1e871a5ba6475f5ffe90e2  src/updown_desk.egg-info/SOURCES.txt
+d21ce4c64d7813feeaf9a545b803d215881abcd3af4ada6baa79034b0d27d15d  src/updown_desk.egg-info/top_level.txt
+faf917037aaf5934e5a2235d471451177d6b1bb79a2483970d79f19ab2fb293d  src/updown/discovery.py
+16bd36e58e10261e3656287785dbb07b1515d7cdae64a7968f7e7ec095ccfde9  src/updown/fair_value.py
+e8c62bed7918d358963159578565d103c218a1fc22bf4a386e2df87e3efab395  src/updown/__init__.py
+81fb4adb2ca57f77b568ac95df5ee85dbf5fc4f70660acd3064bd65357e9239b  src/updown/passive.py
+a11f97f32f7631f155d57a959f4d63959f7d0459c9c1d654811942519fe625fc  src/updown/replay.py
+174df7c57e6c19542bfe3852de3b9b81f7019e3e045cf824d6e15733c219d5ce  src/updown/report.py
+45e6ab1689cc95ac46a49147ae11e88276c32466e05dc672449395632cb6e60b  src/updown/resolve.py
+f62ebea9b6bb4bb320986cdaaef9738bd3c32256fbdb44ca82fbc94534448a5e  src/updown/store.py
+c9e3abd723321a7d559181b36756bb9b4a8b93d5b4b9e6ef6dfddd824896f2f6  src/updown/telegram.py
+c96223f38a6fa714d6140acfb5d59143e7441489baf27a92a2d4e01c197f51e9  src/updown/windows.py
+d0b21b39aabd8ff0272ee548dfb9da13299ebb207cfa8841c326a79ba34f73fe  tests/test_fair_value.py
+e3dfcdd0878ff67b1e5f30541749296fff83b73c175e94873f363175272fa9f0  tests/test_passive_note.py
+cdf1715da96dbbf0585f863d6a9745e819e260da5225c5dc6e51cbca9c0461bf  tests/test_passive.py
+d8035a26f11fb0340b7cb8531c355d04ed59fcc163d178ff6fb6985a82240f5a  tests/test_pipeline_synthetic.py
+307a958e87806b6628b990ac184d1acfd9b492c87e068f7a55ea884ada4333b0  tests/test_windows.py
+# exit: 0
