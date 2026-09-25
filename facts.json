@@ -147,22 +147,22 @@
  "ud0_windows": {
   "value": 2548,
   "printed": "2,548",
-  "source": "sources/updown-desk-b4c0c95/README.md"
+  "source": "sources/updown-desk-547d806/README.md"
  },
  "ud0_agree_twap60": {
   "value": 98.8,
   "printed": "98.8 %",
-  "source": "sources/updown-desk-b4c0c95/README.md"
+  "source": "sources/updown-desk-547d806/README.md"
  },
  "ud0_brier_spot_840": {
   "value": 0.132,
   "printed": "0.132",
-  "source": "sources/updown-desk-b4c0c95/README.md"
+  "source": "sources/updown-desk-547d806/README.md"
  },
  "ud0_brier_mkt_840": {
   "value": 0.097,
   "printed": "0.097",
-  "source": "sources/updown-desk-b4c0c95/README.md"
+  "source": "sources/updown-desk-547d806/README.md"
  },
  "ps_prints": {
   "value": 1512913,
@@ -277,142 +277,142 @@
  "bt_universe_line": {
   "value": "Universe: 84160 resolved markets, 54520 in sample (resolved before 2026-06-01), 29640 out of sample. Costs: CostModel(half_spread=0.01, slippage=0.0, venue='polymarket', spot_fee_bps=5).",
   "printed": "Universe: 84160 resolved markets, 54520 in sample (resolved before 2026-06-01), 29640 out of sample. Costs: CostModel(half_spread=0.01, slippage=0.0, venue='polymarket', spot_fee_bps=5).",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "bt_markets": {
   "value": 84160,
   "printed": "84,160",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "bt_is": {
   "value": 54520,
   "printed": "54,520",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "bt_split": {
   "value": "2026-06-01",
   "printed": "2026-06-01",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "bt_oos": {
   "value": 29640,
   "printed": "29,640",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "fc_n": {
   "value": 10825,
   "printed": "10,825",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "fc_loss": {
   "value": 0.83,
   "printed": "0.8 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "fc_t": {
   "value": -6.5441,
   "printed": "-6.5",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "fc_loss_0": {
   "value": 0.52,
   "printed": "0.5 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "fc_t_0": {
   "value": -4.0788,
   "printed": "-4.1",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "fc_mid_95": {
   "value": 95.84,
   "printed": "95.8 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "fc_win_95": {
   "value": 93.24,
   "printed": "93.2 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "fc_mid_98": {
   "value": 99.62,
   "printed": "99.6 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "fc_win_98": {
   "value": 99.42999999999999,
   "printed": "99.4 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "db_no_several": {
   "value": 53.54,
   "printed": "54 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "db_yes_one": {
   "value": 67.82000000000001,
   "printed": "68 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "db_yes_n": {
   "value": 289,
   "printed": "289",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "db_yes_pnl": {
   "value": 42.618,
   "printed": "43",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "db_is_roc": {
   "value": 5.18,
   "printed": "5.2 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "db_yes_roc": {
   "value": 19.34,
   "printed": "19 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "db_yes_t": {
   "value": 2.3932,
   "printed": "2.4",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "db_no_roc": {
   "value": -0.69,
   "printed": "-0.7 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "db_oos_roc": {
   "value": -0.04,
   "printed": "0.0 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "bh_cells": {
   "value": 9,
   "printed": "9",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "bh_is_t": {
   "value": 4.1257,
   "printed": "4.1",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "bh_oos_loss": {
   "value": 8.97,
   "printed": "9 %",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "bh_oos_t": {
   "value": -2.4002,
   "printed": "-2.4",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "bh_var_ratio": {
   "value": 0.611,
   "printed": "0.61",
-  "source": "sources/pm-backtest-86fa1aa/2026-09-18.md"
+  "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
  "xa_report_head": {
   "value": "pm-xarb daily report, 2026-09-22 (UTC)",

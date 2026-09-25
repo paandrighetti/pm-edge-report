@@ -19,8 +19,8 @@ from .tables import fixed_width, md_table, md_tables_after, num, read, text_sect
 
 ROOT = Path(__file__).resolve().parents[2]
 SERVER = ROOT / "sources" / "server-20260923T2149Z"
-BACKTEST = ROOT / "sources" / "pm-backtest-86fa1aa" / "2026-09-18.md"
-UPDOWN_README = ROOT / "sources" / "updown-desk-b4c0c95" / "README.md"
+BACKTEST = ROOT / "sources" / "pm-backtest-c8c343a" / "2026-09-18.md"
+UPDOWN_README = ROOT / "sources" / "updown-desk-547d806" / "README.md"
 KALSHI = ROOT / "sources" / "kalshi-20260924T1145Z"
 KALSHI_SENS = ROOT / "sources" / "kalshi-sensitivity-20260924" / "0014-kalshi-late-settlement.log"
 KALSHI_HORIZON = ROOT / "sources" / "kalshi-horizon-20260924" / "0015-kalshi-horizon.log"
