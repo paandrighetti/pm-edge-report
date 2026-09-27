@@ -21,15 +21,16 @@ test is running.
 | Resolved-market strategies ([pm-backtest](https://github.com/paandrighetti/pm-backtest)) | Do favorite carry, Dutch books or hedged crypto binaries survive out of sample? | No. Favorite carry loses and the best hedge cell reverses; the only Dutch-book residual sits in a few cheap books and cannot be sized on hourly data. |
 | Passive quoting (updown-desk) | Does resting liquidity earn the spread plus the maker rebate? | About the rebate, in one price bucket, and not at the back of the queue. |
 | Cross-venue arbitrage ([pm-xarb](https://github.com/paandrighetti/pm-xarb)) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: edges of about 0.6 cents that often last a single poll; no divergence at settlement, a net loss so far. Basis pairs: more entry edge, and a negative result. |
-| Kalshi maker premium ([kalshi-maker](https://github.com/paandrighetti/kalshi-maker)) | Does the published maker premium survive for a small maker who improves the price or waits at the back of the queue? | 7 of 289 pre-registered pairs pass in both sets of markets, all with the maker selling YES; forward paper test running. |
+| Kalshi maker premium ([kalshi-maker](https://github.com/paandrighetti/kalshi-maker)) | Does the published maker premium survive for a small maker who improves the price or waits at the back of the queue? | 7 of 289 pre-registered pairs pass in both sets of markets, all with the maker selling YES, and all stay positive on the holdout hours; forward paper test running. |
 
 The common thread: on Polymarket's 15-minute crypto markets, prices reflect the contract that
 actually settles better than simple models do, and what liquidity provision earns depends on
 queue position and speed, which a small participant does not have. Four studies found no edge
 that survives their own costs and checks. The fifth found a candidate on Kalshi: in a few
 non-crypto categories, the pre-registered statistics for a maker selling YES were positive in
-two sets of markets. It rests on fill assumptions and on outcomes already known; only the
-forward paper test, on new outcomes, can confirm it.
+two sets of markets, and they stayed positive on holdout hours of the same markets. It rests on
+fill assumptions and on outcomes already known; only the forward paper test, on new outcomes,
+can confirm it.
 
 ## 1. Settlement first: which price does a market resolve on?
 
@@ -271,10 +272,11 @@ levels deeper than the best price. Neither sees competing makers or the size a s
 actually get, and cells chosen as the best of 289 overstate their own magnitude.
 The holdout draws other trades from another twelfth of the hours on the same markets, so it
 tests the sampling of trades, not new outcomes: it can remove the part of the selection bias
-that comes from sampling trades, not the part that comes from outcomes. By 2026-09-25 12:46 UTC it
-had downloaded all 600 of its hours (52,655,628 trades) and
-1,280,000 of the 5,514,825 market records they need; it has not
-reported yet.
+that comes from sampling trades, not the part that comes from outcomes. It reported at
+2026-09-26 01:25 UTC, on 41,214,818 eligible trades from its 600 hours: all
+7 qualifying pairs keep a positive mean, 6 of them with t ≥ 2, and none is
+contradicted. The weakest is PENNY Politics [0.00, 0.10), at 2.13 cents per contract
+(t = 1.5).
 
 The forward paper test is the only test on new outcomes. It started when the decision was
 written and quotes only the qualifying pairs, on up to the 400 most active markets
@@ -291,11 +293,15 @@ clusters, if it comes before day 60, and the first report on or after day
 contract with t ≥ 2.28: the one-sided error of t ≥ 2 is split between the two looks
 (Bonferroni), and the same simulation gives 2.0 % false successes. A variant without
 success at day 60 is inconclusive, and one whose mean is negative in a report on or
-after day 30 is abandoned. By 2026-09-25 12:48 UTC, day 1 of the test,
-4,566 cycles had produced 3,877 fills; 37 events had
-settled for JOIN and 1 for PENNY, short of the first look's minimums.
-63 cycles had a stage fail on a Kalshi API error, none before the holdout started
-downloading market records at 08:34 UTC that day.
+after day 30 is abandoned. By 2026-09-27 07:00 UTC, day 3 of the test,
+12,162 cycles had produced 10,223 fills. JOIN had 117 settled
+events and PENNY 10, and their losing clusters numbered 1
+and 2, against the 200 events and 10 losing clusters the
+first look needs, so no look had taken place. Both variants held the pre-registered maximum of
+5,000 USD at risk, so the tested sample grows as positions settle. 320 cycles had a
+failed stage, all between 2026-09-25 08:34 UTC, when the holdout started
+downloading market records, and 2026-09-26 01:19 UTC, by which time that download had finished;
+none failed afterwards.
 
 ## 7. What the five studies say together
 

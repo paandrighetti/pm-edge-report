@@ -24,7 +24,8 @@ stated before the statistic it governs; the other two are measurements. Full rep
 - **Kalshi maker premium.** On {km_trades_ok} eligible trades, {km_qualifying} of
   {km_pairs_tested} pre-registered pairs pass in both sets of markets, all with the maker selling YES,
   in {km_qual_cats}. The pooled
-  premium over all non-sports markets is not significant. A forward paper test is running.
+  premium over all non-sports markets is not significant. On holdout hours of the same markets all
+  {km_hold_pos} stay positive, {km_hold_sig} with t ≥ 2. A forward paper test is running.
 
 Tools: Python, DuckDB, Docker on a self-hosted server, public REST and websocket APIs,
 cluster-robust inference, reproducible reports generated from raw outputs.

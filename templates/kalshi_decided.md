@@ -90,10 +90,11 @@ levels deeper than the best price. Neither sees competing makers or the size a s
 actually get, and cells chosen as the best of {km_pairs_tested} overstate their own magnitude.
 The holdout draws other trades from another twelfth of the hours on the same markets, so it
 tests the sampling of trades, not new outcomes: it can remove the part of the selection bias
-that comes from sampling trades, not the part that comes from outcomes. By {km_holdout_time} it
-had downloaded all {km_holdout_total} of its hours ({km_holdout_trades} trades) and
-{km_holdout_mk_done} of the {km_holdout_mk_total} market records they need; it has not
-reported yet.
+that comes from sampling trades, not the part that comes from outcomes. It reported at
+{km_holdout_time}, on {km_holdout_trades_ok} eligible trades from its {km_holdout_total} hours: all
+{km_hold_pos} qualifying pairs keep a positive mean, {km_hold_sig} of them with t ≥ 2, and none is
+contradicted. The weakest is {km_hold_weak}, at {km_hold_weak_mean} cents per contract
+(t = {km_hold_weak_t}).
 
 The forward paper test is the only test on new outcomes. It started when the decision was
 written and quotes only the qualifying pairs, on up to the {km_fwd_n} most active markets
@@ -111,7 +112,11 @@ contract with t ≥ {km_fwd_t}: the one-sided error of t ≥ 2 is split between 
 (Bonferroni), and the same simulation gives {km_sim_two} false successes. A variant without
 success at day {km_fwd_final} is inconclusive, and one whose mean is negative in a report on or
 after day {km_fwd_days} is abandoned. By {km_fwd_time}, day {km_fwd_day} of the test,
-{km_fwd_cycles} cycles had produced {km_fwd_fills} fills; {km_fwd_join_events} events had
-settled for JOIN and {km_fwd_penny_events} for PENNY, short of the first look's minimums.
-{km_fwd_failed} cycles had a stage fail on a Kalshi API error, none before the holdout started
-downloading market records at {km_holdout_mk_start} that day.
+{km_fwd_cycles} cycles had produced {km_fwd_fills} fills. JOIN had {km_fwd_join_events} settled
+events and PENNY {km_fwd_penny_events}, and their losing clusters numbered {km_fwd_join_losing}
+and {km_fwd_penny_losing}, against the {km_fwd_events} events and {km_fwd_neg} losing clusters the
+first look needs, so no look had taken place. Both variants held the pre-registered maximum of
+{km_fwd_cap} at risk, so the tested sample grows as positions settle. {km_fwd_failed} cycles had a
+failed stage, all between {km_holdout_mk_start}, when the holdout started
+downloading market records, and {km_holdout_mk_end}, by which time that download had finished;
+none failed afterwards.

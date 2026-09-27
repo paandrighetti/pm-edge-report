@@ -1,0 +1,11 @@
+54822ef4cd5b9b01648e7825de263bdf907d13f402e86aff73c52927dcc13a8a  ./gate.json
+183148a6364c167961f1901a3654cb205db269ff5e882c243bf85eba0b1d8d3e  ./manifest_r1.json
+be8decba1c6aff37d635d2f4790fb97d997751f679e2e40e07937bf1090532e5  ./PREREGISTRATION.md
+f05a6578bdfac20a243d8ecfe0d1dab68a0ab95aea1d62e2d29f76df83f3d1f2  ./reports/BACKTEST.md
+18da323ae502410b0b3078b997f5ff8831d0f66a98bddfbf08970ac36bbb26e6  ./reports/backtest/r1/calibration.csv
+1fd1117309a0290eeb6c33169b4cf7a712fa01f1b48c280e80225bfe5394b636  ./reports/backtest/r1/cells.csv
+234d71a7beb6d3ed85a8e0ec22b83281774fba6ed6ae0043c0a4abd4d7c44b01  ./reports/backtest/r1/horizon_expost.csv
+abfff3b92c7e32577c2332bcffe541ad04404ed7651545493e075ba7906476d4  ./reports/backtest/r1/overall.csv
+38e2fd4083108f9e4b78562a92caf05b9c7c9fcc91c729da61996d4734799352  ./reports/backtest/r1/summary.json
+e9a74702cd4e6299a6f1163eb616dbed92af02aa66f4a72b36177bc0d30f1035  ./reports/backtest/r1/volume.csv
+030b0907b4187615c21e82f91d169305ee11d3e236d4775d04a3700a96121f69  ./reports/FORWARD.md

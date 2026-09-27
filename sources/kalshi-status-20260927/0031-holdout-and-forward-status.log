@@ -1,0 +1,113 @@
+# job: jobs/0031-holdout-and-forward-status.sh
+# commit: 7b4126bdadfaca3ef86bb1d8f92f1cd936632b97
+# started: 2026-09-27T15:22:13Z
+--- backtest container and log tail
+kalshi-maker-backtest-1 Up 2 days
+kalshi-maker-reporter-1 Up 2 days
+kalshi-maker-paper-1 Up 4 days
+2026-09-26T00:32:51.577774302Z 2026-09-26 00:32:51,577 INFO kmaker.ingest: markets: 5280000 of 5514825 fetched, 225253 requests so far
+2026-09-26T00:37:16.987737986Z 2026-09-26 00:37:16,987 INFO kmaker.ingest: markets: 5300000 of 5514825 fetched, 226236 requests so far
+2026-09-26T00:41:22.944812608Z 2026-09-26 00:41:22,944 INFO kmaker.ingest: markets: 5320000 of 5514825 fetched, 227200 requests so far
+2026-09-26T00:45:32.260157164Z 2026-09-26 00:45:32,259 INFO kmaker.ingest: markets: 5340000 of 5514825 fetched, 228174 requests so far
+2026-09-26T00:49:34.204418440Z 2026-09-26 00:49:34,204 INFO kmaker.ingest: markets: 5360000 of 5514825 fetched, 229133 requests so far
+2026-09-26T00:53:40.604700168Z 2026-09-26 00:53:40,604 INFO kmaker.ingest: markets: 5380000 of 5514825 fetched, 230099 requests so far
+2026-09-26T00:57:44.016799380Z 2026-09-26 00:57:44,016 INFO kmaker.ingest: markets: 5400000 of 5514825 fetched, 231059 requests so far
+2026-09-26T01:01:57.261896715Z 2026-09-26 01:01:57,261 INFO kmaker.ingest: markets: 5420000 of 5514825 fetched, 232030 requests so far
+2026-09-26T01:06:02.686357622Z 2026-09-26 01:06:02,685 INFO kmaker.ingest: markets: 5440000 of 5514825 fetched, 232989 requests so far
+2026-09-26T01:10:08.726130163Z 2026-09-26 01:10:08,725 INFO kmaker.ingest: markets: 5460000 of 5514825 fetched, 233954 requests so far
+2026-09-26T01:13:36.798639634Z 2026-09-26 01:13:36,798 INFO kmaker.ingest: markets: 5480000 of 5514825 fetched, 234771 requests so far
+2026-09-26T01:16:58.422720120Z 2026-09-26 01:16:58,422 INFO kmaker.ingest: markets: 5500000 of 5514825 fetched, 235568 requests so far
+2026-09-26T01:19:36.782229604Z 2026-09-26 01:19:36,781 INFO kmaker.ingest: series missing from the listing: 2, fetched: 0
+2026-09-26T01:24:04.875401857Z 2026-09-26 01:24:04,875 INFO kmaker.backtest: backtest r1: {'trades_unknown_series': 3479, 'trades_not_final': 16, 'trades_block': 1, 'trades_ok': 41214818, 'trades_multivariate': 10045441,
+2026-09-26T01:25:21.464441834Z 2026-09-26 01:25:21,464 INFO kmaker: pipeline complete, idle
+--- holdout outputs
+/opt/kalshi-maker/reports/backtest/:
+total 16
+drwxrwxr-x+ 4 root root 4096 Sep 26 01:19 .
+drwxrwxr-x+ 4 root root 4096 Sep 25 07:00 ..
+drwxrwxr-x+ 2 root root 4096 Sep 24 12:39 primary
+drwxrwxr-x+ 2 root root 4096 Sep 26 01:25 r1
+
+/opt/kalshi-maker/reports/backtest/r1:
+total 216
+drwxrwxr-x+ 2 root root   4096 Sep 26 01:25 .
+drwxrwxr-x+ 4 root root   4096 Sep 26 01:19 ..
+-rw-rw-r--+ 1 root root   9794 Sep 26 01:25 calibration.csv
+-rw-rw-r--+ 1 root root 148821 Sep 26 01:25 cells.csv
+-rw-rw-r--+ 1 root root   1227 Sep 26 01:25 horizon_expost.csv
+-rw-rw-r--+ 1 root root  33156 Sep 26 01:25 overall.csv
+-rw-rw-r--+ 1 root root   1346 Sep 26 01:25 summary.json
+-rw-rw-r--+ 1 root root   1871 Sep 26 01:25 volume.csv
+no forward_status.json
+--- holdout section of BACKTEST.md
+## Holdout hours (reported, not used to decide)
+
+| variant | category | side | bucket | exploration_mean_c | exploration_t | confirmation_mean_c | confirmation_t | holdout_events | holdout_mean_c | holdout_t | contradicted |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| PENNY | Entertainment | short_yes | [0.00, 0.10) | 3.1023 | 6.68 | 1.7305 | 3.08 | 1327 | 2.891 | 6.42 | False |
+| PENNY | Entertainment | short_yes | [0.10, 0.30) | 7.8879 | 3.48 | 9.9746 | 5.44 | 1080 | 8.141 | 5.34 | False |
+| PENNY | Mentions | short_yes | [0.10, 0.30) | 7.1444 | 4.82 | 6.266 | 4.38 | 1935 | 5.841 | 5.80 | False |
+| PENNY | Mentions | short_yes | [0.30, 0.70) | 14.2088 | 7.3 | 7.8598 | 5.11 | 2198 | 10.072 | 6.64 | False |
+| PENNY | Politics | short_yes | [0.00, 0.10) | 2.8181 | 2.97 | 3.6412 | 7.8 | 553 | 2.130 | 1.54 | False |
+| JOIN | Climate and Weather | short_yes | [0.00, 0.10) | 1.1463 | 2.66 | 1.4576 | 2.79 | 4845 | 1.330 | 3.91 | False |
+| JOIN | Entertainment | short_yes | [0.10, 0.30) | 10.6929 | 4.87 | 6.4856 | 2.62 | 765 | 8.879 | 4.11 | False |
+--- git status of the server copy
+ M reports/BACKTEST.md
+?? reports/FORWARD.md
+?? reports/backtest/r1/
+?? reports/forward/
+--- today's forward report
+# Forward paper maker
+
+Generated 2026-09-27T07:00:00+00:00. Pre-registration SHA-256 `be8decba1c6aff37d635d2f4790fb97d997751f679e2e40e07937bf1090532e5`; gate of 2026-09-24T11:20:36+00:00, written under `02e4f9180ac2b8b08b46401119b2e9bce9614561dbfd912b78dc922045da8f45`, with 7 qualifying pairs.
+
+## JOIN
+
+Status: running, day 3 of 60; look 1 at 200 events and 10 losing clusters (now 117 and 1).
+
+Settled: 117 events in 4 clusters (1 negative), 9405 contracts, 2.572 cents per contract (t = 2.45), PnL 241.88 USD.
+
+| category | side | bucket | clusters | events | losing | contracts | rows | mean_c | se_c | t |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Climate and Weather | short_yes | [0.00, 0.10) | 3 | 116 | 0 | 9239 | 1160 | 3.305 | 0.169 | 19.54 |
+| Entertainment | short_yes | [0.10, 0.30) | 1 | 1 | 1 | 166 | 19 | -38.260 | n/a | n/a |
+
+Open: 712 fills, 5000.00 USD at risk.
+
+Fill mechanics (all fills, before limits):
+
+| via | improved | fills | contracts | mean_queue_ahead |
+|---|---|---|---|---|
+| cross | 0 | 578 | 4757 | 16.0 |
+| tape | 0 | 4203 | 34490 | 37.2 |
+
+## PENNY
+
+Status: running, day 3 of 60; look 1 at 200 events and 10 losing clusters (now 10 and 2).
+
+Settled: 10 events in 5 clusters (2 negative), 1389 contracts, -6.837 cents per contract (t = -0.71), PnL -94.94 USD.
+
+| category | side | bucket | clusters | events | losing | contracts | rows | mean_c | se_c | t |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Entertainment | short_yes | [0.00, 0.10) | 2 | 3 | 0 | 60 | 6 | 3.833 | 0.056 | 69.00 |
+| Entertainment | short_yes | [0.10, 0.30) | 1 | 2 | 1 | 200 | 24 | -28.306 | n/a | n/a |
+| Politics | short_yes | [0.00, 0.10) | 3 | 7 | 1 | 1129 | 137 | -3.599 | 11.019 | -0.33 |
+
+Open: 830 fills, 5000.00 USD at risk.
+
+Fill mechanics (all fills, before limits):
+
+| via | improved | fills | contracts | mean_queue_ahead |
+|---|---|---|---|---|
+| cross | 0 | 189 | 1647 | 58.6 |
+| cross | 1 | 1374 | 10872 | 0.0 |
+| tape | 0 | 406 | 3435 | 118.1 |
+| tape | 1 | 3473 | 24968 | 0.0 |
+
+## Cycles
+
+12162 cycles; duration median 5.4 s, 95th percentile 7.8 s; median 400 active markets, 208 live quotes, 21 requests per cycle; median age of the newest trade at poll -0.1 s; 320 cycles with a failed stage.
+
+--- paper maker: last failed stage
+failed cycles total 320 last 2026-09-26 01:17
+# exit: 0

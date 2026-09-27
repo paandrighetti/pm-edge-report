@@ -24,7 +24,8 @@ def derived(values: dict[str, str], raw: dict) -> dict[str, str]:
     else:
         out["km_verdict"] = (
             f"{values['km_qualifying']} of {values['km_pairs_tested']} pre-registered pairs pass in both "
-            "sets of markets, all with the maker selling YES; forward paper test running."
+            "sets of markets, all with the maker selling YES, and all stay positive on the holdout hours; "
+            "forward paper test running."
         )
         out["km_section"] = (TEMPLATES / "kalshi_decided.md").read_text(encoding="utf-8").strip()
     out["pm_xarb_exact_verdict"] = (

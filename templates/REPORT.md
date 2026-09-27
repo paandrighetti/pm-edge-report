@@ -28,8 +28,9 @@ actually settles better than simple models do, and what liquidity provision earn
 queue position and speed, which a small participant does not have. Four studies found no edge
 that survives their own costs and checks. The fifth found a candidate on Kalshi: in a few
 non-crypto categories, the pre-registered statistics for a maker selling YES were positive in
-two sets of markets. It rests on fill assumptions and on outcomes already known; only the
-forward paper test, on new outcomes, can confirm it.
+two sets of markets, and they stayed positive on holdout hours of the same markets. It rests on
+fill assumptions and on outcomes already known; only the forward paper test, on new outcomes,
+can confirm it.
 
 ## 1. Settlement first: which price does a market resolve on?
 

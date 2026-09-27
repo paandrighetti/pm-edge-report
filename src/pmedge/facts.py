@@ -24,8 +24,9 @@ UPDOWN_README = ROOT / "sources" / "updown-desk-547d806" / "README.md"
 KALSHI = ROOT / "sources" / "kalshi-20260924T1145Z"
 KALSHI_SENS = ROOT / "sources" / "kalshi-sensitivity-20260924" / "0014-kalshi-late-settlement.log"
 KALSHI_HORIZON = ROOT / "sources" / "kalshi-horizon-20260924" / "0015-kalshi-horizon.log"
-KALSHI_NOW = ROOT / "sources" / "kalshi-20260925T1248Z"
+KALSHI_NOW = ROOT / "sources" / "kalshi-20260927T1522Z"
 KALSHI_STATUS = ROOT / "sources" / "kalshi-status-20260925"
+KALSHI_STATUS2 = ROOT / "sources" / "kalshi-status-20260927"
 
 
 class ClaimError(AssertionError):
@@ -448,7 +449,7 @@ def kalshi(f: Facts) -> None:
     f.put("km_sig_change_c", q["confirmation_mean_c"], "{:.2f}", gate_path)
     f.put("km_sig_change_t", t, "{:.1f}", cells_path)
 
-    kalshi_forward(f, gate, sha)
+    kalshi_forward(f, gate, sha, label)
 
     # exploratory, after the decision: markets settled more than a day after their latest expiration
     sens = read(KALSHI_SENS)
@@ -508,9 +509,9 @@ def kalshi(f: Facts) -> None:
 
 
 
-def kalshi_forward(f: Facts, gate: dict, decision_sha: str) -> None:
-    """The forward rule as amended on 25 September (Amendment 4), and where the forward test and
-    the holdout stood in the snapshot taken from the server."""
+def kalshi_forward(f: Facts, gate: dict, decision_sha: str, label) -> None:
+    """The forward rule as amended on 25 September (Amendment 4), the holdout result, and where the
+    forward test stood in the snapshot taken from the server."""
     prereg_path = KALSHI_NOW / "PREREGISTRATION.md"
     prereg = re.sub(r"\s+", " ", read(prereg_path))
     now_sha = hashlib.sha256(prereg_path.read_bytes()).hexdigest()
@@ -561,7 +562,7 @@ def kalshi_forward(f: Facts, gate: dict, decision_sha: str) -> None:
     claim(head.group(4) == gate["prereg_sha256"] == decision_sha,
           "the forward report keeps the pre-registration the decision was taken under")
     f.put("km_fwd_time", f"{head.group(1)} {head.group(2)} UTC", "", fwd_path)
-    days, fills, events = [], 0, {}
+    days, fills, events, at_risk = [], 0, {}, {}
     for variant in ("JOIN", "PENNY"):
         blk = fwd.split(f"## {variant}\n", 1)[1].split("\n## ")[0]
         st = re.search(r"Status: running, day (\d+) of (\d+); look 1 at (\d+) events and (\d+) losing clusters "
@@ -571,45 +572,75 @@ def kalshi_forward(f: Facts, gate: dict, decision_sha: str) -> None:
               and int(st.group(4)) == f.raw["km_fwd_neg"], f"the {variant} status uses the amended rule")
         days.append(int(st.group(1)))
         events[variant] = (int(st.group(5)), int(st.group(6)))
+        at_risk[variant] = float(re.search(r"^Open: \d+ fills, ([\d.]+) USD at risk\.$", blk, re.M).group(1))
         mech = md_tables_after(fwd, f"## {variant}")[-1]
         claim(bool(mech) and "via" in mech[0], f"the last {variant} table is the fill mechanics")
         fills += sum(int(num(r["fills"])) for r in mech)
     f.put("km_fwd_day", max(days), "{}", fwd_path)
     f.put("km_fwd_fills", fills, "{:,}", fwd_path)
     f.put("km_fwd_join_events", events["JOIN"][0], "{}", fwd_path)
+    f.put("km_fwd_join_losing", events["JOIN"][1], "{}", fwd_path)
     f.put("km_fwd_penny_events", events["PENNY"][0], "{}", fwd_path)
+    f.put("km_fwd_penny_losing", events["PENNY"][1], "{}", fwd_path)
     claim(all(n < f.raw["km_fwd_events"] or neg < f.raw["km_fwd_neg"] for n, neg in events.values()),
           "neither variant has reached the minimums of the first look")
+    cap = re.search(r"at most \d+ contracts per market and variant, [\d,]+ USD at risk per event, ([\d,]+) USD in total",
+                    prereg)
+    total_cap = float(cap.group(1).replace(",", ""))
+    f.put("km_fwd_cap", total_cap, "{:,.0f} USD", prereg_path)
+    claim(all(abs(v - total_cap) < 0.01 for v in at_risk.values()),
+          "both variants hold the pre-registered total at risk")
     m = re.search(r"^(\d+) cycles; .*?; (\d+) cycles with a failed stage\.$", fwd, re.M)
     f.put("km_fwd_cycles", int(m.group(1)), "{:,}", fwd_path)
     f.put("km_fwd_failed", int(m.group(2)), "{}", fwd_path)
 
-    # which stage failed, and when the holdout's download of market records started
+    # the failed stages: kinds and first one (25 September), start of the holdout's market download
     errs_path = KALSHI_STATUS / "0028-paper-errors-updown-files.log"
     errs = read(errs_path)
     m = re.search(r"^(\d+) cycles with a failed stage\nfirst (\d\d-\d\d) (\d\d:\d\d) last", errs, re.M)
-    claim(int(m.group(1)) >= f.raw["km_fwd_failed"], "the error query covers the cycles counted by the report")
     first_fail = (m.group(2), m.group(3))
     kinds = re.findall(r"^(\d+) \| (.+)$", errs.split("--- updown-desk")[0], re.M)
     claim(sum(int(n) for n, _ in kinds) == int(m.group(1)) and all("KalshiError" in k for _, k in kinds),
-          "every failed stage is a Kalshi API error")
+          "every failed stage counted on 25 September is a Kalshi API error")
     snap_path = KALSHI_STATUS / "0027-publish-snapshot.log"
-    m = re.search(r"^backtest restarts=\d+ status=running started=\d{4}-(\d\d-\d\d)T(\d\d:\d\d)", read(snap_path), re.M)
-    claim(m.groups() <= first_fail, "no stage failed before the holdout started downloading market records")
-    f.put("km_holdout_mk_start", m.group(2) + " UTC", "", snap_path)
+    m = re.search(r"^backtest restarts=\d+ status=running started=(\d{4})-(\d\d-\d\d)T(\d\d:\d\d)", read(snap_path), re.M)
+    claim((m.group(2), m.group(3)) <= first_fail, "no stage failed before the holdout started downloading market records")
+    f.put("km_holdout_mk_start", f"{m.group(1)}-{m.group(2)} {m.group(3)} UTC", "", snap_path)
+    # the last failed stage, and the end of that download
+    st2_path = KALSHI_STATUS2 / "0031-holdout-and-forward-status.log"
+    st2 = read(st2_path)
+    m = re.search(r"^failed cycles total (\d+) last (\d{4}-\d\d-\d\d) (\d\d:\d\d)$", st2, re.M)
+    claim(int(m.group(1)) == f.raw["km_fwd_failed"], "no stage failed between the forward report and the later check")
+    last_fail = (m.group(2), m.group(3))
+    end = re.search(r"^\S+ (\d{4}-\d\d-\d\d) (\d\d:\d\d):\S+ INFO kmaker\.ingest: series missing from the listing", st2, re.M)
+    claim(last_fail <= end.groups(), "no stage failed after the holdout finished downloading market records")
+    f.put("km_holdout_mk_end", f"{end.group(1)} {end.group(2)} UTC", "", st2_path)
 
-    hold_path = KALSHI_NOW / "holdout_progress.txt"
-    hold = read(hold_path)
-    kv = dict(re.findall(r"^(\w+) (\S+)$", hold, re.M))
-    claim(kv["hours_done"] == kv["hours_total"], "every holdout hour has been downloaded")
-    claim(kv["summary_exists"] == "False", "the holdout has not reported yet")
-    f.put("km_holdout_total", int(kv["hours_total"]), "{}", hold_path)
-    f.put("km_holdout_trades", int(kv["trades_done"]), "{:,}", hold_path)
-    mk = re.findall(r"^\S+ (\d{4}-\d\d-\d\d) (\d\d:\d\d):\S+ INFO kmaker\.ingest: markets: (\d+) of (\d+) fetched", hold, re.M)
-    f.put("km_holdout_time", f"{mk[-1][0]} {mk[-1][1]} UTC", "", hold_path)
-    f.put("km_holdout_mk_done", int(mk[-1][2]), "{:,}", hold_path)
-    f.put("km_holdout_mk_total", int(mk[-1][3]), "{:,}", hold_path)
-
+    # the holdout: the same statistics on another twelfth of the hours, reported, deciding nothing
+    bt_path = KALSHI_NOW / "reports" / "BACKTEST.md"
+    hold = md_table(read(bt_path), "## Holdout hours (reported, not used to decide)")
+    claim(len(hold) == len(gate["qualifying"]), "the holdout table has one row per qualifying pair")
+    for r in hold:
+        q = [q for q in gate["qualifying"] if q["variant"] == r["variant"] and q["category"] == r["category"]
+             and label(q["bucket"]) == r["bucket"]]
+        claim(len(q) == 1 and abs(num(r["exploration_mean_c"]) - q[0]["exploration_mean_c"]) < 1e-3,
+              "the holdout table lists the qualifying pairs of the gate")
+    claim(all(r["contradicted"] == "False" for r in hold), "no qualifying pair is contradicted by the holdout")
+    pos = sum(num(r["holdout_mean_c"]) > 0 for r in hold)
+    claim(pos == len(hold), "every qualifying pair keeps a positive mean on the holdout")
+    f.put("km_hold_pos", pos, "{}", bt_path)
+    f.put("km_hold_sig", sum(num(r["holdout_t"]) >= 2 for r in hold), "{}", bt_path)
+    weak = [r for r in hold if num(r["holdout_t"]) < 2]
+    claim(len(weak) == 1, "exactly one qualifying pair has a holdout t below 2")
+    f.put("km_hold_weak", f"{weak[0]['variant']} {weak[0]['category']} {weak[0]['bucket']}", "", bt_path)
+    f.put("km_hold_weak_mean", num(weak[0]["holdout_mean_c"]), "{:.2f}", bt_path)
+    f.put("km_hold_weak_t", num(weak[0]["holdout_t"]), "{:.1f}", bt_path)
+    sum_path = KALSHI_NOW / "reports" / "backtest" / "r1" / "summary.json"
+    summ = json.loads(read(sum_path))
+    claim(summ["validity"]["valid"] and not summ["validity"]["reasons"], "the holdout data passed the validity checks")
+    f.put("km_holdout_time", summ["generated_at"][:16].replace("T", " ") + " UTC", "", sum_path)
+    f.put("km_holdout_total", summ["validity"]["hours"], "{}", sum_path)
+    f.put("km_holdout_trades_ok", summ["counts"]["trades_ok"], "{:,}", sum_path)
 
 def build_facts() -> Facts:
     f = Facts()
