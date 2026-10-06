@@ -103,20 +103,25 @@ Its success criterion pools the qualifying pairs of a variant, so it tests the p
 each pair. The first rule checked success in every daily report once the minimums were
 reached, with no end date; on simulated daily results with no edge, checking every day from
 day {km_sim_from} to day {km_sim_to} gives {km_sim_daily} false successes. The fourth amendment
-({km_amend_date}, before any look; the file's SHA-256 now begins `{km_prereg_now_sha}`, and the
-forward report prints it next to the one the decision was taken under) keeps two looks per
+({km_amend_date}, before any look; the forward report prints the file's current SHA-256 next to
+the one the decision was taken under) keeps two looks per
 variant: the first report with {km_fwd_events} settled events and at least {km_fwd_neg} losing
 clusters, if it comes before day {km_fwd_final}, and the first report on or after day
 {km_fwd_final}, counting from the variant's first fill. Each look needs a positive profit per
 contract with t ≥ {km_fwd_t}: the one-sided error of t ≥ 2 is split between the two looks
 (Bonferroni), and the same simulation gives {km_sim_two} false successes. A variant without
 success at day {km_fwd_final} is inconclusive, and one whose mean is negative in a report on or
-after day {km_fwd_days} is abandoned. By {km_fwd_time}, day {km_fwd_day} of the test,
+after day {km_fwd_days} is abandoned. A fifth amendment ({km_amend5_date}, day {km_amend5_day},
+after the daily forward reports had been read and before any look) adds to each report and
+each look the one-sided p of a wild cluster bootstrap and the range of the mean with one cluster
+left out, because the cluster-robust t rejects too often with few clusters; it decides nothing,
+and the file's SHA-256 now begins `{km_prereg_now_sha}`. By {km_fwd_time}, day {km_fwd_day} of the test,
 {km_fwd_cycles} cycles had produced {km_fwd_fills} fills. JOIN had {km_fwd_join_events} settled
 events and PENNY {km_fwd_penny_events}, and their losing clusters numbered {km_fwd_join_losing}
 and {km_fwd_penny_losing}, against the {km_fwd_events} events and {km_fwd_neg} losing clusters the
-first look needs, so no look had taken place. Both variants held the pre-registered maximum of
-{km_fwd_cap} at risk, so the tested sample grows as positions settle. {km_fwd_failed} cycles had a
+first look needs, so no look had taken place. JOIN held {km_fwd_join_risk} and PENNY
+{km_fwd_penny_risk} at risk, under the pre-registered maximum of {km_fwd_cap}; the tested sample
+grows as positions settle. {km_fwd_failed} cycles had a
 failed stage, all between {km_holdout_mk_start}, when the holdout started
 downloading market records, and {km_holdout_mk_end}, by which time that download had finished;
 none failed afterwards.

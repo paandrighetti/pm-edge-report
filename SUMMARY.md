@@ -17,10 +17,12 @@ stated before the statistic it governs; the other two are measurements. Full rep
 - **Market making.** On 1,512,913 prints, resting liquidity earns about the maker rebate in
   one price bucket; fills that reach the back of the queue lose 0.56 and
   0.35 cents per share before it.
-- **Cross-venue arbitrage.** Exact Kalshi and Polymarket pairs show 0.6 cents of
-  entry edge, sound at settlement but hard to fill (median episode a single poll); pairs
-  settling on different sources or at different instants show more edge (1.9 cents) and a negative result
-  (-7.2 cents per contract, 2 divergent settlements).
+- **Cross-venue arbitrage.** Once 9 pairs that joined two different games are set
+  apart, exact Kalshi and Polymarket pairs show 0.98 cents of entry edge, sound at
+  settlement but hard to fill (median episode a single poll), and 35 USD on paper since
+  2026-09-22 under an optimistic fill model; pairs settling on different sources or at
+  different instants show about the same edge (1.02 cents) and a negative result
+  (-0.12 cents per contract, 3 divergent settlements).
 - **Kalshi maker premium.** On 41,722,550 eligible trades, 7 of
   289 pre-registered pairs pass in both sets of markets, all with the maker selling YES,
   in climate and weather, entertainment, mentions and politics. The pooled

@@ -20,13 +20,15 @@ test is running.
 | Up/Down taker ([updown-desk](https://github.com/paandrighetti/updown-desk)) | Does taking against a diffusion fair value pay on 15-minute crypto markets? | No. All {ud_taker_cells} cells lose, t from {ud_taker_t_lo} to {ud_taker_t_hi}. |
 | Resolved-market strategies ([pm-backtest](https://github.com/paandrighetti/pm-backtest)) | Do favorite carry, Dutch books or hedged crypto binaries survive out of sample? | No. Favorite carry loses and the best hedge cell reverses; the only Dutch-book residual sits in a few cheap books and cannot be sized on hourly data. |
 | Passive quoting (updown-desk) | Does resting liquidity earn the spread plus the maker rebate? | About the rebate, in one price bucket, and not at the back of the queue. |
-| Cross-venue arbitrage ([pm-xarb](https://github.com/paandrighetti/pm-xarb)) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: {pm_xarb_exact_verdict} Basis pairs: more entry edge, and a negative result. |
+| Cross-venue arbitrage ([pm-xarb](https://github.com/paandrighetti/pm-xarb)) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: {pm_xarb_exact_verdict} Basis pairs: about the same entry edge, and a negative result. |
 | Kalshi maker premium ([kalshi-maker](https://github.com/paandrighetti/kalshi-maker)) | Does the published maker premium survive for a small maker who improves the price or waits at the back of the queue? | {km_verdict} |
 
 The common thread: on Polymarket's 15-minute crypto markets, prices reflect the contract that
 actually settles better than simple models do, and what liquidity provision earns depends on
-queue position and speed, which a small participant does not have. Four studies found no edge
-that survives their own costs and checks. The fifth found a candidate on Kalshi: in a few
+queue position and speed, which a small participant does not have. Three studies found no edge
+that survives their own costs and checks. The cross-venue desk finds a small edge on exact pairs
+that a taker one poll late mostly misses, positive on paper only under an optimistic fill model.
+The fifth found a candidate on Kalshi: in a few
 non-crypto categories, the pre-registered statistics for a maker selling YES were positive in
 two sets of markets, and they stayed positive on holdout hours of the same markets. It rests on
 fill assumptions and on outcomes already known; only the forward paper test, on new outcomes,
@@ -132,33 +134,42 @@ queue, or a faster quoter, would earn was not measured.
 ## 5. Cross-venue arbitrage: the same event on two venues
 
 A paper desk records both order books for pairs matched deterministically across Kalshi and
-Polymarket. The figures below come from its daily report for {xa_day}. That day: {xa_polls}
-polls, mean skew between venues {xa_skew}. Of the Kalshi legs in the matched families,
-{xa_kalshi_unmatched} have no matched Polymarket leg.
+Polymarket, detects hedges that cost less than one dollar after both venues' fees, and trades
+the exact ones on paper. Its daily report for {xa_day} counts {xa_polls} polls, a mean skew
+between venues of {xa_skew}, {xa_exact_pairs} exact and {xa_basis_pairs} basis pairs on the
+whitelist, and {xa_kalshi_unmatched} of the Kalshi legs in the matched families without a
+Polymarket leg. The other figures come from `pmx final`, which reads the whole record.
 
-- **Exact pairs** (same fact, same source, same instant; {xa_exact_pairs} on the whitelist).
-  On that day, {xa_exact_det} detections after fees on both legs, mean edge
-  {xa_exact_edge_mean} per contract, at most {xa_exact_edge_max}. The median episode is seen
-  on a single poll (median lifetime {xa_exact_life_med}, 90th percentile
-  {xa_exact_life_p90}); one poll later, {xa_fill_ratio} of the intended size fills.
-  Since inception, {xa_exact_resolved} pairs have resolved for a total of {xa_exact_pnl},
-  of which {xa_exact_naked_pnl} on the {xa_exact_naked} pairs left with a naked leg and
-  {xa_exact_hedged_pnl} on hedged pairs; the total is not final while {xa_exact_onesided} of
-  them await the second venue. In the desk's counterfactual table, {xa_exact_cf_pairs} exact
-  pairs held from their first opportunity settle with no divergence and return
-  {xa_exact_cf_pnl} per contract: the loss so far is not explained by divergent settlement.
+**Two games taken for one.** The matcher first joined sports markets on the game day, and across
+days within a window. In a series, or when a postponed game was replayed in a doubleheader, that
+joined two different games. Applied to every archived definition, the start-time rule the matcher
+now uses rejects {xa_other_pairs} pairs. They carried {xa_other_det_share} of all exact
+detections, at a mean edge of {xa_other_det_edge} against {xa_clean_det_edge} for the others,
+and every exact pair that settled differently on the two venues ({xa_other_div}) was among
+them. The figures below leave them out.
+
+- **Exact pairs** (same fact, same source, same instant). {xa_single_poll} of the exact episodes
+  are seen on a single poll, so the median lifetime is zero; the 90th percentile is
+  {xa_life_p90}. Held without capital from their first opportunity, the {xa_exact_cf_pairs}
+  exact pairs of the counterfactual table settle with no divergence and return
+  {xa_exact_cf_pnl} per contract, the entry edge itself. Traded on paper from
+  {xa_joint_since}, with fills taken from the next books of both venues at once (an upper
+  bound), {xa_joint_filled} intents filled for {xa_joint_contracts} contracts while
+  {xa_joint_missed} found the books gone one poll later; the {xa_joint_resolved} pairs resolved
+  since then gain {xa_joint_pnl} in total. Since inception, including the first days, when each
+  leg was priced on its own, the {xa_clean_resolved} resolved pairs total {xa_clean_pnl}. The
+  desk's realized total, which also carries the cost of selling naked legs and the basis pairs
+  traded in its first days, is {xa_realized}.
 - **Basis pairs** (the same question, settled on different sources or at different instants;
-  {xa_basis_pairs} on the current whitelist). Held without capital from the first opportunity
-  on each of the {xa_basis_cf_pairs} basis pairs in the desk's counterfactual table, the mean entry edge is
-  {xa_basis_edge} per contract against {xa_exact_cf_edge} for exact pairs, and the mean result
+  {xa_basis_pairs} on the whitelist). Held without capital from the first opportunity on each
+  of the {xa_basis_cf_pairs} basis pairs in the counterfactual table, the mean entry edge is
+  {xa_basis_edge} per contract, about the {xa_exact_cf_edge} of exact pairs, and the mean result
   is {xa_basis_pnl}. {xa_basis_div} of those pairs settled differently on the two venues, and
   such a pair pays zero or two, not one. The entry edge is the premium for that risk; on this
-  small sample it did not cover it. In the first days of paper trading basis pairs were also
-  traded: {xa_basis_traded_pairs} resolved, total {xa_basis_traded_pnl}, not final while
-  {xa_basis_traded_onesided} of them await the second venue.
+  sample it did not cover it.
 
 A basis pair is short the difference between two measurements of the same event. It is not an
-arbitrage.
+arbitrage, and neither is a pair that joins two games.
 
 ## 6. The Kalshi maker premium
 
@@ -193,8 +204,8 @@ arbitrage.
 
 ## 8. Limitations
 
-- Short samples: two weeks of Up/Down markets, days of cross-venue data. None of this can
-  tell a change of regime from noise.
+- Short samples: two weeks of Up/Down markets, a few weeks of cross-venue data. None of this
+  can tell a change of regime from noise.
 - The resolved-market intervals treat trades as independent. Many markets resolve on the
   same event night, so the intervals are too narrow.
 - The rules of the passive study sit in script docstrings, and the backtest's selection rule

@@ -414,150 +414,150 @@
   "printed": "0.61",
   "source": "sources/pm-backtest-c8c343a/2026-09-18.md"
  },
- "xa_report_head": {
-  "value": "pm-xarb daily report, 2026-09-22 (UTC)",
-  "printed": "pm-xarb daily report, 2026-09-22 (UTC)",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ "xa_day": {
+  "value": "2026-10-05",
+  "printed": "2026-10-05",
+  "source": "sources/pm-xarb-20261006T1434Z/latest.md"
  },
  "xa_exact_pairs": {
-  "value": 54,
-  "printed": "54",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+  "value": 39,
+  "printed": "39",
+  "source": "sources/pm-xarb-20261006T1434Z/latest.md"
  },
  "xa_basis_pairs": {
-  "value": 15,
-  "printed": "15",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+  "value": 12,
+  "printed": "12",
+  "source": "sources/pm-xarb-20261006T1434Z/latest.md"
  },
  "xa_kalshi_unmatched": {
-  "value": 87.94788273615634,
+  "value": 87.57637474541752,
   "printed": "88 %",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+  "source": "sources/pm-xarb-20261006T1434Z/latest.md"
  },
  "xa_polls": {
-  "value": 28769,
-  "printed": "28,769",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+  "value": 28766,
+  "printed": "28,766",
+  "source": "sources/pm-xarb-20261006T1434Z/latest.md"
  },
  "xa_skew": {
-  "value": 0.112,
-  "printed": "0.11 s",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+  "value": 0.094,
+  "printed": "0.09 s",
+  "source": "sources/pm-xarb-20261006T1434Z/latest.md"
  },
- "xa_exact_det": {
-  "value": 91,
-  "printed": "91",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ "xa_realized": {
+  "value": -558.23,
+  "printed": "-558 USD",
+  "source": "sources/pm-xarb-20261006T1434Z/latest.md"
  },
- "xa_exact_edge_max": {
-  "value": 1.15,
-  "printed": "1.2 cents",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+ "xa_other_pairs": {
+  "value": 9,
+  "printed": "9",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
  },
- "xa_exact_edge_mean": {
-  "value": 0.5845054945054945,
+ "xa_other_det_share": {
+  "value": 88.48667303032528,
+  "printed": "88 %",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_other_det_edge": {
+  "value": 26.953,
+  "printed": "27 cents",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_clean_det_edge": {
+  "value": 0.591,
   "printed": "0.6 cents",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
  },
- "xa_exact_life_med": {
-  "value": 0.0,
-  "printed": "0 s",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_exact_life_p90": {
-  "value": 60.1,
-  "printed": "60 s",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_fill_ratio": {
-  "value": 53.1,
-  "printed": "53 %",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_exact_resolved": {
-  "value": 46,
-  "printed": "46",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_exact_pnl": {
-  "value": -93.09,
-  "printed": "-93 USD",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_exact_naked": {
-  "value": 7,
-  "printed": "7",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_exact_onesided": {
-  "value": 14,
-  "printed": "14",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_exact_naked_pnl": {
-  "value": -58.07,
-  "printed": "-58 USD",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_exact_hedged_pnl": {
-  "value": -35.02,
-  "printed": "-35 USD",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_basis_traded_pairs": {
-  "value": 8,
-  "printed": "8",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_basis_traded_pnl": {
-  "value": -301.7,
-  "printed": "-302 USD",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_basis_traded_onesided": {
-  "value": 6,
-  "printed": "6",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_day": {
-  "value": "2026-09-22",
-  "printed": "2026-09-22",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_exact_cf_pairs": {
-  "value": 17,
-  "printed": "17",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_exact_cf_edge": {
-  "value": 0.64,
-  "printed": "0.6 cents",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_exact_cf_pnl": {
-  "value": 0.64,
-  "printed": "0.6 cents",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_basis_cf_pairs": {
-  "value": 22,
-  "printed": "22",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
- },
- "xa_basis_div": {
+ "xa_other_div": {
   "value": 2,
   "printed": "2",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_single_poll": {
+  "value": 75.1,
+  "printed": "75 %",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_life_p90": {
+  "value": 9.0,
+  "printed": "9 s",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_clean_resolved": {
+  "value": 76,
+  "printed": "76",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_clean_pnl": {
+  "value": -60.01,
+  "printed": "-60 USD",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_joint_since": {
+  "value": "2026-09-22",
+  "printed": "2026-09-22",
+  "source": "sources/pm-xarb-20261006T1434Z/final-20260922.md"
+ },
+ "xa_joint_resolved": {
+  "value": 32,
+  "printed": "32",
+  "source": "sources/pm-xarb-20261006T1434Z/final-20260922.md"
+ },
+ "xa_joint_pnl": {
+  "value": 35.44,
+  "printed": "35 USD",
+  "source": "sources/pm-xarb-20261006T1434Z/final-20260922.md"
+ },
+ "xa_joint_filled": {
+  "value": 34,
+  "printed": "34",
+  "source": "sources/pm-xarb-20261006T1434Z/final-20260922.md"
+ },
+ "xa_joint_contracts": {
+  "value": 8006,
+  "printed": "8,006",
+  "source": "sources/pm-xarb-20261006T1434Z/final-20260922.md"
+ },
+ "xa_joint_missed": {
+  "value": 77,
+  "printed": "77",
+  "source": "sources/pm-xarb-20261006T1434Z/final-20260922.md"
+ },
+ "xa_exact_cf_pairs": {
+  "value": 104,
+  "printed": "104",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_exact_cf_edge": {
+  "value": 0.98,
+  "printed": "0.98 cents",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_exact_cf_pnl": {
+  "value": 0.98,
+  "printed": "0.98 cents",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_basis_cf_pairs": {
+  "value": 88,
+  "printed": "88",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
+ },
+ "xa_basis_div": {
+  "value": 3,
+  "printed": "3",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
  },
  "xa_basis_edge": {
-  "value": 1.94,
-  "printed": "1.9 cents",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+  "value": 1.02,
+  "printed": "1.02 cents",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
  },
  "xa_basis_pnl": {
-  "value": -7.16,
-  "printed": "-7.2 cents",
-  "source": "sources/server-20260923T2149Z/pm-xarb/latest.md"
+  "value": -0.12,
+  "printed": "-0.12 cents",
+  "source": "sources/pm-xarb-20261006T1434Z/final.md"
  },
  "km_prereg_sha": {
   "value": "02e4f9180ac2b8b0",
@@ -740,119 +740,139 @@
   "source": "sources/kalshi-20260924T1145Z/reports/backtest/primary/cells.csv"
  },
  "km_prereg_now_sha": {
-  "value": "be8decba1c6aff37",
-  "printed": "be8decba1c6aff37",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "value": "29c248edd7873211",
+  "printed": "29c248edd7873211",
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_amend_date": {
   "value": "25 September 2026",
   "printed": "25 September 2026",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_fwd_t": {
   "value": 2.28,
   "printed": "2.28",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_fwd_events": {
   "value": 200,
   "printed": "200",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_fwd_neg": {
   "value": 10,
   "printed": "10",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_fwd_final": {
   "value": 60,
   "printed": "60",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_fwd_days": {
   "value": 30,
   "printed": "30",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_sim_from": {
   "value": 20,
   "printed": "20",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_sim_to": {
   "value": 60,
   "printed": "60",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_sim_daily": {
   "value": 8.2,
   "printed": "8.2 %",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_sim_two": {
   "value": 2.0,
   "printed": "2.0 %",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
+ },
+ "km_amend5_date": {
+  "value": "6 October 2026",
+  "printed": "6 October 2026",
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
+ },
+ "km_amend5_day": {
+  "value": 12,
+  "printed": "12",
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_fwd_n": {
   "value": 400,
   "printed": "400",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_fwd_window": {
   "value": 7,
   "printed": "7",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
  },
  "km_fwd_time": {
-  "value": "2026-09-27 07:00 UTC",
-  "printed": "2026-09-27 07:00 UTC",
-  "source": "sources/kalshi-20260927T1522Z/reports/FORWARD.md"
+  "value": "2026-10-06 14:34 UTC",
+  "printed": "2026-10-06 14:34 UTC",
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
  },
  "km_fwd_day": {
-  "value": 3,
-  "printed": "3",
-  "source": "sources/kalshi-20260927T1522Z/reports/FORWARD.md"
+  "value": 12,
+  "printed": "12",
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
  },
  "km_fwd_fills": {
-  "value": 10223,
-  "printed": "10,223",
-  "source": "sources/kalshi-20260927T1522Z/reports/FORWARD.md"
+  "value": 42868,
+  "printed": "42,868",
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
  },
  "km_fwd_join_events": {
-  "value": 117,
-  "printed": "117",
-  "source": "sources/kalshi-20260927T1522Z/reports/FORWARD.md"
+  "value": 656,
+  "printed": "656",
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
  },
  "km_fwd_join_losing": {
-  "value": 1,
-  "printed": "1",
-  "source": "sources/kalshi-20260927T1522Z/reports/FORWARD.md"
+  "value": 7,
+  "printed": "7",
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
  },
  "km_fwd_penny_events": {
-  "value": 10,
-  "printed": "10",
-  "source": "sources/kalshi-20260927T1522Z/reports/FORWARD.md"
+  "value": 132,
+  "printed": "132",
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
  },
  "km_fwd_penny_losing": {
-  "value": 2,
-  "printed": "2",
-  "source": "sources/kalshi-20260927T1522Z/reports/FORWARD.md"
+  "value": 11,
+  "printed": "11",
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
  },
  "km_fwd_cap": {
   "value": 5000.0,
   "printed": "5,000 USD",
-  "source": "sources/kalshi-20260927T1522Z/PREREGISTRATION.md"
+  "source": "sources/kalshi-20261006T1434Z/PREREGISTRATION.md"
+ },
+ "km_fwd_join_risk": {
+  "value": 3025.16,
+  "printed": "3,025 USD",
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
+ },
+ "km_fwd_penny_risk": {
+  "value": 4777.67,
+  "printed": "4,778 USD",
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
  },
  "km_fwd_cycles": {
-  "value": 12162,
-  "printed": "12,162",
-  "source": "sources/kalshi-20260927T1522Z/reports/FORWARD.md"
+  "value": 52405,
+  "printed": "52,405",
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
  },
  "km_fwd_failed": {
   "value": 320,
   "printed": "320",
-  "source": "sources/kalshi-20260927T1522Z/reports/FORWARD.md"
+  "source": "sources/kalshi-20261006T1434Z/reports/FORWARD.md"
  },
  "km_holdout_mk_start": {
   "value": "2026-09-25 08:34 UTC",
@@ -867,42 +887,42 @@
  "km_hold_pos": {
   "value": 7,
   "printed": "7",
-  "source": "sources/kalshi-20260927T1522Z/reports/BACKTEST.md"
+  "source": "sources/kalshi-20261006T1434Z/reports/BACKTEST.md"
  },
  "km_hold_sig": {
   "value": 6,
   "printed": "6",
-  "source": "sources/kalshi-20260927T1522Z/reports/BACKTEST.md"
+  "source": "sources/kalshi-20261006T1434Z/reports/BACKTEST.md"
  },
  "km_hold_weak": {
   "value": "PENNY Politics [0.00, 0.10)",
   "printed": "PENNY Politics [0.00, 0.10)",
-  "source": "sources/kalshi-20260927T1522Z/reports/BACKTEST.md"
+  "source": "sources/kalshi-20261006T1434Z/reports/BACKTEST.md"
  },
  "km_hold_weak_mean": {
   "value": 2.13,
   "printed": "2.13",
-  "source": "sources/kalshi-20260927T1522Z/reports/BACKTEST.md"
+  "source": "sources/kalshi-20261006T1434Z/reports/BACKTEST.md"
  },
  "km_hold_weak_t": {
   "value": 1.54,
   "printed": "1.5",
-  "source": "sources/kalshi-20260927T1522Z/reports/BACKTEST.md"
+  "source": "sources/kalshi-20261006T1434Z/reports/BACKTEST.md"
  },
  "km_holdout_time": {
   "value": "2026-09-26 01:25 UTC",
   "printed": "2026-09-26 01:25 UTC",
-  "source": "sources/kalshi-20260927T1522Z/reports/backtest/r1/summary.json"
+  "source": "sources/kalshi-20261006T1434Z/reports/backtest/r1/summary.json"
  },
  "km_holdout_total": {
   "value": 600,
   "printed": "600",
-  "source": "sources/kalshi-20260927T1522Z/reports/backtest/r1/summary.json"
+  "source": "sources/kalshi-20261006T1434Z/reports/backtest/r1/summary.json"
  },
  "km_holdout_trades_ok": {
   "value": 41214818,
   "printed": "41,214,818",
-  "source": "sources/kalshi-20260927T1522Z/reports/backtest/r1/summary.json"
+  "source": "sources/kalshi-20261006T1434Z/reports/backtest/r1/summary.json"
  },
  "km_late_universe": {
   "value": 101092,

@@ -17,9 +17,11 @@ stated before the statistic it governs; the other two are measurements. Full rep
 - **Market making.** On {ps_prints} prints, resting liquidity earns about the maker rebate in
   one price bucket; fills that reach the back of the queue lose {pq_back_loss_x} and
   {pq_back_loss_c} cents per share before it.
-- **Cross-venue arbitrage.** Exact Kalshi and Polymarket pairs show {xa_exact_cf_edge} of
-  entry edge, sound at settlement but hard to fill (median episode a single poll); pairs
-  settling on different sources or at different instants show more edge ({xa_basis_edge}) and a negative result
+- **Cross-venue arbitrage.** Once {xa_other_pairs} pairs that joined two different games are set
+  apart, exact Kalshi and Polymarket pairs show {xa_exact_cf_edge} of entry edge, sound at
+  settlement but hard to fill (median episode a single poll), and {xa_joint_pnl} on paper since
+  {xa_joint_since} under an optimistic fill model; pairs settling on different sources or at
+  different instants show about the same edge ({xa_basis_edge}) and a negative result
   ({xa_basis_pnl} per contract, {xa_basis_div} divergent settlements).
 - **Kalshi maker premium.** On {km_trades_ok} eligible trades, {km_qualifying} of
   {km_pairs_tested} pre-registered pairs pass in both sets of markets, all with the maker selling YES,

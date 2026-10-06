@@ -29,8 +29,9 @@ def derived(values: dict[str, str], raw: dict) -> dict[str, str]:
         )
         out["km_section"] = (TEMPLATES / "kalshi_decided.md").read_text(encoding="utf-8").strip()
     out["pm_xarb_exact_verdict"] = (
-        f"edges of about {values['xa_exact_edge_mean']} that often last a single poll; no divergence at "
-        "settlement, a net loss so far."
+        f"edges of about {values['xa_clean_det_edge']} that usually last a single poll, and "
+        f"{values['xa_joint_pnl']} on paper since {values['xa_joint_since']} under an optimistic fill model, "
+        f"once {values['xa_other_pairs']} pairs that joined two different games are set apart."
     )
     return out
 

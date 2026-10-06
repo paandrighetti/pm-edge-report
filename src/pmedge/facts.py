@@ -24,7 +24,8 @@ UPDOWN_README = ROOT / "sources" / "updown-desk-547d806" / "README.md"
 KALSHI = ROOT / "sources" / "kalshi-20260924T1145Z"
 KALSHI_SENS = ROOT / "sources" / "kalshi-sensitivity-20260924" / "0014-kalshi-late-settlement.log"
 KALSHI_HORIZON = ROOT / "sources" / "kalshi-horizon-20260924" / "0015-kalshi-horizon.log"
-KALSHI_NOW = ROOT / "sources" / "kalshi-20260927T1522Z"
+KALSHI_NOW = ROOT / "sources" / "kalshi-20261006T1434Z"
+XARB = ROOT / "sources" / "pm-xarb-20261006T1434Z"
 KALSHI_STATUS = ROOT / "sources" / "kalshi-status-20260925"
 KALSHI_STATUS2 = ROOT / "sources" / "kalshi-status-20260927"
 
@@ -242,9 +243,12 @@ def backtest(f: Facts) -> None:
 
 # --------------------------------------------------------------------------- pm-xarb
 def xarb(f: Facts) -> None:
-    src = SERVER / "pm-xarb" / "latest.md"
+    """The desk's daily report for its universe and realized total, and `pmx final` for the exact
+    class with the pairs that joined two different games set apart, over the whole record and
+    since the executor took fills from the next books of both venues at once."""
+    src = XARB / "latest.md"
     text = read(src)
-    f.put("xa_report_head", text.splitlines()[0].lstrip("# ").strip(), "", src)
+    f.put("xa_day", re.search(r"(\d{4}-\d{2}-\d{2})", text.splitlines()[0]).group(1), "", src)
     uni = {r["family"]: r for r in md_table(text, "## Universe")}
     exact = sum(int(num(r["exact"])) for r in uni.values() if r["exact"])
     basis = sum(int(num(r["basis"])) for r in uni.values() if r["basis"])
@@ -253,51 +257,64 @@ def xarb(f: Facts) -> None:
     f.put("xa_exact_pairs", exact, "{}", src)
     f.put("xa_basis_pairs", basis, "{}", src)
     f.put("xa_kalshi_unmatched", k_unm / k_legs * 100, "{:.0f} %", src)
-
     dq = md_table(text, "## Data quality")[0]
     f.put("xa_polls", int(num(dq["polls"])), "{:,}", src)
     f.put("xa_skew", num(dq["mean_skew_s"]), "{:.2f} s", src)
+    mtm = md_table(text, "### Latest mark-to-market")[0]
+    f.put("xa_realized", num(mtm["realized"]), "{:.0f} USD", src)
 
-    det = [r for r in md_table(text, "## Detections (net of fees, depth-limited)") if r["klass"] == "exact"]
-    f.put("xa_exact_det", sum(int(num(r["n"])) for r in det), "{}", src)
-    f.put("xa_exact_edge_max", max(num(r["max_edge"]) for r in det) * 100, "{:.1f} cents", src)
-    wmean = sum(num(r["mean_edge"]) * num(r["n"]) for r in det) / sum(num(r["n"]) for r in det)
-    f.put("xa_exact_edge_mean", wmean * 100, "{:.1f} cents", src)
-    ep = [r for r in md_table(text, "### Episodes (contiguous polls with the same opportunity)") if r["klass"] == "exact"][0]
-    f.put("xa_exact_life_med", num(ep["median_life_s"]), "{:.0f} s", src)
-    f.put("xa_exact_life_p90", num(ep["p90_life_s"]), "{:.0f} s", src)
+    fin = XARB / "final.md"
+    t_all = read(fin)
+    f.put("xa_other_pairs", int(re.search(r"^(\d+) archived sports pairs joined two different games",
+                                          t_all, re.M).group(1)), "{}", fin)
+    by = lambda heading: {r["other_game"]: r for r in md_table(t_all, heading)}
+    det = by("### Detections")
+    n_other, n_clean = num(det["True"]["n"]), num(det["False"]["n"])
+    f.put("xa_other_det_share", n_other / (n_other + n_clean) * 100, "{:.0f} %", fin)
+    f.put("xa_other_det_edge", num(det["True"]["mean_edge_cents"]), "{:.0f} cents", fin)
+    f.put("xa_clean_det_edge", num(det["False"]["mean_edge_cents"]), "{:.1f} cents", fin)
+    claim(num(det["True"]["mean_edge_cents"]) > num(det["False"]["mean_edge_cents"]),
+          "the pairs with the most entry edge were those whose legs settle on different facts")
+    obs = by("### Pairs observed to settlement")
+    f.put("xa_other_div", int(num(obs["True"]["divergent"])), "{}", fin)
+    claim(int(num(obs["False"]["divergent"])) == 0 and int(num(obs["True"]["divergent"])) > 0,
+          "every exact pair that settled differently on the two venues joined two different games")
+    ep = by("### Episodes")["False"]
+    f.put("xa_single_poll", num(ep["single_poll_pct"]), "{:.0f} %", fin)
+    f.put("xa_life_p90", num(ep["p90_life_s"]), "{:.0f} s", fin)
+    claim(num(ep["median_life_s"]) == 0 and num(ep["single_poll_pct"]) > 50,
+          "the median exact episode is seen on a single poll")
+    res = by("### Resolutions")["False"]
+    f.put("xa_clean_resolved", int(num(res["pairs"])), "{}", fin)
+    f.put("xa_clean_pnl", num(res["pnl_usd"]), "{:.0f} USD", fin)
+    claim(num(res["pnl_usd"]) < 0, "since inception, the correctly matched exact pairs lose")
 
-    lf = md_table(text, "### Leg failures (second leg gone once the first is on; the cost sits in the unwinds)")[0]
-    f.put("xa_fill_ratio", num(lf["fill_ratio"]) * 100, "{:.0f} %", src)
+    fin2 = XARB / "final-20260922.md"
+    t_new = read(fin2)
+    f.put("xa_joint_since", re.search(r"exact class since (\d{4}-\d{2}-\d{2})", t_new).group(1), "", fin2)
+    res2 = {r["other_game"]: r for r in md_table(t_new, "### Resolutions")}["False"]
+    fil2 = {r["other_game"]: r for r in md_table(t_new, "### Filled intents")}["False"]
+    f.put("xa_joint_resolved", int(num(res2["pairs"])), "{}", fin2)
+    f.put("xa_joint_pnl", num(res2["pnl_usd"]), "{:.0f} USD", fin2)
+    f.put("xa_joint_filled", int(num(fil2["filled"])), "{}", fin2)
+    f.put("xa_joint_contracts", int(num(fil2["contracts"])), "{:,}", fin2)
+    f.put("xa_joint_missed", int(num(fil2["missed"])), "{}", fin2)
+    claim(num(res2["pnl_usd"]) > 0, "since the joint executor, the correctly matched exact pairs gain")
+    claim(int(num(fil2["missed"])) > int(num(fil2["filled"])), "more intents miss than fill one poll later")
 
-    since = {(r["family"], r["klass"]): r for r in md_table(text, "### Resolutions since inception")}
-    se = since[("sports", "exact")]
-    f.put("xa_exact_resolved", int(num(se["resolved_pairs"])), "{}", src)
-    f.put("xa_exact_pnl", num(se["pnl"]), "{:.0f} USD", src)
-    f.put("xa_exact_naked", int(num(se["naked_pairs"])), "{}", src)
-    f.put("xa_exact_onesided", int(num(se["one_sided"])), "{}", src)
-    f.put("xa_exact_naked_pnl", num(se["pnl_naked"]), "{:.0f} USD", src)
-    f.put("xa_exact_hedged_pnl", num(se["pnl_hedged"]), "{:.0f} USD", src)
-    sb = since[("crypto", "basis")]
-    f.put("xa_basis_traded_pairs", int(num(sb["resolved_pairs"])), "{}", src)
-    f.put("xa_basis_traded_pnl", num(sb["pnl"]), "{:.0f} USD", src)
-    f.put("xa_basis_traded_onesided", int(num(sb["one_sided"])), "{}", src)
-    f.put("xa_day", re.search(r"(\d{4}-\d{2}-\d{2})", text.splitlines()[0]).group(1), "", src)
-    claim(num(se["pnl"]) < 0, "exact pairs lose since inception")
-
-    cf = {r["klass"]: r for r in md_table(text, "## Classes not traded: counterfactual")}
-    b = cf["basis"]
-    e = cf["exact"]
-    f.put("xa_exact_cf_pairs", int(num(e["pairs"])), "{}", src)
-    f.put("xa_exact_cf_edge", num(e["mean_edge_at_entry"]) * 100, "{:.1f} cents", src)
-    f.put("xa_exact_cf_pnl", num(e["mean_pnl_per_contract"]) * 100, "{:.1f} cents", src)
+    cf = {r["klass"]: r for r in md_table(t_all, "### Counterfactual since inception, pairs that joined two games left out")}
+    e, b = cf["exact"], cf["basis"]
+    f.put("xa_exact_cf_pairs", int(num(e["pairs"])), "{}", fin)
+    f.put("xa_exact_cf_edge", num(e["mean_edge_at_entry"]) * 100, "{:.2f} cents", fin)
+    f.put("xa_exact_cf_pnl", num(e["mean_pnl_per_contract"]) * 100, "{:.2f} cents", fin)
     claim(int(num(e["divergent"])) == 0 and num(e["mean_pnl_per_contract"]) > 0,
-          "held without execution, exact pairs settle without divergence and at a small profit")
-    f.put("xa_basis_cf_pairs", int(num(b["pairs"])), "{}", src)
-    f.put("xa_basis_div", int(num(b["divergent"])), "{}", src)
-    f.put("xa_basis_edge", num(b["mean_edge_at_entry"]) * 100, "{:.1f} cents", src)
-    f.put("xa_basis_pnl", num(b["mean_pnl_per_contract"]) * 100, "{:.1f} cents", src)
-    claim(num(b["mean_edge_at_entry"]) > num(e["mean_edge_at_entry"]), "basis pairs show more entry edge than exact pairs")
+          "held without execution, correctly matched exact pairs settle without divergence and at a small profit")
+    f.put("xa_basis_cf_pairs", int(num(b["pairs"])), "{}", fin)
+    f.put("xa_basis_div", int(num(b["divergent"])), "{}", fin)
+    f.put("xa_basis_edge", num(b["mean_edge_at_entry"]) * 100, "{:.2f} cents", fin)
+    f.put("xa_basis_pnl", num(b["mean_pnl_per_contract"]) * 100, "{:.2f} cents", fin)
+    claim(abs(num(b["mean_edge_at_entry"]) / num(e["mean_edge_at_entry"]) - 1) < 0.25,
+          "basis and correctly matched exact pairs show about the same entry edge")
     claim(num(b["mean_edge_at_entry"]) > 0 > num(b["mean_pnl_per_contract"]),
           "basis pairs show a positive entry edge and a negative result")
 
@@ -549,6 +566,12 @@ def kalshi_forward(f: Facts, gate: dict, decision_sha: str, label) -> None:
     f.put("km_sim_daily", float(m.group(3)), "{:.1f} %", prereg_path)
     f.put("km_sim_two", float(m.group(4)), "{:.1f} %", prereg_path)
     claim(float(m.group(4)) < float(m.group(3)), "the two looks give fewer false successes than daily checks")
+    m = re.search(r"Amendment 5, (\d+ \w+ \d{4}), on day (\d+) of the forward test, after its daily reports had "
+                  r"been read and before either variant reached a look\.", prereg)
+    f.put("km_amend5_date", m.group(1), "", prereg_path)
+    f.put("km_amend5_day", int(m.group(2)), "{}", prereg_path)
+    claim("It changes no status, threshold or look date." in prereg and "These figures are reported, not decisional" in prereg,
+          "the fifth amendment reports figures and decides nothing")
     m = re.search(r"the forward universe is the (\d+) most active markets closing within (\d+) days", prereg)
     f.put("km_fwd_n", int(m.group(1)), "{}", prereg_path)
     f.put("km_fwd_window", int(m.group(2)), "{}", prereg_path)
@@ -573,6 +596,8 @@ def kalshi_forward(f: Facts, gate: dict, decision_sha: str, label) -> None:
         days.append(int(st.group(1)))
         events[variant] = (int(st.group(5)), int(st.group(6)))
         at_risk[variant] = float(re.search(r"^Open: \d+ fills, ([\d.]+) USD at risk\.$", blk, re.M).group(1))
+        claim(re.search(r"^Reported, not decisional \(Amendment 5\): one-sided p of the wild cluster bootstrap ",
+                        blk, re.M) is not None, f"the {variant} report prints the figures of the fifth amendment")
         mech = md_tables_after(fwd, f"## {variant}")[-1]
         claim(bool(mech) and "via" in mech[0], f"the last {variant} table is the fill mechanics")
         fills += sum(int(num(r["fills"])) for r in mech)
@@ -588,8 +613,10 @@ def kalshi_forward(f: Facts, gate: dict, decision_sha: str, label) -> None:
                     prereg)
     total_cap = float(cap.group(1).replace(",", ""))
     f.put("km_fwd_cap", total_cap, "{:,.0f} USD", prereg_path)
-    claim(all(abs(v - total_cap) < 0.01 for v in at_risk.values()),
-          "both variants hold the pre-registered total at risk")
+    f.put("km_fwd_join_risk", at_risk["JOIN"], "{:,.0f} USD", fwd_path)
+    f.put("km_fwd_penny_risk", at_risk["PENNY"], "{:,.0f} USD", fwd_path)
+    claim(all(v <= total_cap + 0.01 for v in at_risk.values()),
+          "no variant holds more than the pre-registered total at risk")
     m = re.search(r"^(\d+) cycles; .*?; (\d+) cycles with a failed stage\.$", fwd, re.M)
     f.put("km_fwd_cycles", int(m.group(1)), "{:,}", fwd_path)
     f.put("km_fwd_failed", int(m.group(2)), "{}", fwd_path)

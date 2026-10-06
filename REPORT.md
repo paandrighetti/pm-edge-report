@@ -20,13 +20,15 @@ test is running.
 | Up/Down taker ([updown-desk](https://github.com/paandrighetti/updown-desk)) | Does taking against a diffusion fair value pay on 15-minute crypto markets? | No. All 12 cells lose, t from -3.4 to -1.8. |
 | Resolved-market strategies ([pm-backtest](https://github.com/paandrighetti/pm-backtest)) | Do favorite carry, Dutch books or hedged crypto binaries survive out of sample? | No. Favorite carry loses and the best hedge cell reverses; the only Dutch-book residual sits in a few cheap books and cannot be sized on hourly data. |
 | Passive quoting (updown-desk) | Does resting liquidity earn the spread plus the maker rebate? | About the rebate, in one price bucket, and not at the back of the queue. |
-| Cross-venue arbitrage ([pm-xarb](https://github.com/paandrighetti/pm-xarb)) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: edges of about 0.6 cents that often last a single poll; no divergence at settlement, a net loss so far. Basis pairs: more entry edge, and a negative result. |
+| Cross-venue arbitrage ([pm-xarb](https://github.com/paandrighetti/pm-xarb)) | How much of a Kalshi and Polymarket price gap can a taker capture? | Exact pairs: edges of about 0.6 cents that usually last a single poll, and 35 USD on paper since 2026-09-22 under an optimistic fill model, once 9 pairs that joined two different games are set apart. Basis pairs: about the same entry edge, and a negative result. |
 | Kalshi maker premium ([kalshi-maker](https://github.com/paandrighetti/kalshi-maker)) | Does the published maker premium survive for a small maker who improves the price or waits at the back of the queue? | 7 of 289 pre-registered pairs pass in both sets of markets, all with the maker selling YES, and all stay positive on the holdout hours; forward paper test running. |
 
 The common thread: on Polymarket's 15-minute crypto markets, prices reflect the contract that
 actually settles better than simple models do, and what liquidity provision earns depends on
-queue position and speed, which a small participant does not have. Four studies found no edge
-that survives their own costs and checks. The fifth found a candidate on Kalshi: in a few
+queue position and speed, which a small participant does not have. Three studies found no edge
+that survives their own costs and checks. The cross-venue desk finds a small edge on exact pairs
+that a taker one poll late mostly misses, positive on paper only under an optimistic fill model.
+The fifth found a candidate on Kalshi: in a few
 non-crypto categories, the pre-registered statistics for a maker selling YES were positive in
 two sets of markets, and they stayed positive on holdout hours of the same markets. It rests on
 fill assumptions and on outcomes already known; only the forward paper test, on new outcomes,
@@ -132,33 +134,42 @@ queue, or a faster quoter, would earn was not measured.
 ## 5. Cross-venue arbitrage: the same event on two venues
 
 A paper desk records both order books for pairs matched deterministically across Kalshi and
-Polymarket. The figures below come from its daily report for 2026-09-22. That day: 28,769
-polls, mean skew between venues 0.11 s. Of the Kalshi legs in the matched families,
-88 % have no matched Polymarket leg.
+Polymarket, detects hedges that cost less than one dollar after both venues' fees, and trades
+the exact ones on paper. Its daily report for 2026-10-05 counts 28,766 polls, a mean skew
+between venues of 0.09 s, 39 exact and 12 basis pairs on the
+whitelist, and 88 % of the Kalshi legs in the matched families without a
+Polymarket leg. The other figures come from `pmx final`, which reads the whole record.
 
-- **Exact pairs** (same fact, same source, same instant; 54 on the whitelist).
-  On that day, 91 detections after fees on both legs, mean edge
-  0.6 cents per contract, at most 1.2 cents. The median episode is seen
-  on a single poll (median lifetime 0 s, 90th percentile
-  60 s); one poll later, 53 % of the intended size fills.
-  Since inception, 46 pairs have resolved for a total of -93 USD,
-  of which -58 USD on the 7 pairs left with a naked leg and
-  -35 USD on hedged pairs; the total is not final while 14 of
-  them await the second venue. In the desk's counterfactual table, 17 exact
-  pairs held from their first opportunity settle with no divergence and return
-  0.6 cents per contract: the loss so far is not explained by divergent settlement.
+**Two games taken for one.** The matcher first joined sports markets on the game day, and across
+days within a window. In a series, or when a postponed game was replayed in a doubleheader, that
+joined two different games. Applied to every archived definition, the start-time rule the matcher
+now uses rejects 9 pairs. They carried 88 % of all exact
+detections, at a mean edge of 27 cents against 0.6 cents for the others,
+and every exact pair that settled differently on the two venues (2) was among
+them. The figures below leave them out.
+
+- **Exact pairs** (same fact, same source, same instant). 75 % of the exact episodes
+  are seen on a single poll, so the median lifetime is zero; the 90th percentile is
+  9 s. Held without capital from their first opportunity, the 104
+  exact pairs of the counterfactual table settle with no divergence and return
+  0.98 cents per contract, the entry edge itself. Traded on paper from
+  2026-09-22, with fills taken from the next books of both venues at once (an upper
+  bound), 34 intents filled for 8,006 contracts while
+  77 found the books gone one poll later; the 32 pairs resolved
+  since then gain 35 USD in total. Since inception, including the first days, when each
+  leg was priced on its own, the 76 resolved pairs total -60 USD. The
+  desk's realized total, which also carries the cost of selling naked legs and the basis pairs
+  traded in its first days, is -558 USD.
 - **Basis pairs** (the same question, settled on different sources or at different instants;
-  15 on the current whitelist). Held without capital from the first opportunity
-  on each of the 22 basis pairs in the desk's counterfactual table, the mean entry edge is
-  1.9 cents per contract against 0.6 cents for exact pairs, and the mean result
-  is -7.2 cents. 2 of those pairs settled differently on the two venues, and
+  12 on the whitelist). Held without capital from the first opportunity on each
+  of the 88 basis pairs in the counterfactual table, the mean entry edge is
+  1.02 cents per contract, about the 0.98 cents of exact pairs, and the mean result
+  is -0.12 cents. 3 of those pairs settled differently on the two venues, and
   such a pair pays zero or two, not one. The entry edge is the premium for that risk; on this
-  small sample it did not cover it. In the first days of paper trading basis pairs were also
-  traded: 8 resolved, total -302 USD, not final while
-  6 of them await the second venue.
+  sample it did not cover it.
 
 A basis pair is short the difference between two measurements of the same event. It is not an
-arbitrage.
+arbitrage, and neither is a pair that joins two games.
 
 ## 6. The Kalshi maker premium
 
@@ -285,20 +296,25 @@ Its success criterion pools the qualifying pairs of a variant, so it tests the p
 each pair. The first rule checked success in every daily report once the minimums were
 reached, with no end date; on simulated daily results with no edge, checking every day from
 day 20 to day 60 gives 8.2 % false successes. The fourth amendment
-(25 September 2026, before any look; the file's SHA-256 now begins `be8decba1c6aff37`, and the
-forward report prints it next to the one the decision was taken under) keeps two looks per
+(25 September 2026, before any look; the forward report prints the file's current SHA-256 next to
+the one the decision was taken under) keeps two looks per
 variant: the first report with 200 settled events and at least 10 losing
 clusters, if it comes before day 60, and the first report on or after day
 60, counting from the variant's first fill. Each look needs a positive profit per
 contract with t ≥ 2.28: the one-sided error of t ≥ 2 is split between the two looks
 (Bonferroni), and the same simulation gives 2.0 % false successes. A variant without
 success at day 60 is inconclusive, and one whose mean is negative in a report on or
-after day 30 is abandoned. By 2026-09-27 07:00 UTC, day 3 of the test,
-12,162 cycles had produced 10,223 fills. JOIN had 117 settled
-events and PENNY 10, and their losing clusters numbered 1
-and 2, against the 200 events and 10 losing clusters the
-first look needs, so no look had taken place. Both variants held the pre-registered maximum of
-5,000 USD at risk, so the tested sample grows as positions settle. 320 cycles had a
+after day 30 is abandoned. A fifth amendment (6 October 2026, day 12,
+after the daily forward reports had been read and before any look) adds to each report and
+each look the one-sided p of a wild cluster bootstrap and the range of the mean with one cluster
+left out, because the cluster-robust t rejects too often with few clusters; it decides nothing,
+and the file's SHA-256 now begins `29c248edd7873211`. By 2026-10-06 14:34 UTC, day 12 of the test,
+52,405 cycles had produced 42,868 fills. JOIN had 656 settled
+events and PENNY 132, and their losing clusters numbered 7
+and 11, against the 200 events and 10 losing clusters the
+first look needs, so no look had taken place. JOIN held 3,025 USD and PENNY
+4,778 USD at risk, under the pre-registered maximum of 5,000 USD; the tested sample
+grows as positions settle. 320 cycles had a
 failed stage, all between 2026-09-25 08:34 UTC, when the holdout started
 downloading market records, and 2026-09-26 01:19 UTC, by which time that download had finished;
 none failed afterwards.
@@ -332,8 +348,8 @@ none failed afterwards.
 
 ## 8. Limitations
 
-- Short samples: two weeks of Up/Down markets, days of cross-venue data. None of this can
-  tell a change of regime from noise.
+- Short samples: two weeks of Up/Down markets, a few weeks of cross-venue data. None of this
+  can tell a change of regime from noise.
 - The resolved-market intervals treat trades as independent. Many markets resolve on the
   same event night, so the intervals are too narrow.
 - The rules of the passive study sit in script docstrings, and the backtest's selection rule
